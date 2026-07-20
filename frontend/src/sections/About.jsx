@@ -22,7 +22,9 @@ export default function About({ props = {}, path, editable = false }) {
               src={image}
               alt=""
               className="w-full h-full object-cover"
-              style={{ borderRadius: 'var(--card-radius)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}
+              // Real Tenji hardcodes 24px on the hero image regardless of the Design
+              // tab's corner-radius knob (see Services.jsx for the same fix + rationale).
+              style={{ borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}
             />
           )}
           {editable && (

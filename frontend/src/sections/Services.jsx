@@ -41,8 +41,12 @@ export default function Services({ props = {}, path, editable = false }) {
                   background: 'var(--card-bg)',
                   border: 'var(--card-border)',
                   boxShadow: 'var(--card-shadow)',
-                  borderRadius: 'var(--card-radius)',
-                  padding: 'var(--card-pad)',
+                  // Real Tenji hardcodes 24px/28px here regardless of the Design tab's
+                  // corner-radius knob (verified against both tenji-plumbing-template.html
+                  // and tenji-catering-template.html) — --card-radius/--card-pad default to
+                  // 20px/"24px 28px" which is only correct for FAQ cards, not these.
+                  borderRadius: '24px',
+                  padding: '28px',
                 }}
               >
                 {Icon && (

@@ -41,8 +41,10 @@ export default function Testimonials({ props = {}, path, editable = false }) {
                   background: 'var(--card-bg)',
                   border: 'var(--card-border)',
                   boxShadow: 'var(--card-shadow)',
-                  borderRadius: 'var(--card-radius)',
-                  padding: 'var(--card-pad)',
+                  // Real Tenji hardcodes 24px/28px here (verified against both real
+                  // template HTML files) — see Services.jsx for the same fix + rationale.
+                  borderRadius: '24px',
+                  padding: '28px',
                 }}
               >
                 <div className="flex gap-0.5 mb-4">
