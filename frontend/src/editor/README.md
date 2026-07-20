@@ -73,7 +73,19 @@ of 9). Full grade table in BUILD-LOG Terminal 3.
    page reload with localStorage deliberately wiped beforehand (see BUILD-LOG for the exact
    test). `publish`/`republish` only flip the published flag on a confirmed save; a failed
    write surfaces as "Save failed — kept locally" in the toolbar instead of silently lying.
-3. **CLOSED 2026-07-20**: `theme.headingFont`/`buttonStyle`/`cornerRadius` — T2 shipped
+3. **CLOSED 2026-07-21 (was a second, worse bug), REVISED same day**: Publish/Republish used
+   to ONLY flip a local UI boolean — the entity's `status`/`subdomain` never changed and no
+   hosted URL ever existed. First fix compiled real static HTML and uploaded it via
+   `base44.integrations.Core.UploadFile` — that produced a real URL, but Base44 serves
+   uploaded files as `application/octet-stream`, so browsers download the file instead of
+   rendering it (confirmed live). Revised to use `serveSite` instead — a public,
+   unauthenticated `GET /api/functions/serveSite?subdomain=<slug>` that server-renders
+   content_json directly with correct `text/html` headers. `doPublish()` now just persists
+   `status`/`subdomain`/`published_at` on the real entity and points `publishedUrl` at that
+   endpoint — no compile/upload step needed. Verified with a real published site opened in a
+   fresh, logged-out browser tab (full page rendered, zero login) — see BUILD-LOG for the
+   exact URL and before/after entity values. `unpublish()` sets `status: 'draft'`.
+4. **CLOSED 2026-07-20**: `theme.headingFont`/`buttonStyle`/`cornerRadius` — T2 shipped
    `renderer/theme.js`'s `resolveThemeVars()` + `lib/designTokens.js`; every section now
    reads `var(--heading-font)`/`var(--btn-radius)`/`var(--card-radius)`. Verified live
    (Button Style Rounded↔Sharp instantly changes the rendered CTA corners) — no further

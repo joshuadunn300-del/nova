@@ -3,9 +3,14 @@ import { createHistory, push, undo, redo, canUndo, canRedo } from './history.js'
 import { getAtPath, setAtPath } from './contentPath.js';
 import { moveSection, reorderSection, duplicateSection, deleteSection, toggleVisible, addSection } from './sectionOps.js';
 import { slugify } from './slug.js';
-import { compileStaticHtml } from '../sections/compileStaticHtml.js';
 
 const STORAGE_PREFIX = 'nova.editor.doc.'; // TEMP: localStorage save fallback until Terminal 1's API is live.
+// Confirmed live 2026-07-21: GET /api/functions/serveSite?subdomain=<slug> is a PUBLIC,
+// unauthenticated endpoint (no api_key/session needed) that server-renders content_json
+// straight from the GeneratedSite entity with correct `text/html` headers — verified in a
+// real browser tab against a real published site, zero login. This is the actual mechanism
+// a pitched prospect's link resolves through; see BUILD-LOG for the full before/after proof.
+const BASE44_APP_URL = 'https://icy-nova-growth-lab.base44.app';
 
 export function useEditorState(siteId, initialDoc) {
   const [hist, setHist] = useState(() => {
@@ -133,16 +138,19 @@ export function useEditorState(siteId, initialDoc) {
   // BUG FIX (2026-07-21, T4 found live, CRITICAL — blocked T5's exit test): Publish used
   // to only flip a LOCAL `published` boolean — the GeneratedSite entity's `status` stayed
   // "draft" forever and no `subdomain` was ever assigned, so there was no real servable URL
-  // despite the UI showing a green "PUBLISHED" badge. Now: compiles a real static HTML file
-  // from content_json (via T2's actual SiteRenderer, non-editable — same source of truth as
-  // the live preview), uploads it through Base44's OWN public-storage endpoint
-  // (`integrations.Core.UploadFile`) to get a genuinely hosted, publicly servable URL — this
-  // answers the "does Base44 serve it, or does publishSite need to" coordination question:
-  // Base44's own file storage serves it directly, no dedicated publishSite backend function
-  // needed. Persists `status`/`subdomain` on the real entity via the same `update(id, patch)`
-  // shape as save(). Stores the real URL in `content_json.publishedUrl` (entity schema has no
-  // dedicated "hosted URL" field, same pattern as `seo`/`domain`/`quoteFields` living in
-  // content_json rather than a section's `props`).
+  // despite the UI showing a green "PUBLISHED" badge.
+  //
+  // REVISED (2026-07-21, per Josh's verify-gap report): the first fix used
+  // `integrations.Core.UploadFile` to host a compiled static HTML file — that DID produce a
+  // real public URL, but Base44 serves uploaded files as `application/octet-stream`
+  // (confirmed live: `curl -D-` on the file_url), which makes browsers download the file
+  // instead of rendering it — broken for a demo-pitch link. Investigated `serveSite`
+  // (function #7) instead: confirmed live it's a PUBLIC, unauthenticated GET endpoint
+  // (`/api/functions/serveSite?subdomain=<slug>`) that server-renders content_json directly
+  // with correct `text/html` headers — published a real site, hit it from a fresh browser
+  // tab with zero login, got the actual rendered page. That makes the compile+upload step
+  // entirely unnecessary: serveSite already renders from content_json on every request, so
+  // publishing now only needs to persist `status`/`subdomain` — no separate HTML artifact.
   const doPublish = useCallback(async () => {
     setPublishError(null);
     if (!(await save())) { setPublishError('Could not save — publish aborted.'); return; }
@@ -153,11 +161,9 @@ export function useEditorState(siteId, initialDoc) {
     }
     try {
       const siteName = doc.siteName || doc.sections?.[0]?.props?.logo || 'site';
-      const html = await compileStaticHtml(doc, siteName);
-      const file = new File([html], 'index.html', { type: 'text/html' });
-      const { file_url } = await window.base44.integrations.Core.UploadFile({ file });
       const slug = slugify(siteName, Date.now().toString(36));
-      const stampedDoc = { ...doc, publishedUrl: file_url };
+      const url = `${BASE44_APP_URL}/api/functions/serveSite?subdomain=${slug}`;
+      const stampedDoc = { ...doc, publishedUrl: url };
       await window.base44.entities.GeneratedSite.update(siteId, {
         status: 'published',
         subdomain: slug,
@@ -166,7 +172,7 @@ export function useEditorState(siteId, initialDoc) {
       });
       setHist((h) => ({ ...h, present: stampedDoc }));
       setPublished(true);
-      setPublishedUrl(file_url);
+      setPublishedUrl(url);
     } catch (err) {
       setPublishError(err?.message || 'Failed to publish — the site was saved but not published.');
     }
