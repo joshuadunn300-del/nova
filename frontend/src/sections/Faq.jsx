@@ -4,25 +4,35 @@ export default function Faq({ props = {}, path, editable = false }) {
   const { title = 'Frequently Asked Questions', items = [] } = props
 
   return (
-    <section className="w-full px-4 sm:px-6 py-16 mx-auto max-w-3xl">
+    <section
+      className="w-full mx-auto max-w-3xl"
+      style={{ paddingBlock: 'var(--section-y)', paddingInline: 'var(--section-x)' }}
+    >
       <h2
         className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
-        style={{ fontFamily: 'var(--heading-font)' }}
+        style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)' }}
         {...editableProps(editable, `${path}.title`)}
       >
         {title}
       </h2>
       {items.length === 0 ? (
-        <p className="text-center text-gray-400">No questions yet.</p>
+        <p className="text-center" style={{ color: 'var(--muted-color)' }}>No questions yet.</p>
       ) : (
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y" style={{ borderColor: 'var(--input-border-color)' }}>
           {items.map((item, i) => (
             <details key={i} className="py-4 group">
-              <summary className="cursor-pointer font-medium text-gray-900 break-words list-none flex justify-between gap-4">
+              <summary
+                className="cursor-pointer font-medium break-words list-none flex justify-between gap-4"
+                style={{ color: 'var(--heading-color)' }}
+              >
                 <span {...editableProps(editable, `${path}.items.${i}.question`)}>{item?.question || 'Question'}</span>
-                <span className="text-gray-400 group-open:rotate-45 transition-transform shrink-0">+</span>
+                <span className="group-open:rotate-45 transition-transform shrink-0" style={{ color: 'var(--muted-color)' }}>+</span>
               </summary>
-              <p className="mt-2 text-gray-600 break-words" {...editableProps(editable, `${path}.items.${i}.answer`)}>
+              <p
+                className="mt-2 break-words"
+                style={{ color: 'var(--body-color)' }}
+                {...editableProps(editable, `${path}.items.${i}.answer`)}
+              >
                 {item?.answer || ''}
               </p>
             </details>

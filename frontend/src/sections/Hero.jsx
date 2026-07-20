@@ -11,8 +11,8 @@ export default function Hero({ props = {}, path, editable = false }) {
 
   return (
     <section
-      className="relative w-full px-4 sm:px-6 py-20 md:py-28 text-center overflow-hidden group"
-      style={{ backgroundColor: 'var(--secondary)', color: '#fff' }}
+      className="relative w-full py-20 md:py-28 text-center overflow-hidden group"
+      style={{ backgroundColor: 'var(--secondary)', color: '#fff', paddingInline: 'var(--section-x)' }}
       data-bg-path={editable ? `${path}.image` : undefined}
     >
       {image && (
@@ -51,8 +51,16 @@ export default function Hero({ props = {}, path, editable = false }) {
         {cta?.label && !form?.enabled && (
           <a
             href={cta.href || '#'}
-            className="mt-8 inline-block px-6 py-3 font-medium text-white"
-            style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
+            className="mt-8 inline-block"
+            style={{
+              background: 'var(--cta-bg)',
+              boxShadow: 'var(--cta-shadow)',
+              color: 'var(--cta-color)',
+              borderRadius: 'var(--btn-radius)',
+              padding: 'var(--cta-pad)',
+              fontSize: 'var(--cta-fs)',
+              fontWeight: 'var(--cta-fw)',
+            }}
             {...editableProps(editable, `${path}.cta.label`)}
           >
             {cta.label}
@@ -69,14 +77,29 @@ export default function Hero({ props = {}, path, editable = false }) {
                 key={i}
                 name={field}
                 placeholder={field}
-                className="min-w-0 flex-1 px-4 py-3 text-gray-900"
-                style={{ borderRadius: 'var(--card-radius)' }}
+                className="min-w-0 flex-1"
+                style={{
+                  background: 'var(--input-bg)',
+                  border: 'var(--input-border)',
+                  borderRadius: 'var(--input-radius)',
+                  padding: 'var(--input-pad)',
+                  boxShadow: 'var(--input-shadow)',
+                  color: 'var(--heading-color)',
+                }}
               />
             ))}
             <button
               type="submit"
-              className="px-6 py-3 font-medium text-white shrink-0"
-              style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
+              className="shrink-0"
+              style={{
+                background: 'var(--cta-bg)',
+                boxShadow: 'var(--cta-shadow)',
+                color: 'var(--cta-color)',
+                borderRadius: 'var(--btn-radius)',
+                padding: 'var(--cta-pad)',
+                fontSize: 'var(--cta-fs)',
+                fontWeight: 'var(--cta-fw)',
+              }}
               {...editableProps(editable, `${path}.form.submitLabel`)}
             >
               {form.submitLabel || 'Get a Quote'}

@@ -16,7 +16,7 @@ export default function Home() {
           <li key={slug}>
             <Link
               to={`/preview/${slug}`}
-              className="rounded-lg border border-nova-border bg-nova-surface px-5 py-2.5 capitalize text-sm font-medium text-nova-text transition hover:border-nova-accent/50 hover:bg-nova-surface-hover"
+              className="rounded-lg border border-nova-border bg-nova-surface px-5 py-2.5 capitalize text-sm font-medium text-nova-text transition hover:border-nova-accent/50 hover:bg-nova-surface-hover hover:shadow-[0_0_12px_hsl(335_90%_56%_/_0.3)]"
             >
               {slug}
             </Link>

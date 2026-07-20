@@ -14,27 +14,37 @@
 @import "@fontsource/space-grotesk/700.css";
 
 /* ============================================================================
-   NOVA DESIGN TOKENS — the "dojo" brand system, matching real Tenji's live UI
-   (09 - Resources/UI-Reference/_INDEX.md "Aesthetic" + designer.md's palette
-   swatches, not the original spec doc). This is Nova's OWN APP CHROME ONLY —
+   NOVA APP-CHROME DESIGN TOKENS — corrected 2026-07-20 per token-reconciliation
+   (frontend/src/lib/designTokens.js `appChrome`, extracted from Tenji's real
+   compiled CSS bundle, not guessed). This is Nova's OWN APP CHROME ONLY —
    dashboard, sidebar, editor shell, tool pages. It must NEVER apply to
    generated client-site output (renderer/SiteRenderer.jsx + sections/*.jsx),
-   which uses each site's own independent `theme.primary/secondary/font` —
-   see renderer contract in frontend/README.md. Two separate brand systems,
-   don't conflate them.
+   which is driven by `lib/designTokens.js`'s separate `generatedSite` token
+   set instead — see renderer/theme.js. Two separate brand systems, don't
+   conflate them (that conflation is exactly what got corrected here: #9D174D
+   was never the app accent, it was a generated site's per-lead brand color).
 
    Usage: these are Tailwind v4 @theme values, so standard utilities work
    directly — bg-nova-accent, text-nova-text-muted, border-nova-border, etc.
+   Values here MUST match frontend/src/lib/designTokens.js `appChrome` exactly
+   — Tailwind's CSS-based config can't literally `import` a JS module, so this
+   block is a hand-kept mirror; designTokens.js is the documented source of
+   truth (see its header comment + tenji-tokens.md for provenance).
    ============================================================================ */
 @theme {
-  --color-nova-accent: #f2386f; /* primary hot-pink/magenta brand accent */
-  --color-nova-accent-deep: #9d174d; /* darker magenta, secondary accent / default site theme primary */
-  --color-nova-bg: #0a0a0f; /* near-black app background */
-  --color-nova-surface: #121218; /* cards, sidebar, panels */
-  --color-nova-surface-hover: #1a1a22;
+  --color-nova-accent: #f2386f; /* hsl(335 90% 56%) — the real Tenji pink, 13 uses in bundle */
+  --color-nova-accent-bright: #ff5c99;
+  --color-nova-accent-soft: #ff8fb0;
+  --color-nova-accent-pale: #ffd1e0;
+  --color-nova-accent-deep: #db2777; /* was wrongly #9D174D — that's a generated-site brand color (catering), not an app token */
+  --color-nova-bg: #08080c;
+  --color-nova-bg-raised: #0a0b10;
+  --color-nova-surface: #181825;
+  --color-nova-surface-hover: #22222f;
   --color-nova-border: #24242e;
   --color-nova-text: #e8e6ec;
   --color-nova-text-muted: #92909e;
+  --radius-nova: 1rem; /* --radius base from the real bundle */
 }
 
 :root {
@@ -50,6 +60,18 @@ body {
 
 .font-nova-heading {
   font-family: var(--font-heading);
+}
+
+/* Pink "glow" elevation — the signature app-chrome look, hsl(335 90% 56%) = accent.
+   Matches designTokens.js appChrome.shadows exactly. */
+.nova-glow-focus {
+  box-shadow: 0 0 0 3px hsl(335 90% 56% / 0.18), 0 0 28px hsl(335 90% 56% / 0.22);
+}
+.nova-glow-strong {
+  box-shadow: 0 0 18px 3px hsl(335 90% 56% / 0.7);
+}
+.nova-glow-soft {
+  box-shadow: 0 0 12px hsl(335 90% 56% / 0.3);
 }
 
 /* Real Tenji uses Space Grotesk for EVERY heading across EVERY screen, not
@@ -75,7 +97,7 @@ h1, h2, h3 {
   background-color: var(--color-nova-bg);
   background-image:
     radial-gradient(circle at 15% 20%, rgba(242, 56, 111, 0.10), transparent 40%),
-    radial-gradient(circle at 85% 70%, rgba(157, 23, 77, 0.12), transparent 45%),
+    radial-gradient(circle at 85% 70%, rgba(219, 39, 119, 0.12), transparent 45%),
     radial-gradient(circle at 60% 15%, rgba(242, 56, 111, 0.05), transparent 30%),
     linear-gradient(rgba(242, 56, 111, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(242, 56, 111, 0.05) 1px, transparent 1px);

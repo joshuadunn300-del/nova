@@ -5,34 +5,43 @@ export default function Testimonials({ props = {}, path, editable = false }) {
 
   return (
     <section
-      className="w-full px-4 sm:px-6 py-16"
-      style={{ backgroundColor: 'color-mix(in srgb, var(--secondary) 6%, white)' }}
+      className="w-full"
+      style={{ backgroundColor: 'var(--section-bg-alt)', paddingBlock: 'var(--section-y)', paddingInline: 'var(--section-x)' }}
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto" style={{ maxWidth: 'var(--max-w)' }}>
         <h2
           className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
-          style={{ fontFamily: 'var(--heading-font)' }}
+          style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)' }}
           {...editableProps(editable, `${path}.title`)}
         >
           {title}
         </h2>
         {items.length === 0 ? (
-          <p className="text-center text-gray-400">No testimonials yet.</p>
+          <p className="text-center" style={{ color: 'var(--muted-color)' }}>No testimonials yet.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.map((item, i) => (
               <blockquote
                 key={i}
-                className="bg-white p-6 shadow-sm min-w-0"
-                style={{ borderRadius: 'var(--card-radius)' }}
+                className="min-w-0"
+                style={{
+                  background: 'var(--card-bg)',
+                  border: 'var(--card-border)',
+                  boxShadow: 'var(--card-shadow)',
+                  borderRadius: 'var(--card-radius)',
+                  padding: 'var(--card-pad)',
+                }}
               >
-                <p className="text-gray-700 italic break-words">
+                <p className="italic break-words" style={{ color: 'var(--body-color)' }}>
                   "<span {...editableProps(editable, `${path}.items.${i}.quote`)}>{item?.quote || ''}</span>"
                 </p>
-                <footer className="mt-4 text-sm font-medium text-gray-900 break-words">
+                <footer
+                  className="mt-4 text-sm font-medium break-words"
+                  style={{ color: 'var(--heading-color)' }}
+                >
                   <span {...editableProps(editable, `${path}.items.${i}.author`)}>{item?.author || 'Customer'}</span>
                   {item?.role && (
-                    <span className="text-gray-500 font-normal">
+                    <span className="font-normal" style={{ color: 'var(--muted-color)' }}>
                       {' '}
                       — <span {...editableProps(editable, `${path}.items.${i}.role`)}>{item.role}</span>
                     </span>

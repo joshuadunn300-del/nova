@@ -5,8 +5,13 @@ export default function Cta({ props = {}, path, editable = false }) {
 
   return (
     <section
-      className="w-full px-4 sm:px-6 py-16 text-center"
-      style={{ backgroundColor: 'var(--primary)', color: '#fff' }}
+      className="w-full text-center"
+      style={{
+        backgroundColor: 'var(--primary)',
+        color: '#fff',
+        paddingBlock: 'var(--section-y)',
+        paddingInline: 'var(--section-x)',
+      }}
     >
       <div className="mx-auto max-w-2xl">
         <h2

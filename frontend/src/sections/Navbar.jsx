@@ -13,7 +13,10 @@ export default function Navbar({ props = {}, path, editable = false }) {
         >
           {logo}
         </span>
-        <ul className="hidden md:flex items-center gap-6 text-sm text-gray-700 min-w-0">
+        <ul
+          className="hidden md:flex items-center gap-6 text-sm min-w-0"
+          style={{ color: 'var(--body-color)' }}
+        >
           {Array.isArray(links) &&
             links.map((link, i) => (
               <li key={i} className="truncate max-w-[10rem]">
@@ -30,8 +33,16 @@ export default function Navbar({ props = {}, path, editable = false }) {
         {cta?.label && (
           <a
             href={cta.href || '#'}
-            className="shrink-0 px-4 py-2 text-sm font-medium text-white"
-            style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
+            className="shrink-0"
+            style={{
+              background: 'var(--cta-bg)',
+              boxShadow: 'var(--cta-shadow)',
+              color: 'var(--cta-color)',
+              borderRadius: 'var(--btn-radius)',
+              padding: 'var(--cta-pad)',
+              fontSize: 'var(--cta-fs)',
+              fontWeight: 'var(--cta-fw)',
+            }}
             {...editableProps(editable, `${path}.cta.label`)}
           >
             {cta.label}

@@ -22,8 +22,8 @@ export default function SiteRenderer({ content, editable = false }) {
 
   return (
     <div
-      className="nova-site-render bg-white text-gray-900"
-      style={{ ...vars, fontFamily }}
+      className="nova-site-render"
+      style={{ ...vars, fontFamily, backgroundColor: 'var(--page-bg)', color: 'var(--body-color)' }}
     >
       {content.sections.map((section, index) => {
         if (!section || section.visible === false) return null
