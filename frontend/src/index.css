@@ -2,7 +2,7 @@
 
 /* Tenji's app UI is permanently dark, not OS-theme-adaptive — force Tailwind's
    `dark:` variant on via a class instead of `prefers-color-scheme` (index.html
-   sets `class="dark"` on <html>). */
+   sets `class="dark"` on <html>; Settings.jsx's Dark/Light toggle flips it). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @import "@fontsource/inter/400.css";
@@ -14,61 +14,25 @@
 @import "@fontsource/space-grotesk/700.css";
 
 /* ============================================================================
-   NOVA APP-CHROME DESIGN TOKENS — corrected 2026-07-20 per token-reconciliation
-   (frontend/src/lib/designTokens.js `appChrome`, extracted from Tenji's real
-   compiled CSS bundle, not guessed). This is Nova's OWN APP CHROME ONLY —
-   dashboard, sidebar, editor shell, tool pages. It must NEVER apply to
-   generated client-site output (renderer/SiteRenderer.jsx + sections/*.jsx),
-   which is driven by `lib/designTokens.js`'s separate `generatedSite` token
-   set instead — see renderer/theme.js. Two separate brand systems, don't
-   conflate them (that conflation is exactly what got corrected here: #9D174D
-   was never the app accent, it was a generated site's per-lead brand color).
+   NOVA APP-CHROME DESIGN TOKENS — exact values pulled from Josh's real Tenji
+   bundle (frontend/src/lib/designTokens.js `appChrome` + tenji-tokens.md).
+   This is Nova's OWN APP CHROME ONLY — dashboard, sidebar, editor shell, tool
+   pages. It must NEVER apply to generated client-site output
+   (renderer/SiteRenderer.jsx + sections/*.jsx), which is driven by
+   `lib/designTokens.js`'s separate `generatedSite` token set instead — see
+   renderer/theme.js and the `.nova-site-render` opt-out below. Two separate
+   brand systems, don't conflate them (#9D174D is a generated-SITE brand color,
+   not an app token — that conflation is what the earlier reconciliation fixed).
 
-   Usage: these are Tailwind v4 @theme values, so standard utilities work
-   directly — bg-nova-accent, text-nova-text-muted, border-nova-border, etc.
-   Values here MUST match frontend/src/lib/designTokens.js `appChrome` exactly
-   — Tailwind's CSS-based config can't literally `import` a JS module, so this
-   block is a hand-kept mirror; designTokens.js is the documented source of
-   truth (see its header comment + tenji-tokens.md for provenance).
+   Two token layers, both usable directly as Tailwind utilities:
+   1. `--color-nova-*` — legacy names, 24+ files across the app already use
+      them (bg-nova-accent, text-nova-text-muted, border-nova-border, etc).
+   2. Raw shadcn/ui-convention HSL triplets under `.dark`, exposed as
+      `--color-background/-foreground/-card/-primary/...` — Tenji's own
+      literal class names (bg-background, text-muted-foreground, border-input,
+      ring-ring, bg-sidebar, etc). The nova-* layer derives its 5 core colors
+      from these so there's exactly one source of truth, no hex drift.
    ============================================================================ */
-@theme {
-  --color-nova-accent: #f2386f; /* hsl(335 90% 56%) — the real Tenji pink, 13 uses in bundle */
-  --color-nova-accent-bright: #ff5c99;
-  --color-nova-accent-soft: #ff8fb0;
-  --color-nova-accent-pale: #ffd1e0;
-  --color-nova-accent-deep: #db2777; /* was wrongly #9D174D — that's a generated-site brand color (catering), not an app token */
-  --color-nova-bg-raised: #0a0b10;
-  --color-nova-surface-hover: #22222f;
-  --radius-nova: 1rem; /* --radius base from the real bundle */
-
-  /* These 5 now derive from the exact shadcn-convention tokens below (single
-     source of truth, no hand-guessed hex drift) instead of separately-guessed
-     hex — Josh pulled --background/--card/--border/--foreground/--muted-foreground
-     straight from the real bundle, more precise than the earlier reconciliation. */
-  --color-nova-bg: hsl(var(--background));
-  --color-nova-surface: hsl(var(--card));
-  --color-nova-border: hsl(var(--border));
-  --color-nova-text: hsl(var(--foreground));
-  --color-nova-text-muted: hsl(var(--muted-foreground));
-}
-
-:root {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-}
-
-/* ============================================================================
-   EXACT TENJI CSS TOKENS — pulled directly from Josh's real bundle (2026-07-20),
-   shadcn/ui variable convention (raw "H S% L%" triplets, consumed via hsl(var(--x))).
-   These CONFIRM + COMPLETE the hex values above rather than replace them — the
-   `--color-nova-*` utilities above stay (24+ files across T3/T4/T5 already use
-   them), these are the same palette exposed under shadcn's own names
-   (`bg-background`, `text-muted-foreground`, `border-input`, `ring-ring`,
-   `bg-sidebar`, etc.) for anyone matching Tenji's literal class names, and for
-   precise cases (sidebar active-state, input focus ring) called out below.
-   Scoped under `.dark` — Settings.jsx's Dark/Light toggle flips the `.dark`
-   class on <html>, so this only applies in dark mode, same trigger as
-   `@custom-variant dark` above. Values are exact from Josh, not re-derived. */
 .dark {
   --background: 240 20% 1%;
   --foreground: 0 0% 100%;
@@ -107,51 +71,56 @@
   --color-sidebar-accent: hsl(var(--sidebar-accent));
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* Legacy nova-* names — derive from the exact tokens above, no separate hex. */
+  --color-nova-accent: #f2386f; /* hsl(335 90% 56%) — the real Tenji pink, 13 uses in bundle */
+  --color-nova-accent-bright: #ff5c99;
+  --color-nova-accent-soft: #ff8fb0;
+  --color-nova-accent-pale: #ffd1e0;
+  --color-nova-accent-deep: #db2777;
+  --color-nova-bg-raised: #0a0b10;
+  --color-nova-surface-hover: #22222f;
+  --radius-nova: 1rem; /* --radius base from the real bundle */
+  --color-nova-bg: hsl(var(--background));
+  --color-nova-surface: hsl(var(--card));
+  --color-nova-border: hsl(var(--border));
+  --color-nova-text: hsl(var(--foreground));
+  --color-nova-text-muted: hsl(var(--muted-foreground));
 }
 
-/* Sidebar active-item recipe (Josh's spec): data-[active=true] gets bg-accent/50 +
-   text-sidebar-accent-foreground. Josh's token list didn't include a distinct
-   `--sidebar-accent-foreground`, so this uses `--sidebar-foreground` (white) —
-   readable over the accent wash, same intent. Tailwind's `data-*` variant reads
-   the DOM attribute directly — whichever nav link sets `data-active="true"` on
-   the active route picks this up with zero extra classes. */
-.nova-sidebar-item[data-active='true'] {
-  background-color: hsl(var(--accent) / 0.5);
-  color: hsl(var(--sidebar-foreground));
+:root {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
-/* Input focus recipe (Josh's spec): border-[#F2386F]/60 on focus. */
-.nova-input-focus:focus {
-  border-color: rgb(242 56 111 / 0.6);
-  outline: none;
-}
-
+/* App background: near-black w/ faint pink grid, per spec. */
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-nova-bg);
-  color: var(--color-nova-text);
+  color: hsl(var(--foreground));
+  background: linear-gradient(160deg, #050505, #0b0b0f);
+  background-attachment: fixed;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(242, 56, 111, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 56, 111, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 .font-nova-heading {
   font-family: var(--font-heading);
 }
 
-/* Pink "glow" elevation — the signature app-chrome look, hsl(335 90% 56%) = accent.
-   Matches designTokens.js appChrome.shadows exactly. */
-.nova-glow-focus {
-  box-shadow: 0 0 0 3px hsl(335 90% 56% / 0.18), 0 0 28px hsl(335 90% 56% / 0.22);
-}
-.nova-glow-strong {
-  box-shadow: 0 0 18px 3px hsl(335 90% 56% / 0.7);
-}
-.nova-glow-soft {
-  box-shadow: 0 0 12px hsl(335 90% 56% / 0.3);
-}
-
-/* Real Tenji uses Space Grotesk for EVERY heading across EVERY screen, not
-   opt-in per-component — auditing the live app found only 3 of 22 screens had
-   actually adopted `.font-nova-heading` a terminal at a time, so make it the
-   default instead of a migration every screen has to remember to apply.
+/* Real Tenji uses Space Grotesk for EVERY heading, not opt-in per-component.
    `.nova-site-render` (SiteRenderer's wrapper) opts back out — generated
    client sites keep each site's own independent `theme.font` on their own
    headings, this must not leak Nova's app-chrome typography onto them. */
@@ -164,8 +133,20 @@ h1, h2, h3 {
   font-family: inherit;
 }
 
-/* Faint pink grid + floating particle dots, per _INDEX.md's "Aesthetic" note.
-   Apply to any full-bleed app-chrome surface (dashboard hero, auth pages, etc). */
+/* Pink "glow" elevation — the signature app-chrome look, hsl(335 90% 56%) = accent. */
+.nova-glow-focus {
+  box-shadow: 0 0 0 3px hsl(335 90% 56% / 0.18), 0 0 28px hsl(335 90% 56% / 0.22);
+}
+.nova-glow-strong {
+  box-shadow: 0 0 18px 3px hsl(335 90% 56% / 0.7);
+}
+.nova-glow-soft {
+  box-shadow: 0 0 12px hsl(335 90% 56% / 0.3);
+}
+
+/* Faint pink grid + floating particle dots — apply to any full-bleed app-chrome
+   surface that wants the radial-glow variant instead of the flat body grid
+   (dashboard hero, auth pages, etc). */
 .nova-dojo-bg {
   position: relative;
   background-color: var(--color-nova-bg);
@@ -179,7 +160,7 @@ h1, h2, h3 {
 }
 
 /* Large low-opacity kanji watermark (天 = "Tenji"/"heaven" in the original;
-   Nova can swap the character via --nova-kanji-char if the brand wants its own). */
+   override the character via --nova-kanji-char if a screen wants a different one). */
 .nova-kanji-watermark {
   position: relative;
   overflow: hidden;
@@ -196,4 +177,223 @@ h1, h2, h3 {
   opacity: 0.06;
   pointer-events: none;
   user-select: none;
+}
+
+/* Sidebar active-item recipe: data-active="true" gets a soft accent wash +
+   accent-toned text. Tailwind's data-* variant reads the DOM attribute
+   directly — whichever nav link sets data-active="true" picks this up with
+   zero extra classes. */
+.nova-sidebar-item[data-active='true'] {
+  background-color: hsl(var(--accent) / 0.5);
+  color: hsl(var(--sidebar-foreground));
+}
+
+/* Frosted-glass card — the base surface for every panel/card in the app. */
+.nova-card {
+  background: linear-gradient(165deg, rgba(30, 22, 30, 0.7), rgba(18, 14, 20, 0.7));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.25rem; /* 20px, within spec's 16-24px range */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.nova-card-active {
+  border-color: rgba(242, 56, 111, 0.5);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(242, 56, 111, 0.25), 0 0 24px rgba(242, 56, 111, 0.25);
+}
+
+/* Sidebar nav pill — wide rounded, deep-plum fill, pink left bar, glow. */
+.nova-nav-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.5rem 0.875rem;
+  color: rgb(161 161 170); /* low-contrast gray, inactive */
+  transition: background-color 0.15s, color 0.15s;
+}
+.nova-nav-pill:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+.nova-nav-pill-active {
+  background: linear-gradient(90deg, rgba(242, 56, 111, 0.22), rgba(242, 56, 111, 0.08));
+  color: #fff;
+  box-shadow: 0 0 16px rgba(242, 56, 111, 0.25);
+}
+.nova-nav-pill-active::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--color-nova-accent);
+  box-shadow: 0 0 8px rgba(242, 56, 111, 0.8);
+}
+
+/* Circular credits progress ring — sidebar footer. Draws via conic-gradient,
+   pct is set inline per-instance (style="--pct: 62"). */
+.nova-credit-ring {
+  --pct: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(var(--color-nova-accent) calc(var(--pct) * 1%), rgba(255, 255, 255, 0.08) 0);
+}
+.nova-credit-ring-inner {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 9999px;
+  background: #0b0b0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--color-nova-text);
+}
+
+/* Buttons */
+.nova-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #fff;
+  background: linear-gradient(135deg, #ff5c99, #f2386f);
+  box-shadow: 0 0 20px rgba(242, 56, 111, 0.45);
+  transition: filter 0.15s;
+}
+.nova-btn-primary:hover {
+  filter: brightness(1.08);
+}
+.nova-btn-primary:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+.nova-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--color-nova-text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Icon tile — hot-pink gradient rounded square for stat cards / quick actions. */
+.nova-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  background: linear-gradient(135deg, #ff5c99, #f2386f);
+  box-shadow: 0 0 16px rgba(242, 56, 111, 0.4);
+  color: #fff;
+}
+
+/* Hero badge pill (e.g. "天 · Nova") */
+.nova-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(242, 56, 111, 0.12);
+  border: 1px solid rgba(242, 56, 111, 0.3);
+  color: var(--color-nova-accent);
+}
+
+/* Status pills */
+.nova-pill-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgb(228 228 231);
+}
+.nova-pill-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+.nova-pill-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(242, 56, 111, 0.08);
+  color: var(--color-nova-accent-soft);
+}
+.nova-pill-draft::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* Section-label pill (boxed/filled variant, e.g. plan tier tags). */
+.nova-pill-label {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(242, 56, 111, 0.1);
+  border: 1px solid rgba(242, 56, 111, 0.25);
+  color: var(--color-nova-accent-soft);
+}
+
+/* Section eyebrow label (COMMAND / AGENCY / etc + page eyebrows) */
+.nova-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(180 140 155); /* muted rose */
+}
+
+/* Stat card — dark charcoal, icon tile top-left, label+value, subtle border. */
+.nova-stat-card {
+  border-radius: 1rem;
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Input focus recipe: border-[#F2386F]/60 on focus. */
+.nova-input-focus:focus {
+  border-color: rgb(242 56 111 / 0.6);
+  outline: none;
 }
