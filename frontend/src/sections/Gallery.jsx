@@ -9,22 +9,27 @@ export default function Gallery({ props = {}, path, editable = false }) {
       style={{ paddingBlock: 'var(--section-y)', paddingInline: 'var(--section-x)', maxWidth: 'var(--max-w)' }}
     >
       <h2
-        className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
-        style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)' }}
+        className="text-center font-bold break-words"
+        style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
         {...editableProps(editable, `${path}.title`)}
       >
         {title}
       </h2>
       {images.length === 0 ? (
-        <p className="text-center" style={{ color: 'var(--muted-color)' }}>No images yet.</p>
+        <p className="text-center mt-16" style={{ color: 'var(--muted-color)' }}>No images yet.</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" style={{ marginTop: '64px' }}>
           {images.map((img, i) => (
             <div
               key={i}
-              className="relative aspect-square overflow-hidden group"
-              style={{ backgroundColor: 'var(--section-bg-alt)', borderRadius: 'var(--card-radius)' }}
+              className="relative overflow-hidden group"
               data-image-path={editable ? `${path}.images.${i}.src` : undefined}
+              style={{
+                backgroundColor: 'var(--section-bg-alt)',
+                borderRadius: 'var(--card-radius)',
+                height: '16rem',
+                boxShadow: '0 18px 40px -18px rgba(17,18,28,0.3)',
+              }}
             >
               {img?.src && (
                 <img

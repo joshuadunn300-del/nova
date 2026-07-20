@@ -4,38 +4,63 @@ export default function Cta({ props = {}, path, editable = false }) {
   const { headline = 'Ready to get started?', subheadline = '', button } = props
 
   return (
-    <section
-      className="w-full text-center"
-      style={{
-        backgroundColor: 'var(--primary)',
-        color: '#fff',
-        paddingBlock: 'var(--section-y)',
-        paddingInline: 'var(--section-x)',
-      }}
-    >
-      <div className="mx-auto max-w-2xl">
-        <h2
-          className="text-2xl sm:text-3xl font-bold break-words"
-          style={{ fontFamily: 'var(--heading-font)' }}
-          {...editableProps(editable, `${path}.headline`)}
-        >
-          {headline}
-        </h2>
-        {subheadline && (
-          <p className="mt-3 text-white/80 break-words" {...editableProps(editable, `${path}.subheadline`)}>
-            {subheadline}
-          </p>
-        )}
-        {button?.label && (
-          <a
-            href={button.href || '#'}
-            className="mt-6 inline-block bg-white px-6 py-3 font-medium"
-            style={{ color: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
-            {...editableProps(editable, `${path}.button.label`)}
+    <section className="w-full" style={{ padding: '48px 32px', background: '#0a0b10' }}>
+      <div
+        className="relative mx-auto overflow-hidden text-center"
+        style={{
+          maxWidth: '64rem',
+          borderRadius: '32px',
+          padding: '80px 48px',
+          background: 'var(--cta-panel-bg)',
+          boxShadow: '0 40px 90px -30px rgba(21,23,31,0.9), 0 0 0 1px rgba(255,255,255,0.06)',
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--cta-panel-glow)' }} aria-hidden="true" />
+        <div className="relative">
+          <h2
+            className="font-bold break-words"
+            style={{
+              fontFamily: 'var(--heading-font)',
+              color: '#fff',
+              fontSize: 'clamp(1.75rem, 4vw, 3rem)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              textShadow: '0 2px 22px rgba(0,0,0,0.4)',
+            }}
+            {...editableProps(editable, `${path}.headline`)}
           >
-            {button.label}
-          </a>
-        )}
+            {headline}
+          </h2>
+          {subheadline && (
+            <p
+              className="mx-auto break-words"
+              style={{ marginTop: '20px', color: 'rgba(255,255,255,0.85)', fontSize: '1.125rem', maxWidth: '36rem', lineHeight: 1.6 }}
+              {...editableProps(editable, `${path}.subheadline`)}
+            >
+              {subheadline}
+            </p>
+          )}
+          {button?.label && (
+            <a
+              href={button.href || '#'}
+              className="inline-flex items-center justify-center whitespace-nowrap"
+              style={{
+                marginTop: '36px',
+                padding: '16px 36px',
+                borderRadius: 'var(--btn-radius)',
+                color: '#000',
+                fontSize: '14px',
+                fontWeight: 700,
+                minWidth: '13rem',
+                background: 'linear-gradient(180deg, #ffffff 0%, #eef0f4 100%)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), var(--cta-shadow)',
+              }}
+              {...editableProps(editable, `${path}.button.label`)}
+            >
+              {button.label}
+            </a>
+          )}
+        </div>
       </div>
     </section>
   )

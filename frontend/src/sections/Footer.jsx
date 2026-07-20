@@ -1,40 +1,87 @@
 import { editableProps } from './editable.js'
 
 export default function Footer({ props = {}, path, editable = false }) {
-  const { logo = 'Business', text = '', links = [], social = [] } = props
+  const { logo = 'Business', text = '', links = [], phone, email, copyright } = props
 
   return (
-    <footer className="w-full px-4 sm:px-6 py-10" style={{ backgroundColor: 'var(--secondary)', color: '#fff' }}>
-      <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="min-w-0 text-center sm:text-left">
-          <p className="font-semibold truncate" {...editableProps(editable, `${path}.logo`)}>
-            {logo}
-          </p>
-          {text && (
-            <p className="text-sm text-white/60 mt-1 break-words" {...editableProps(editable, `${path}.text`)}>
-              {text}
-            </p>
+    <footer className="w-full" style={{ padding: '64px 32px 40px', background: '#0a0b0f' }}>
+      <div className="mx-auto" style={{ maxWidth: 'var(--max-w)' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+          <div style={{ maxWidth: '20rem' }}>
+            <div className="flex items-center gap-2.5">
+              <div
+                className="shrink-0"
+                style={{
+                  width: 'var(--logo-tile-size)',
+                  height: 'var(--logo-tile-size)',
+                  borderRadius: 'var(--logo-tile-radius)',
+                  background: 'var(--logo-tile-bg)',
+                  boxShadow: 'var(--logo-tile-shadow)',
+                }}
+              />
+              <span
+                className="font-semibold truncate"
+                style={{ color: '#fff', fontSize: '1.125rem', letterSpacing: '-0.01em' }}
+                {...editableProps(editable, `${path}.logo`)}
+              >
+                {logo}
+              </span>
+            </div>
+            {text && (
+              <p
+                className="mt-4 break-words"
+                style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.6 }}
+                {...editableProps(editable, `${path}.text`)}
+              >
+                {text}
+              </p>
+            )}
+          </div>
+
+          {(phone || email) && (
+            <div>
+              <p className="uppercase mb-4" style={{ fontSize: '11px', letterSpacing: '0.18em', fontWeight: 600, color: 'var(--eyebrow-color)' }}>
+                Get in touch
+              </p>
+              <div className="flex flex-col gap-3" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
+                {phone && <div>{phone}</div>}
+                {email && <div>{email}</div>}
+              </div>
+            </div>
+          )}
+
+          {links.length > 0 && (
+            <div>
+              <p className="uppercase mb-4" style={{ fontSize: '11px', letterSpacing: '0.18em', fontWeight: 600, color: 'var(--eyebrow-color)' }}>
+                Explore
+              </p>
+              <div className="flex flex-col gap-2.5">
+                {links.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link?.href || '#'}
+                    className="flex items-center gap-2 hover:text-white transition-colors truncate"
+                    style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', textDecoration: 'none' }}
+                    {...editableProps(editable, `${path}.links.${i}.label`)}
+                  >
+                    <span className="shrink-0" style={{ width: '4px', height: '4px', borderRadius: '9999px', background: 'var(--primary)' }} />
+                    {link?.label || 'Link'}
+                  </a>
+                ))}
+              </div>
+            </div>
           )}
         </div>
-        <ul className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/70">
-          {links.map((link, i) => (
-            <li key={i} className="truncate max-w-[8rem]">
-              <a href={link?.href || '#'} className="hover:text-white" {...editableProps(editable, `${path}.links.${i}.label`)}>
-                {link?.label || 'Link'}
-              </a>
-            </li>
-          ))}
-        </ul>
-        {social.length > 0 && (
-          <ul className="flex items-center gap-3 text-sm text-white/70">
-            {social.map((s, i) => (
-              <li key={i}>
-                <a href={s?.href || '#'} className="hover:text-white" {...editableProps(editable, `${path}.social.${i}.platform`)}>
-                  {s?.platform || 'Social'}
-                </a>
-              </li>
-            ))}
-          </ul>
+
+        {copyright && (
+          <div className="mt-12 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <p
+              style={{ color: 'rgba(255,255,255,0.35)', fontSize: '12px' }}
+              {...editableProps(editable, `${path}.copyright`)}
+            >
+              {copyright}
+            </p>
+          </div>
         )}
       </div>
     </footer>

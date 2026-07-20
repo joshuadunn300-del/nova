@@ -22,7 +22,7 @@ export default function SiteRenderer({ content, editable = false }) {
 
   return (
     <div
-      className="nova-site-render"
+      className="nova-site-render relative"
       style={{ ...vars, fontFamily, backgroundColor: 'var(--page-bg)', color: 'var(--body-color)' }}
     >
       {content.sections.map((section, index) => {
