@@ -9,7 +9,11 @@ export default function Cta({ props = {}, path, editable = false }) {
       style={{ backgroundColor: 'var(--primary)', color: '#fff' }}
     >
       <div className="mx-auto max-w-2xl">
-        <h2 className="text-2xl sm:text-3xl font-bold break-words" {...editableProps(editable, `${path}.headline`)}>
+        <h2
+          className="text-2xl sm:text-3xl font-bold break-words"
+          style={{ fontFamily: 'var(--heading-font)' }}
+          {...editableProps(editable, `${path}.headline`)}
+        >
           {headline}
         </h2>
         {subheadline && (
@@ -20,8 +24,8 @@ export default function Cta({ props = {}, path, editable = false }) {
         {button?.label && (
           <a
             href={button.href || '#'}
-            className="mt-6 inline-block rounded-md bg-white px-6 py-3 font-medium"
-            style={{ color: 'var(--primary)' }}
+            className="mt-6 inline-block bg-white px-6 py-3 font-medium"
+            style={{ color: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
             {...editableProps(editable, `${path}.button.label`)}
           >
             {button.label}

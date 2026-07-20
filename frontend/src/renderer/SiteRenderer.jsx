@@ -1,6 +1,5 @@
 import { sectionRegistry } from './sectionRegistry.js'
-
-const DEFAULT_THEME = { primary: '#9D174D', secondary: '#15171f', font: 'Inter' }
+import { resolveThemeVars } from './theme.js'
 
 /**
  * Renders a Tenji-schema content_json object into a full page.
@@ -19,16 +18,12 @@ export default function SiteRenderer({ content, editable = false }) {
     return <div className="p-8 text-center text-gray-400">No content to render.</div>
   }
 
-  const theme = { ...DEFAULT_THEME, ...(content.theme || {}) }
+  const { fontFamily, vars } = resolveThemeVars(content.theme)
 
   return (
     <div
       className="nova-site-render bg-white text-gray-900"
-      style={{
-        '--primary': theme.primary,
-        '--secondary': theme.secondary,
-        fontFamily: `"${theme.font}", ui-sans-serif, system-ui, -apple-system, sans-serif`,
-      }}
+      style={{ ...vars, fontFamily }}
     >
       {content.sections.map((section, index) => {
         if (!section || section.visible === false) return null

@@ -5,7 +5,11 @@ export default function Faq({ props = {}, path, editable = false }) {
 
   return (
     <section className="w-full px-4 sm:px-6 py-16 mx-auto max-w-3xl">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words" {...editableProps(editable, `${path}.title`)}>
+      <h2
+        className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
+        style={{ fontFamily: 'var(--heading-font)' }}
+        {...editableProps(editable, `${path}.title`)}
+      >
         {title}
       </h2>
       {items.length === 0 ? (

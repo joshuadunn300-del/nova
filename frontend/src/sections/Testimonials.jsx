@@ -9,7 +9,11 @@ export default function Testimonials({ props = {}, path, editable = false }) {
       style={{ backgroundColor: 'color-mix(in srgb, var(--secondary) 6%, white)' }}
     >
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words" {...editableProps(editable, `${path}.title`)}>
+        <h2
+          className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
+          style={{ fontFamily: 'var(--heading-font)' }}
+          {...editableProps(editable, `${path}.title`)}
+        >
           {title}
         </h2>
         {items.length === 0 ? (
@@ -17,7 +21,11 @@ export default function Testimonials({ props = {}, path, editable = false }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.map((item, i) => (
-              <blockquote key={i} className="rounded-lg bg-white p-6 shadow-sm min-w-0">
+              <blockquote
+                key={i}
+                className="bg-white p-6 shadow-sm min-w-0"
+                style={{ borderRadius: 'var(--card-radius)' }}
+              >
                 <p className="text-gray-700 italic break-words">
                   "<span {...editableProps(editable, `${path}.items.${i}.quote`)}>{item?.quote || ''}</span>"
                 </p>

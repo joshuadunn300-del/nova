@@ -34,6 +34,7 @@ export default function Hero({ props = {}, path, editable = false }) {
       <div className="relative mx-auto max-w-3xl">
         <h1
           className="text-3xl sm:text-5xl font-bold leading-tight break-words"
+          style={{ fontFamily: 'var(--heading-font)' }}
           {...editableProps(editable, `${path}.headline`)}
         >
           {headline}
@@ -50,8 +51,8 @@ export default function Hero({ props = {}, path, editable = false }) {
         {cta?.label && !form?.enabled && (
           <a
             href={cta.href || '#'}
-            className="mt-8 inline-block rounded-md px-6 py-3 font-medium text-white"
-            style={{ backgroundColor: 'var(--primary)' }}
+            className="mt-8 inline-block px-6 py-3 font-medium text-white"
+            style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
             {...editableProps(editable, `${path}.cta.label`)}
           >
             {cta.label}
@@ -68,13 +69,14 @@ export default function Hero({ props = {}, path, editable = false }) {
                 key={i}
                 name={field}
                 placeholder={field}
-                className="min-w-0 flex-1 rounded-md px-4 py-3 text-gray-900"
+                className="min-w-0 flex-1 px-4 py-3 text-gray-900"
+                style={{ borderRadius: 'var(--card-radius)' }}
               />
             ))}
             <button
               type="submit"
-              className="rounded-md px-6 py-3 font-medium text-white shrink-0"
-              style={{ backgroundColor: 'var(--primary)' }}
+              className="px-6 py-3 font-medium text-white shrink-0"
+              style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
               {...editableProps(editable, `${path}.form.submitLabel`)}
             >
               {form.submitLabel || 'Get a Quote'}

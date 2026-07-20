@@ -5,7 +5,11 @@ export default function Gallery({ props = {}, path, editable = false }) {
 
   return (
     <section className="w-full px-4 sm:px-6 py-16 mx-auto max-w-6xl">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words" {...editableProps(editable, `${path}.title`)}>
+      <h2
+        className="text-2xl sm:text-3xl font-bold text-center mb-10 break-words"
+        style={{ fontFamily: 'var(--heading-font)' }}
+        {...editableProps(editable, `${path}.title`)}
+      >
         {title}
       </h2>
       {images.length === 0 ? (
@@ -13,7 +17,11 @@ export default function Gallery({ props = {}, path, editable = false }) {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {images.map((img, i) => (
-            <div key={i} className="aspect-square overflow-hidden rounded-lg bg-gray-100">
+            <div
+              key={i}
+              className="aspect-square overflow-hidden bg-gray-100"
+              style={{ borderRadius: 'var(--card-radius)' }}
+            >
               {img?.src && (
                 <img
                   src={img.src}

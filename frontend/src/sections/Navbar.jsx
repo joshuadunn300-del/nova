@@ -30,8 +30,8 @@ export default function Navbar({ props = {}, path, editable = false }) {
         {cta?.label && (
           <a
             href={cta.href || '#'}
-            className="shrink-0 rounded-md px-4 py-2 text-sm font-medium text-white"
-            style={{ backgroundColor: 'var(--primary)' }}
+            className="shrink-0 px-4 py-2 text-sm font-medium text-white"
+            style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--btn-radius)' }}
             {...editableProps(editable, `${path}.cta.label`)}
           >
             {cta.label}

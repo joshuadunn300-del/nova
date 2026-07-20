@@ -9,11 +9,16 @@ export default function About({ props = {}, path, editable = false }) {
         <img
           src={image}
           alt=""
-          className="w-full h-64 md:h-80 object-cover rounded-lg order-1 md:order-none"
+          className="w-full h-64 md:h-80 object-cover order-1 md:order-none"
+          style={{ borderRadius: 'var(--card-radius)' }}
         />
       )}
       <div className="min-w-0">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 break-words" {...editableProps(editable, `${path}.title`)}>
+        <h2
+          className="text-2xl sm:text-3xl font-bold mb-4 break-words"
+          style={{ fontFamily: 'var(--heading-font)' }}
+          {...editableProps(editable, `${path}.title`)}
+        >
           {title}
         </h2>
         <p className="text-gray-600 whitespace-pre-line break-words" {...editableProps(editable, `${path}.body`)}>
