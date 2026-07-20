@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "theme": { "primary": "#9D174D", "secondary": "#15171f", "font": "Inter" },
+  "sections": [
+    { "id": "navbar", "type": "navbar", "visible": true, "props": {
+      "logo": "Rick's Plumbing", "links": [{ "label": "Services", "href": "#services" }, { "label": "About", "href": "#about" }, { "label": "Contact", "href": "#cta" }]
+    }},
+    { "id": "hero", "type": "hero", "visible": true, "props": {
+      "headline": "Fast, Reliable Plumbing You Can Trust", "subheadline": "24/7 emergency service across the metro area.",
+      "background": "#15171f", "cta_label": "Get a Free Quote",
+      "form": { "fields": ["name", "phone", "message"] }
+    }},
+    { "id": "services", "type": "services", "visible": true, "props": {
+      "title": "What We Do", "items": [
+        { "name": "Drain Cleaning", "desc": "Fast clog removal, same-day service." },
+        { "name": "Water Heater Repair", "desc": "Install and repair all major brands." },
+        { "name": "Emergency Leaks", "desc": "24/7 dispatch for burst pipes." }
+      ]
+    }},
+    { "id": "gallery", "type": "gallery", "visible": true, "props": {
+      "title": "Recent Work", "images": ["/placeholder1.jpg", "/placeholder2.jpg", "/placeholder3.jpg"]
+    }},
+    { "id": "about", "type": "about", "visible": true, "props": {
+      "title": "About Rick's Plumbing", "body": "Family-owned and operated since 2004. Licensed, bonded, insured."
+    }},
+    { "id": "testimonials", "type": "testimonials", "visible": true, "props": {
+      "title": "What Customers Say", "items": [
+        { "quote": "Showed up in 20 minutes on a Sunday.", "author": "Dana R." },
+        { "quote": "Fair pricing, no upsell nonsense.", "author": "Marcus T." }
+      ]
+    }},
+    { "id": "faq", "type": "faq", "visible": true, "props": {
+      "title": "FAQ", "items": [
+        { "q": "Do you offer emergency service?", "a": "Yes, 24/7 dispatch." },
+        { "q": "Do you serve my area?", "a": "We cover the whole metro area." }
+      ]
+    }},
+    { "id": "cta", "type": "cta", "visible": true, "props": {
+      "headline": "Ready to fix it right the first time?", "button_label": "Call Now"
+    }},
+    { "id": "footer", "type": "footer", "visible": true, "props": {
+      "text": "© 2026 Rick's Plumbing. All rights reserved."
+    }}
+  ]
+}
