@@ -52,6 +52,22 @@ body {
   font-family: var(--font-heading);
 }
 
+/* Real Tenji uses Space Grotesk for EVERY heading across EVERY screen, not
+   opt-in per-component — auditing the live app found only 3 of 22 screens had
+   actually adopted `.font-nova-heading` a terminal at a time, so make it the
+   default instead of a migration every screen has to remember to apply.
+   `.nova-site-render` (SiteRenderer's wrapper) opts back out — generated
+   client sites keep each site's own independent `theme.font` on their own
+   headings, this must not leak Nova's app-chrome typography onto them. */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+}
+.nova-site-render h1,
+.nova-site-render h2,
+.nova-site-render h3 {
+  font-family: inherit;
+}
+
 /* Faint pink grid + floating particle dots, per _INDEX.md's "Aesthetic" note.
    Apply to any full-bleed app-chrome surface (dashboard hero, auth pages, etc). */
 .nova-dojo-bg {

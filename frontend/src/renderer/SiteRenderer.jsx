@@ -23,7 +23,7 @@ export default function SiteRenderer({ content, editable = false }) {
 
   return (
     <div
-      className="bg-white text-gray-900"
+      className="nova-site-render bg-white text-gray-900"
       style={{
         '--primary': theme.primary,
         '--secondary': theme.secondary,
