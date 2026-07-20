@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams, Link } from 'react-router-dom'
 import SiteRenderer from './renderer/SiteRenderer.jsx'
 import plumber from './renderer/fixtures/plumber.json'
 import roofer from './renderer/fixtures/roofer.json'
@@ -8,6 +8,7 @@ const FIXTURES = { plumber, roofer, cleaner }
 
 export default function FixturePreview() {
   const { slug } = useParams()
+  const [searchParams] = useSearchParams()
   const content = FIXTURES[slug]
 
   if (!content) {
@@ -19,5 +20,5 @@ export default function FixturePreview() {
     )
   }
 
-  return <SiteRenderer content={content} />
+  return <SiteRenderer content={content} editable={searchParams.get('editable') === '1'} />
 }

@@ -7,7 +7,14 @@ const DEFAULT_THEME = { primary: '#9D174D', secondary: '#15171f', font: 'Inter' 
  * Unknown section types are skipped (not crashed on) so future section
  * types don't break older published sites.
  */
-export default function SiteRenderer({ content }) {
+/**
+ * @param {object} content - Tenji-schema content_json
+ * @param {boolean} [editable] - when true, editable text nodes get
+ *   `contentEditable` + `data-edit-path="sections.<i>.props.<field>"`, and each
+ *   section root gets `data-section-id`/`data-section-index` — the contract the
+ *   live editor's iframe bridge listens for (see editor/README.md).
+ */
+export default function SiteRenderer({ content, editable = false }) {
   if (!content || !Array.isArray(content.sections)) {
     return <div className="p-8 text-center text-gray-400">No content to render.</div>
   }
@@ -23,7 +30,7 @@ export default function SiteRenderer({ content }) {
         fontFamily: `"${theme.font}", ui-sans-serif, system-ui, -apple-system, sans-serif`,
       }}
     >
-      {content.sections.map((section) => {
+      {content.sections.map((section, index) => {
         if (!section || section.visible === false) return null
 
         const Component = sectionRegistry[section.type]
@@ -34,7 +41,21 @@ export default function SiteRenderer({ content }) {
           return null
         }
 
-        return <Component key={section.id ?? section.type} props={section.props || {}} />
+        const path = `sections.${index}.props`
+
+        if (!editable) {
+          return <Component key={section.id ?? index} props={section.props || {}} />
+        }
+
+        return (
+          <div
+            key={section.id ?? index}
+            data-section-id={section.id ?? index}
+            data-section-index={index}
+          >
+            <Component props={section.props || {}} path={path} editable />
+          </div>
+        )
       })}
     </div>
   )

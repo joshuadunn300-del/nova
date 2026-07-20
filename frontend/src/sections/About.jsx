@@ -1,4 +1,6 @@
-export default function About({ props = {} }) {
+import { editableProps } from './editable.js'
+
+export default function About({ props = {}, path, editable = false }) {
   const { title = 'About Us', body = '', image } = props
 
   return (
@@ -11,8 +13,12 @@ export default function About({ props = {} }) {
         />
       )}
       <div className="min-w-0">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 break-words">{title}</h2>
-        <p className="text-gray-600 whitespace-pre-line break-words">{body}</p>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 break-words" {...editableProps(editable, `${path}.title`)}>
+          {title}
+        </h2>
+        <p className="text-gray-600 whitespace-pre-line break-words" {...editableProps(editable, `${path}.body`)}>
+          {body}
+        </p>
       </div>
     </section>
   )
