@@ -8,8 +8,7 @@
       "type": "hero",
       "visible": true,
       "props": {
-        "headline": "Spotless Homes, Stress-Free You",
-        "form": { "enabled": true }
+        "headline": "Spotless Homes, Stress-Free You"
       }
     },
     {
@@ -19,7 +18,7 @@
       "props": {
         "items": [
           { "title": "Deep Cleaning" },
-          { "title": "Move-Out Cleaning", "description": "Get your full deposit back." },
+          { "title": "Move-Out Cleaning", "desc": "Get your full deposit back." },
           { "title": "Recurring Cleaning" },
           { "title": "Office Cleaning" }
         ]
@@ -33,7 +32,7 @@
       "visible": true,
       "props": {
         "items": [
-          { "quote": "They were fantastic and thorough.", "author": "Priya S." }
+          { "quote": "They were fantastic and thorough.", "name": "Priya S." }
         ]
       }
     },

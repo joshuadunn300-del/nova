@@ -8,13 +8,9 @@
       "visible": true,
       "props": {
         "logo": "Rapid Flow Plumbing",
+        "links": ["Home", "Services", "About", "Reviews"],
         "phone": "(555) 123-4567",
-        "links": [
-          { "label": "Services", "href": "#services" },
-          { "label": "About", "href": "#about" },
-          { "label": "Contact", "href": "#contact" }
-        ],
-        "cta": { "label": "Get a Quote", "href": "tel:5551234567" }
+        "ctaText": "Get a Quote"
       }
     },
     {
@@ -22,17 +18,21 @@
       "type": "hero",
       "visible": true,
       "props": {
+        "eyebrow": "Licensed Local Plumbers · 24/7",
         "headline": "24/7 Emergency Plumbing You Can Trust",
-        "subheadline": "Licensed, insured, and on your doorstep in under an hour. Honest, upfront pricing and same-day callouts.",
+        "subtext": "Licensed, insured, and on your doorstep in under an hour. Honest, upfront pricing and same-day callouts.",
         "bgImage": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=80&auto=format&fit=crop",
         "ratingText": "From 2,000+ ratings",
         "trustBadges": ["Licensed & Insured", "24/7 Emergency", "Upfront Pricing"],
+        "ctaText": "Call Now, 24/7",
         "form": {
-          "enabled": true,
           "title": "Request a Plumber",
-          "fields": ["name", "phone"],
-          "submitLabel": "Get Help Now",
-          "microcopy": "No obligation · Fast response"
+          "buttonText": "Get Help Now",
+          "fields": [
+            { "id": "name", "label": "Your name", "type": "text", "required": true },
+            { "id": "phone", "label": "Phone number", "type": "tel", "required": true },
+            { "id": "service", "label": "What do you need?", "type": "select", "options": ["Leak repair", "Drain cleaning", "Something else"] }
+          ]
         }
       }
     },
@@ -41,12 +41,12 @@
       "type": "services",
       "visible": true,
       "props": {
-        "title": "Plumbing services built around you",
+        "heading": "Plumbing services built around you",
         "subheading": "Whatever the job, we handle it with care, precision and a workmanship guarantee.",
         "items": [
-          { "icon": "🚰", "title": "Leak Repair", "description": "Fast diagnosis and fix for any leak, big or small." },
-          { "icon": "🔧", "title": "Drain Cleaning", "description": "Clear clogged drains without damaging your pipes." },
-          { "icon": "🔥", "title": "Water Heater Install", "description": "Same-day installation and replacement." }
+          { "icon": "droplets", "title": "Leak & pipe repair", "desc": "Fast diagnosis and fix for any leak, big or small." },
+          { "icon": "wrench", "title": "Drain cleaning", "desc": "Clear clogged drains without damaging your pipes." },
+          { "icon": "flame", "title": "Water heater install", "desc": "Same-day installation and replacement." }
         ]
       }
     },
@@ -61,7 +61,7 @@
       "type": "about",
       "visible": true,
       "props": {
-        "title": "Two decades of trusted craftsmanship",
+        "heading": "Two decades of trusted craftsmanship",
         "body": "Family-owned and operated since 2008. We've fixed thousands of pipes and never met a leak we couldn't beat. Every technician is licensed, insured and trained to treat your home like their own.",
         "image": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=900&q=80&auto=format&fit=crop",
         "stats": [
@@ -76,10 +76,10 @@
       "type": "testimonials",
       "visible": true,
       "props": {
-        "title": "What Customers Say",
+        "heading": "What Customers Say",
         "items": [
-          { "quote": "Fixed my water heater same day, great price.", "author": "Maria G.", "role": "Homeowner" },
-          { "quote": "Professional and fast.", "author": "Tom R." }
+          { "quote": "Fixed my water heater same day, great price.", "name": "Maria G.", "role": "Homeowner" },
+          { "quote": "Professional and fast.", "name": "Tom R." }
         ]
       }
     },
@@ -88,10 +88,10 @@
       "type": "faq",
       "visible": true,
       "props": {
-        "title": "FAQs",
+        "heading": "FAQs",
         "items": [
-          { "question": "Do you offer emergency service?", "answer": "Yes, 24/7 with a 60 minute response window." },
-          { "question": "Are you licensed?", "answer": "Fully licensed and insured in the state." }
+          { "q": "Do you offer emergency service?", "a": "Yes, 24/7 with a 60 minute response window." },
+          { "q": "Are you licensed?", "a": "Fully licensed and insured in the state." }
         ]
       }
     },
@@ -100,9 +100,9 @@
       "type": "cta",
       "visible": true,
       "props": {
-        "headline": "Got a leak? Don't wait.",
-        "subheadline": "Call now for same-day service.",
-        "button": { "label": "Call (555) 123-4567", "href": "tel:5551234567" }
+        "heading": "Got a leak? Don't wait.",
+        "subtext": "Call now for same-day service.",
+        "buttonText": "Call (555) 123-4567"
       }
     },
     {
@@ -111,14 +111,10 @@
       "visible": true,
       "props": {
         "logo": "Rapid Flow Plumbing",
-        "text": "Trusted local plumbing, done right the first time.",
+        "tagline": "Trusted local plumbing, done right the first time.",
         "phone": "(555) 123-4567",
         "email": "hello@rapidflowplumbing.com",
-        "links": [
-          { "label": "Services", "href": "#services" },
-          { "label": "About", "href": "#about" },
-          { "label": "Contact", "href": "#contact" }
-        ],
+        "links": ["Home", "Services", "About", "Reviews"],
         "copyright": "© 2026 Rapid Flow Plumbing. All rights reserved."
       }
     }
