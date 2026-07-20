@@ -2,25 +2,16 @@ import { createBrowserRouter, RouterProvider, Link } from 'react-router-dom'
 import Home from './Home.jsx'
 import FixturePreview from './FixturePreview.jsx'
 import Designer from './editor/Designer.jsx'
-import ScriptGenerator from './tools/ScriptGenerator.jsx'
-import ProposalGenerator from './tools/ProposalGenerator.jsx'
 import { AUTH_ROUTES, APP_ROUTES } from './app/routes.jsx'
 
-const APP_ROUTES_WITH_TOOLS = {
-  ...APP_ROUTES,
-  children: [
-    ...APP_ROUTES.children,
-    { path: 'tools/script', element: <ScriptGenerator /> },
-    { path: 'tools/proposal', element: <ProposalGenerator /> },
-  ],
-}
-
+// T4's routes.jsx now owns tools/script + tools/proposal directly (with lead-state
+// wrappers) — no longer added here, avoids the duplicate-route bug from before.
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
   { path: '/preview/:slug', element: <FixturePreview /> },
   { path: '/app/Designer', element: <Designer /> },
   ...AUTH_ROUTES,
-  APP_ROUTES_WITH_TOOLS,
+  APP_ROUTES,
   {
     path: '*',
     element: (
