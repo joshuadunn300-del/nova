@@ -19,7 +19,7 @@ export default function SiteRenderer({ content }) {
       style={{
         '--primary': theme.primary,
         '--secondary': theme.secondary,
-        fontFamily: theme.font,
+        fontFamily: `"${theme.font}", ui-sans-serif, system-ui, -apple-system, sans-serif`,
       }}
     >
       {content.sections.map((section) => {
