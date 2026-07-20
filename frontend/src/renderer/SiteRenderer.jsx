@@ -16,6 +16,7 @@ export default function SiteRenderer({ content }) {
 
   return (
     <div
+      className="bg-white text-gray-900"
       style={{
         '--primary': theme.primary,
         '--secondary': theme.secondary,

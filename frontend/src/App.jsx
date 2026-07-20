@@ -1,25 +1,40 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Link } from 'react-router-dom'
 import Home from './Home.jsx'
 import FixturePreview from './FixturePreview.jsx'
-import Placeholder from './Placeholder.jsx'
+import Designer from './editor/Designer.jsx'
+import ScriptGenerator from './tools/ScriptGenerator.jsx'
+import ProposalGenerator from './tools/ProposalGenerator.jsx'
+import { AUTH_ROUTES, APP_ROUTES } from './app/routes.jsx'
+
+const APP_ROUTES_WITH_TOOLS = {
+  ...APP_ROUTES,
+  children: [
+    ...APP_ROUTES.children,
+    { path: 'tools/script', element: <ScriptGenerator /> },
+    { path: 'tools/proposal', element: <ProposalGenerator /> },
+  ],
+}
+
+const router = createBrowserRouter([
+  { path: '/', element: <Home /> },
+  { path: '/preview/:slug', element: <FixturePreview /> },
+  { path: '/app/Designer', element: <Designer /> },
+  ...AUTH_ROUTES,
+  APP_ROUTES_WITH_TOOLS,
+  {
+    path: '*',
+    element: (
+      <div className="min-h-screen bg-[#0b0b12] flex items-center justify-center text-white/60">
+        <p>
+          Not found. <Link className="underline hover:text-white" to="/">Go home</Link>
+        </p>
+      </div>
+    ),
+  },
+])
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/preview/:slug" element={<FixturePreview />} />
-      <Route path="/app/Designer" element={<Placeholder label="Live Editor (Terminal 3)" />} />
-      <Route path="/app/*" element={<Placeholder label="Dashboard & CRM (Terminal 4)" />} />
-      <Route
-        path="*"
-        element={
-          <div className="p-8">
-            <p>Not found. <Link className="text-blue-600 underline" to="/">Go home</Link></p>
-          </div>
-        }
-      />
-    </Routes>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

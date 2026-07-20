@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tenji's app UI is permanently dark, not OS-theme-adaptive — force Tailwind's
+   `dark:` variant on via a class instead of `prefers-color-scheme` (index.html
+   sets `class="dark"` on <html>). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
