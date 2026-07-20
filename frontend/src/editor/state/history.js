@@ -45,4 +45,4 @@ function demo() {
   console.log('history demo: OK');
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) demo();
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]}`) demo();

@@ -8,6 +8,16 @@ export function moveSection(doc, index, dir) {
   return { ...doc, sections: next };
 }
 
+// Arbitrary-position reorder (drag-and-drop) as ONE mutation — repeatedly calling
+// moveSection would work too but costs N history/undo steps for a single drag instead of one.
+export function reorderSection(doc, from, to) {
+  if (from === to || from < 0 || to < 0 || from >= doc.sections.length || to >= doc.sections.length) return doc;
+  const next = [...doc.sections];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return { ...doc, sections: next };
+}
+
 export function duplicateSection(doc, index) {
   const original = doc.sections[index];
   const copy = { ...original, id: `${original.id}-copy-${Date.now() % 100000}` };
@@ -50,6 +60,9 @@ function demo() {
   const doc = { sections: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] };
   console.assert(moveSection(doc, 0, -1).sections.map((s) => s.id).join() === 'a,b,c', 'move at top edge must no-op');
   console.assert(moveSection(doc, 0, 1).sections.map((s) => s.id).join() === 'b,a,c', 'move down failed');
+  console.assert(reorderSection(doc, 0, 2).sections.map((s) => s.id).join() === 'b,c,a', 'reorder forward failed');
+  console.assert(reorderSection(doc, 2, 0).sections.map((s) => s.id).join() === 'c,a,b', 'reorder backward failed');
+  console.assert(reorderSection(doc, 1, 1).sections.map((s) => s.id).join() === 'a,b,c', 'no-op reorder should not mutate order');
   console.assert(duplicateSection(doc, 0).sections.length === 4, 'duplicate should add one');
   console.assert(deleteSection(doc, 1).sections.map((s) => s.id).join() === 'a,c', 'delete failed');
   console.assert(toggleVisible(doc, 0).sections[0].visible === false, 'hide failed');
@@ -58,4 +71,4 @@ function demo() {
   console.log('sectionOps demo: OK');
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) demo();
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]}`) demo();

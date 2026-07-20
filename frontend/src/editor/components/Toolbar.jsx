@@ -1,19 +1,49 @@
 import AddSectionMenu from './AddSectionMenu.jsx';
 
 const DEVICES = ['desktop', 'tablet', 'mobile'];
+const DEVICE_ICON = { desktop: '▭', tablet: '▯', mobile: '▮' }; // flat geometric glyphs, not colored emoji — see BUILD-LOG icon-language note
 
 export default function Toolbar({
-  device, setDevice, zoom, setZoom,
+  siteName, device, setDevice, zoom, setZoom,
   canUndo, canRedo, onUndo, onRedo,
-  saveStatus, onSave, published, onPublish, onUnpublish, onRepublish,
+  saveStatus, saveError, onSave, published, publishedUrl, publishError, onPublish, onUnpublish, onRepublish,
   onAddSection, activeTab, setActiveTab,
 }) {
   return (
     <div className="editor-toolbar" data-testid="toolbar">
+      <div className="toolbar-group toolbar-identity">
+        <span className="toolbar-back" title="Back">←</span>
+        <span className="toolbar-site-name" data-testid="toolbar-site-name">{siteName || 'Untitled Site'}</span>
+        <span className={`status-pill ${published ? 'status-published' : 'status-draft'}`} data-testid="status-pill">
+          {published ? 'Published' : 'Draft'}
+        </span>
+        {published && publishedUrl && (
+          <a href={publishedUrl} target="_blank" rel="noreferrer" className="toolbar-live-link" data-testid="published-url">
+            View live ↗
+          </a>
+        )}
+        {publishError && (
+          <span className="toolbar-saved-text saved-text-error" data-testid="publish-error" title={publishError}>
+            Publish failed
+          </span>
+        )}
+        <span className={`toolbar-saved-text${saveError ? ' saved-text-error' : ''}`} data-testid="saved-text" title={saveError || undefined}>
+          {saveError ? 'Save failed — kept locally' : saveStatus === 'dirty' ? 'Unsaved changes' : 'All changes saved'}
+        </span>
+      </div>
+
+      <div className="toolbar-group tabs">
+        {['design', 'settings', 'submissions'].map((tab) => (
+          <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} data-testid={`tab-${tab}`} onClick={() => setActiveTab(tab)}>
+            {tab[0].toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
+
       <div className="toolbar-group">
         {DEVICES.map((d) => (
-          <button key={d} type="button" className={device === d ? 'active' : ''} data-testid={`device-${d}`} onClick={() => setDevice(d)}>
-            {d}
+          <button key={d} type="button" className={device === d ? 'active' : ''} title={d} data-testid={`device-${d}`} onClick={() => setDevice(d)}>
+            {DEVICE_ICON[d]}
           </button>
         ))}
       </div>
@@ -25,27 +55,23 @@ export default function Toolbar({
       </div>
 
       <div className="toolbar-group">
-        <button type="button" data-testid="undo-btn" disabled={!canUndo} onClick={onUndo}>Undo</button>
-        <button type="button" data-testid="redo-btn" disabled={!canRedo} onClick={onRedo}>Redo</button>
-      </div>
-
-      <div className="toolbar-group">
-        <button type="button" data-testid="save-btn" onClick={onSave}>
-          {saveStatus === 'saved' ? 'Saved' : saveStatus === 'dirty' ? 'Save*' : 'Save'}
-        </button>
-        {!published && <button type="button" data-testid="publish-btn" onClick={onPublish}>Publish</button>}
-        {published && <button type="button" data-testid="unpublish-btn" onClick={onUnpublish}>Unpublish</button>}
-        {published && <button type="button" data-testid="republish-btn" onClick={onRepublish}>Republish</button>}
+        <button type="button" title="Undo" data-testid="undo-btn" disabled={!canUndo} onClick={onUndo}>↶</button>
+        <button type="button" title="Redo" data-testid="redo-btn" disabled={!canRedo} onClick={onRedo}>↷</button>
       </div>
 
       <AddSectionMenu onAdd={onAddSection} />
 
-      <div className="toolbar-group tabs">
-        {['design', 'settings', 'submissions'].map((tab) => (
-          <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} data-testid={`tab-${tab}`} onClick={() => setActiveTab(activeTab === tab ? null : tab)}>
-            {tab}
-          </button>
-        ))}
+      <div className="toolbar-group toolbar-actions">
+        <button type="button" title="Preview">Preview</button>
+        <button type="button" title="Save" data-testid="save-btn" onClick={onSave}>Save</button>
+        {published ? (
+          <>
+            <button type="button" data-testid="unpublish-btn" onClick={onUnpublish}>Unpublish</button>
+            <button type="button" className="republish-btn" data-testid="republish-btn" onClick={onRepublish}>🚀 Republish</button>
+          </>
+        ) : (
+          <button type="button" className="republish-btn" data-testid="publish-btn" onClick={onPublish}>🚀 Publish</button>
+        )}
       </div>
     </div>
   );
