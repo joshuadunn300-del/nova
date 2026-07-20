@@ -1,7 +1,13 @@
 import { editableProps } from './editable.js'
 
 export default function Navbar({ props = {}, path, editable = false }) {
-  const { logo = 'Business', links = [], cta, phone } = props
+  // `ctaText` (plain string) is the real field (lib/templates/_base.js); `cta:{label,href}`
+  // kept as a back-compat read. `links` may be plain strings (real shape) or
+  // {label,href} objects — both rendered the same, only strings aren't inline-editable
+  // (no stable path into a bare string array item makes sense to expose as a link URL).
+  const { logo = 'Business', links = [], cta, ctaText, phone } = props
+  const ctaLabel = ctaText || cta?.label
+  const ctaHref = cta?.href || '#'
 
   return (
     <header className="absolute top-0 left-0 right-0 z-20 py-5 px-6">
@@ -38,18 +44,23 @@ export default function Navbar({ props = {}, path, editable = false }) {
 
         <ul className="hidden md:flex items-center gap-1.5 mx-auto min-w-0">
           {Array.isArray(links) &&
-            links.map((link, i) => (
-              <li key={i} className="truncate max-w-[8rem]">
-                <a
-                  href={link?.href || '#'}
-                  className="block rounded-full px-3 py-1.5 text-[13px] whitespace-nowrap transition-colors hover:text-white hover:bg-white/10"
-                  style={{ color: 'rgba(255,255,255,0.72)' }}
-                  {...editableProps(editable, `${path}.links.${i}.label`)}
-                >
-                  {link?.label || 'Link'}
-                </a>
-              </li>
-            ))}
+            links.map((link, i) => {
+              const isString = typeof link === 'string'
+              const label = isString ? link : link?.label || 'Link'
+              const href = isString ? `#${link.toLowerCase().replace(/\s+/g, '-')}` : link?.href || '#'
+              return (
+                <li key={i} className="truncate max-w-[8rem]">
+                  <a
+                    href={href}
+                    className="block rounded-full px-3 py-1.5 text-[13px] whitespace-nowrap transition-colors hover:text-white hover:bg-white/10"
+                    style={{ color: 'rgba(255,255,255,0.72)' }}
+                    {...(isString ? {} : editableProps(editable, `${path}.links.${i}.label`))}
+                  >
+                    {label}
+                  </a>
+                </li>
+              )
+            })}
         </ul>
 
         <div className="flex items-center gap-3 shrink-0">
@@ -66,9 +77,9 @@ export default function Navbar({ props = {}, path, editable = false }) {
               {phone}
             </div>
           )}
-          {cta?.label && (
+          {ctaLabel && (
             <a
-              href={cta.href || '#'}
+              href={ctaHref}
               className="shrink-0 whitespace-nowrap"
               style={{
                 background: 'var(--cta-bg)',
@@ -79,9 +90,9 @@ export default function Navbar({ props = {}, path, editable = false }) {
                 fontSize: '13px',
                 fontWeight: 'var(--cta-fw)',
               }}
-              {...editableProps(editable, `${path}.cta.label`)}
+              {...editableProps(editable, `${path}.${ctaText !== undefined ? 'ctaText' : 'cta.label'}`)}
             >
-              {cta.label}
+              {ctaLabel}
             </a>
           )}
         </div>

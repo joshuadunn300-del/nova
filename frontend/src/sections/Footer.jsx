@@ -1,7 +1,12 @@
 import { editableProps } from './editable.js'
 
 export default function Footer({ props = {}, path, editable = false }) {
-  const { logo = 'Business', text = '', links = [], phone, email, copyright } = props
+  // `tagline` is the real field (lib/templates/_base.js); `text` kept as a
+  // back-compat read for older content_json. Explore `links` may be plain
+  // strings (real template shape, same as Navbar's) or {label,href} objects.
+  const { logo = 'Business', tagline, text, links = [], phone, email, copyright } = props
+  const taglineText = tagline ?? text ?? ''
+  const taglineField = tagline !== undefined ? 'tagline' : 'text'
 
   return (
     <footer className="w-full" style={{ padding: '64px 32px 40px', background: '#0a0b0f' }}>
@@ -27,13 +32,13 @@ export default function Footer({ props = {}, path, editable = false }) {
                 {logo}
               </span>
             </div>
-            {text && (
+            {taglineText && (
               <p
                 className="mt-4 break-words"
                 style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.6 }}
-                {...editableProps(editable, `${path}.text`)}
+                {...editableProps(editable, `${path}.${taglineField}`)}
               >
-                {text}
+                {taglineText}
               </p>
             )}
           </div>
@@ -56,18 +61,23 @@ export default function Footer({ props = {}, path, editable = false }) {
                 Explore
               </p>
               <div className="flex flex-col gap-2.5">
-                {links.map((link, i) => (
-                  <a
-                    key={i}
-                    href={link?.href || '#'}
-                    className="flex items-center gap-2 hover:text-white transition-colors truncate"
-                    style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', textDecoration: 'none' }}
-                    {...editableProps(editable, `${path}.links.${i}.label`)}
-                  >
-                    <span className="shrink-0" style={{ width: '4px', height: '4px', borderRadius: '9999px', background: 'var(--primary)' }} />
-                    {link?.label || 'Link'}
-                  </a>
-                ))}
+                {links.map((link, i) => {
+                  const isString = typeof link === 'string'
+                  const label = isString ? link : link?.label || 'Link'
+                  const href = isString ? `#${link.toLowerCase().replace(/\s+/g, '-')}` : link?.href || '#'
+                  return (
+                    <a
+                      key={i}
+                      href={href}
+                      className="flex items-center gap-2 hover:text-white transition-colors truncate"
+                      style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', textDecoration: 'none' }}
+                      {...(isString ? {} : editableProps(editable, `${path}.links.${i}.label`))}
+                    >
+                      <span className="shrink-0" style={{ width: '4px', height: '4px', borderRadius: '9999px', background: 'var(--primary)' }} />
+                      {label}
+                    </a>
+                  )
+                })}
               </div>
             </div>
           )}

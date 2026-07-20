@@ -1,7 +1,14 @@
 import { editableProps } from './editable.js'
 
 export default function Cta({ props = {}, path, editable = false }) {
-  const { headline = 'Ready to get started?', subheadline = '', button } = props
+  // `heading`/`subtext`/`buttonText` are the real fields (lib/templates/_base.js,
+  // buttonText is a plain string); `headline`/`subheadline`/`button:{label,href}`
+  // kept as back-compat reads for older content_json.
+  const { heading, headline, subtext, subheadline, buttonText, button } = props
+  const title = heading || headline || 'Ready to get started?'
+  const sub = subtext ?? subheadline ?? ''
+  const btnLabel = buttonText || button?.label
+  const btnHref = button?.href || '#'
 
   return (
     <section className="w-full" style={{ padding: '48px 32px', background: '#0a0b10' }}>
@@ -27,22 +34,22 @@ export default function Cta({ props = {}, path, editable = false }) {
               lineHeight: 1.1,
               textShadow: '0 2px 22px rgba(0,0,0,0.4)',
             }}
-            {...editableProps(editable, `${path}.headline`)}
+            {...editableProps(editable, `${path}.${heading ? 'heading' : 'headline'}`)}
           >
-            {headline}
+            {title}
           </h2>
-          {subheadline && (
+          {sub && (
             <p
               className="mx-auto break-words"
               style={{ marginTop: '20px', color: 'rgba(255,255,255,0.85)', fontSize: '1.125rem', maxWidth: '36rem', lineHeight: 1.6 }}
-              {...editableProps(editable, `${path}.subheadline`)}
+              {...editableProps(editable, `${path}.${subtext !== undefined ? 'subtext' : 'subheadline'}`)}
             >
-              {subheadline}
+              {sub}
             </p>
           )}
-          {button?.label && (
+          {btnLabel && (
             <a
-              href={button.href || '#'}
+              href={btnHref}
               className="inline-flex items-center justify-center whitespace-nowrap"
               style={{
                 marginTop: '36px',
@@ -55,9 +62,9 @@ export default function Cta({ props = {}, path, editable = false }) {
                 background: 'linear-gradient(180deg, #ffffff 0%, #eef0f4 100%)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), var(--cta-shadow)',
               }}
-              {...editableProps(editable, `${path}.button.label`)}
+              {...editableProps(editable, `${path}.${buttonText !== undefined ? 'buttonText' : 'button.label'}`)}
             >
-              {button.label}
+              {btnLabel}
             </a>
           )}
         </div>

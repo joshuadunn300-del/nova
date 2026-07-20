@@ -1,7 +1,10 @@
 import { editableProps } from './editable.js'
 
 export default function About({ props = {}, path, editable = false }) {
-  const { title = 'About Us', body = '', image, stats = [] } = props
+  // `heading` is the real field (lib/templates/_base.js); `title` kept as a
+  // back-compat read for any older content_json still using it.
+  const { heading, title, body = '', image, stats = [] } = props
+  const sectionTitle = heading || title || 'About Us'
 
   return (
     <section
@@ -37,9 +40,9 @@ export default function About({ props = {}, path, editable = false }) {
         <h2
           className="font-bold break-words"
           style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-          {...editableProps(editable, `${path}.title`)}
+          {...editableProps(editable, `${path}.${heading ? 'heading' : 'title'}`)}
         >
-          {title}
+          {sectionTitle}
         </h2>
         <p
           className="whitespace-pre-line break-words"

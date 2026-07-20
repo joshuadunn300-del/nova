@@ -12,7 +12,10 @@ export default function Hero({ props = {}, path, editable = false }) {
   const {
     eyebrow,
     headline = 'Your headline here',
-    subheadline = '',
+    // `subtext`/`ctaText` are the real fields (lib/templates/_base.js, ctaText is a
+    // plain string); `subheadline`/`cta:{label,href}` kept as back-compat reads.
+    subtext,
+    subheadline,
     bgImage,
     // `image` is a legacy/back-compat field name — real generation (templateFiller,
     // AI path) writes `bgImage`, but keep reading `image` too so any content_json
@@ -20,11 +23,18 @@ export default function Hero({ props = {}, path, editable = false }) {
     image,
     ratingText,
     trustBadges = [],
+    ctaText,
     cta,
     form,
   } = props
   const heroImage = bgImage || image
-  const fields = form?.fields?.length ? form.fields : ['name', 'phone']
+  const sub = subtext ?? subheadline ?? ''
+  const ctaLabel = ctaText || cta?.label
+  const ctaHref = cta?.href || '#'
+  // Real template data has no `form.enabled` flag at all — a form is "on" simply by
+  // having fields. `enabled: false` (or an empty/missing form) explicitly turns it off.
+  const formOn = !!form && form.enabled !== false && !!form.fields?.length
+  const rawFields = formOn ? form.fields : []
 
   return (
     <section
@@ -54,7 +64,7 @@ export default function Hero({ props = {}, path, editable = false }) {
       )}
 
       <div
-        className="relative z-10 mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-center"
+        className={`relative z-10 mx-auto w-full grid grid-cols-1 items-center ${formOn ? 'md:grid-cols-2' : ''}`}
         style={{ maxWidth: 'var(--max-w)', padding: '112px 32px 64px', gap: '48px' }}
       >
         <div>
@@ -73,19 +83,21 @@ export default function Hero({ props = {}, path, editable = false }) {
           >
             {headline}
           </h1>
-          {subheadline && (
+          {sub && (
             <p
               className="mt-5 break-words"
               style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', lineHeight: 1.6, maxWidth: '28rem' }}
-              {...editableProps(editable, `${path}.subheadline`)}
+              {...editableProps(editable, `${path}.${subtext !== undefined ? 'subtext' : 'subheadline'}`)}
             >
-              {subheadline}
+              {sub}
             </p>
           )}
 
-          {cta?.label && !form?.enabled && (
+          {/* CTA button and the lead-capture form are NOT mutually exclusive — real
+              Tenji shows both at once (button in this column, form card in the other). */}
+          {ctaLabel && (
             <a
-              href={cta.href || '#'}
+              href={ctaHref}
               className="mt-7 inline-flex items-center justify-center whitespace-nowrap"
               style={{
                 background: 'var(--cta-bg)',
@@ -96,9 +108,9 @@ export default function Hero({ props = {}, path, editable = false }) {
                 fontSize: 'var(--cta-fs)',
                 fontWeight: 'var(--cta-fw)',
               }}
-              {...editableProps(editable, `${path}.cta.label`)}
+              {...editableProps(editable, `${path}.${ctaText !== undefined ? 'ctaText' : 'cta.label'}`)}
             >
-              {cta.label}
+              {ctaLabel}
             </a>
           )}
 
@@ -133,7 +145,7 @@ export default function Hero({ props = {}, path, editable = false }) {
           )}
         </div>
 
-        {form?.enabled && (
+        {formOn && (
           <div className="flex justify-end">
             <form
               className="w-full"
@@ -153,23 +165,48 @@ export default function Hero({ props = {}, path, editable = false }) {
                 {form.title || 'Request a Quote'}
               </h3>
               <div className="flex flex-col gap-3">
-                {fields.map((field, i) => (
-                  <input
-                    key={i}
-                    name={field}
-                    placeholder={field}
-                    className="w-full"
-                    style={{
-                      background: 'var(--input-bg)',
-                      border: 'var(--input-border)',
-                      borderRadius: 'var(--input-radius)',
-                      padding: 'var(--input-pad)',
-                      boxShadow: 'var(--input-shadow)',
-                      color: 'var(--heading-color)',
-                      fontSize: '14px',
-                    }}
-                  />
-                ))}
+                {rawFields.map((field, i) => {
+                  // Real fields are objects {id,label,type,required,options}; a bare
+                  // string field name is kept as a back-compat text-input shorthand.
+                  const isObj = typeof field === 'object' && field !== null
+                  const name = isObj ? field.id || field.label : field
+                  const label = isObj ? field.label : field
+                  const type = isObj ? field.type : 'text'
+                  const inputStyle = {
+                    background: 'var(--input-bg)',
+                    border: 'var(--input-border)',
+                    borderRadius: 'var(--input-radius)',
+                    padding: 'var(--input-pad)',
+                    boxShadow: 'var(--input-shadow)',
+                    color: 'var(--heading-color)',
+                    fontSize: '14px',
+                  }
+                  if (type === 'select') {
+                    return (
+                      <select key={i} name={name} className="w-full" style={{ ...inputStyle, color: 'var(--muted-color)' }} defaultValue="">
+                        <option value="" disabled>{label}</option>
+                        {(field.options || []).map((opt, oi) => (
+                          <option key={oi} value={opt}>{opt}</option>
+                        ))}
+                      </select>
+                    )
+                  }
+                  if (type === 'textarea') {
+                    return (
+                      <textarea key={i} name={name} placeholder={label} rows={3} className="w-full resize-none" style={inputStyle} />
+                    )
+                  }
+                  return (
+                    <input
+                      key={i}
+                      type={type === 'tel' || type === 'email' ? type : 'text'}
+                      name={name}
+                      placeholder={label}
+                      className="w-full"
+                      style={inputStyle}
+                    />
+                  )
+                })}
               </div>
               <button
                 type="submit"
@@ -183,9 +220,9 @@ export default function Hero({ props = {}, path, editable = false }) {
                   fontSize: '14px',
                   fontWeight: 'var(--cta-fw)',
                 }}
-                {...editableProps(editable, `${path}.form.submitLabel`)}
+                {...editableProps(editable, `${path}.form.${form.buttonText !== undefined ? 'buttonText' : 'submitLabel'}`)}
               >
-                {form.submitLabel || 'Get a Quote'}
+                {form.buttonText || form.submitLabel || 'Get a Quote'}
               </button>
               <div className="mt-3 flex items-center justify-center gap-1.5" style={{ fontSize: '11px', color: '#9ca3af' }}>
                 {form.microcopy || 'No obligation · Fast response'}
