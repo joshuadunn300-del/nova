@@ -48,12 +48,18 @@ export const mockSupportTickets = [
 ]
 
 export const mockSettings = {
+  full_name: 'Josh Dunn',
+  agency_name: '',
+  agency_bio: '',
   brand_name: 'Nova',
   brand_description: 'AI-powered lead-to-client agency toolkit.',
   logo_url: null,
   palette_preset: 'indigo',
   custom_primary: null,
   custom_secondary: null,
+  theme: 'dark',
+  discord_connected: false,
+  email_notifications: { product_updates: true, billing_credits: true, tips_playbooks: false },
 }
 
 export const PALETTE_PRESETS = {

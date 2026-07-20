@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
-import { listTasks, updateTask } from '../lib/api'
-import DataTable from '../components/DataTable'
+import { createTask, listTasks, updateTask } from '../lib/api'
 
 export default function Tasks() {
   const [tasks, setTasks] = useState(null)
   const [error, setError] = useState('')
+  const [filter, setFilter] = useState('open')
+  const [title, setTitle] = useState('')
+  const [dueDate, setDueDate] = useState('')
+  const [priority, setPriority] = useState('medium')
 
   useEffect(() => {
     listTasks().then(setTasks).catch((err) => setError(err.message || 'Failed to load tasks.'))
@@ -20,10 +23,68 @@ export default function Tasks() {
     }
   }
 
+  async function handleAdd(e) {
+    e.preventDefault()
+    if (!title.trim()) return
+    const task = await createTask({ title: title.trim(), due_date: dueDate, priority })
+    setTasks((prev) => [task, ...(prev || [])])
+    setTitle('')
+    setDueDate('')
+    setPriority('medium')
+  }
+
+  const filtered = (tasks || []).filter((t) => (filter === 'open' ? t.status !== 'done' : t.status === 'done'))
+
   return (
     <div className="max-w-4xl">
+      <p className="nova-eyebrow mb-1">AGENCY</p>
       <h1 className="text-xl font-semibold mb-1">Tasks</h1>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Follow-ups and reminders.</p>
+      <p className="text-sm text-nova-text-muted mb-6">Keep your agency moving — calls, builds, follow-ups, launches.</p>
+
+      <form onSubmit={handleAdd} className="nova-card p-3 flex flex-wrap gap-2 mb-4">
+        <input
+          placeholder="What needs to be done?"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="flex-1 min-w-[200px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+        />
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+        />
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button type="submit" className="nova-btn-primary">
+          ＋ Add
+        </button>
+      </form>
+
+      <div className="flex gap-1 mb-4">
+        {[
+          { key: 'open', label: 'Open' },
+          { key: 'done', label: 'Completed' },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setFilter(tab.key)}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+              filter === tab.key ? 'bg-nova-accent text-white' : 'text-nova-text-muted hover:bg-nova-surface-hover'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
       {error && (
         <div className="mb-4 rounded-md bg-rose-50 dark:bg-rose-900/30 px-3 py-2 text-sm text-rose-700 dark:text-rose-300">
@@ -32,34 +93,27 @@ export default function Tasks() {
       )}
 
       {tasks === null && !error ? (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>
+        <p className="text-sm text-nova-text-muted">Loading…</p>
+      ) : filtered.length === 0 ? (
+        <div className="nova-card border-dashed p-10 text-center">
+          <div className="text-2xl mb-2">☑️</div>
+          <p className="text-sm font-medium">{filter === 'open' ? 'No open tasks' : 'No completed tasks'}</p>
+          <p className="text-sm text-nova-text-muted mt-1">
+            {filter === 'open' ? "You're all caught up. Add your next move above." : 'Finished tasks will show up here.'}
+          </p>
+        </div>
       ) : (
-        <DataTable
-          emptyMessage="No tasks yet."
-          rows={tasks || []}
-          columns={[
-            {
-              key: 'status',
-              label: 'Done',
-              render: (r) => (
-                <input
-                  type="checkbox"
-                  checked={r.status === 'done'}
-                  onChange={() => toggleDone(r)}
-                  className="h-4 w-4"
-                />
-              ),
-            },
-            {
-              key: 'title',
-              label: 'Task',
-              render: (r) => <span className={r.status === 'done' ? 'line-through text-slate-400' : ''}>{r.title}</span>,
-            },
-            { key: 'related_to', label: 'Related to' },
-            { key: 'priority', label: 'Priority' },
-            { key: 'due_date', label: 'Due' },
-          ]}
-        />
+        <ul className="space-y-2">
+          {filtered.map((t) => (
+            <li key={t.id} className="flex items-center gap-3 nova-card px-3 py-2">
+              <input type="checkbox" checked={t.status === 'done'} onChange={() => toggleDone(t)} className="h-4 w-4" />
+              <span className={`flex-1 text-sm ${t.status === 'done' ? 'line-through text-nova-text-muted' : ''}`}>{t.title}</span>
+              {t.related_to && <span className="text-xs text-nova-text-muted">{t.related_to}</span>}
+              <span className="text-xs text-nova-text-muted">{t.priority}</span>
+              <span className="text-xs text-nova-text-muted">{t.due_date}</span>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   )

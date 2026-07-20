@@ -20,8 +20,9 @@ export default function Notifications() {
 
   return (
     <div className="max-w-2xl">
+      <p className="nova-eyebrow mb-1">ACCOUNT</p>
       <h1 className="text-xl font-semibold mb-1">Notifications</h1>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">In-app alerts.</p>
+      <p className="text-sm text-nova-text-muted mb-6">Lead searches, generations, follow-ups, and system updates.</p>
 
       {error && (
         <div className="mb-4 rounded-md bg-rose-50 dark:bg-rose-900/30 px-3 py-2 text-sm text-rose-700 dark:text-rose-300">
@@ -30,26 +31,32 @@ export default function Notifications() {
       )}
 
       {items === null && !error ? (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>
+        <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : (items || []).length === 0 ? (
-        <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-700 p-10 text-center text-sm text-slate-500 dark:text-slate-400">
-          You're all caught up.
+        <div className="nova-card border-dashed p-10 text-center">
+          <div className="text-2xl mb-2">🔔</div>
+          <p className="text-sm font-medium">No notifications</p>
+          <p className="text-sm text-nova-text-muted mt-1">
+            You'll see updates here when lead searches finish, sites are generated, and follow-ups are due.
+          </p>
         </div>
       ) : (
         <ul className="space-y-2">
           {items.map((n) => (
+            // Real Notification entity is message/type/read/link — no `title`/`body` fields
+            // (this file's original mock shape), so both rendered blank on real data.
             <li
               key={n.id}
               onClick={() => !n.read && markRead(n.id)}
-              className={`rounded-lg border p-3 cursor-pointer ${
+              className={`rounded-nova border p-3 cursor-pointer ${
                 n.read
-                  ? 'border-slate-200 dark:border-slate-800 opacity-60'
-                  : 'border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20'
+                  ? 'border-nova-border opacity-60'
+                  : 'border-nova-accent/40 bg-nova-accent/10'
               }`}
             >
-              <p className="text-sm font-medium">{n.title}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{n.body}</p>
-              <p className="text-xs text-slate-400 mt-1">{new Date(n.created_date).toLocaleString()}</p>
+              <p className="text-sm font-medium">{n.title || n.message}</p>
+              {n.title && n.body && <p className="text-sm text-nova-text-muted">{n.body}</p>}
+              {n.created_date && <p className="text-xs text-nova-text-muted mt-1">{new Date(n.created_date).toLocaleString()}</p>}
             </li>
           ))}
         </ul>

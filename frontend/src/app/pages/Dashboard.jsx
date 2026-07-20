@@ -47,10 +47,12 @@ export default function Dashboard() {
     listSites().then(setSites).catch(() => {})
   }, [])
 
-  const leadName = (l) => l.business_name || l.name || ''
-  const byStage = (stage) => leads.filter((l) => l && l.stage === stage).length
+  // Real Lead field is `status` (enum new/contacted/demo_sent/closed/lost), not `stage`
+  // — 'interested' also isn't a real status value, closest real equivalent is 'demo_sent'.
+  // Real Client field is `monthly_value`, not `mrr`.
+  const byStatus = (status) => leads.filter((l) => l && l.status === status).length
   const activeClients = clients.filter((c) => c.status === 'active')
-  const mrr = activeClients.reduce((sum, c) => sum + (c.mrr || 0), 0)
+  const mrr = activeClients.reduce((sum, c) => sum + (c.monthly_value ?? c.mrr ?? 0), 0)
   const openTasks = tasks.filter((t) => t.status !== 'done').length
   const plan = planOf(entitlements)
 
@@ -58,8 +60,8 @@ export default function Dashboard() {
     { label: 'Recurring Revenue', value: `$${mrr}/mo`, highlight: true, icon: '💰' },
     { label: 'Credits Left', value: entitlements ? `${entitlements.credits.toLocaleString()} / ${plan.monthlyCredits.toLocaleString()}` : '—', icon: '⚡' },
     { label: 'Total Leads', value: leads.length, icon: '🔍' },
-    { label: 'Interested', value: byStage('interested'), icon: '👀' },
-    { label: 'Closed', value: byStage('closed'), icon: '✅' },
+    { label: 'Demo Sent', value: byStatus('demo_sent'), icon: '👀' },
+    { label: 'Closed', value: byStatus('closed'), icon: '✅' },
     { label: 'Active Clients', value: activeClients.length, icon: '💼' },
     { label: 'Open Tasks', value: openTasks, icon: '☑️' },
   ]

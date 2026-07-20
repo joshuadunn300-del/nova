@@ -1,25 +1,84 @@
 import { useEffect, useState } from 'react'
-import { listClients } from '../lib/api'
+import { createClient, listClients } from '../lib/api'
 import DataTable from '../components/DataTable'
+
+// Real Client entity is `company`/`name`/`monthly_value`/`status`[active|paused|churned] —
+// not `business_name`/`contact_name`/`mrr`/'onboarding' (this file's original mock shape).
+// Guard both so mock mode (still using the old field names) keeps working.
+const clientBusiness = (c) => c.company || c.business_name || ''
+const clientContact = (c) => c.name || c.contact_name || ''
+const clientMonthly = (c) => c.monthly_value ?? c.mrr ?? 0
 
 const STATUS_STYLE = {
   active: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-  onboarding: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
-  churned: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
+  paused: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  churned: 'bg-nova-surface-hover text-nova-text-muted',
 }
 
 export default function Clients() {
   const [clients, setClients] = useState(null)
   const [error, setError] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({ business_name: '', contact_name: '', email: '' })
 
   useEffect(() => {
     listClients().then(setClients).catch((err) => setError(err.message || 'Failed to load clients.'))
   }, [])
 
+  const active = (clients || []).filter((c) => c.status === 'active')
+  const mrr = active.reduce((sum, c) => sum + clientMonthly(c), 0)
+
+  async function handleAdd(e) {
+    e.preventDefault()
+    if (!form.business_name.trim()) return
+    const client = await createClient(form)
+    setClients((prev) => [client, ...(prev || [])])
+    setForm({ business_name: '', contact_name: '', email: '' })
+    setShowForm(false)
+  }
+
   return (
     <div className="max-w-5xl">
-      <h1 className="text-xl font-semibold mb-1">Clients</h1>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Businesses you're actively managing.</p>
+      <p className="nova-eyebrow mb-1">AGENCY</p>
+      <div className="flex items-start justify-between mb-1">
+        <h1 className="text-xl font-semibold">Clients</h1>
+        <button
+          type="button"
+          onClick={() => setShowForm((v) => !v)}
+          className="nova-btn-primary"
+        >
+          ＋ Add Client
+        </button>
+      </div>
+      <p className="text-sm text-nova-text-muted mb-6">
+        {active.length} active clients · ${mrr}/mo MRR
+      </p>
+
+      {showForm && (
+        <form onSubmit={handleAdd} className="mb-6 nova-card p-4 flex flex-wrap gap-3">
+          <input
+            placeholder="Business name"
+            value={form.business_name}
+            onChange={(e) => setForm((f) => ({ ...f, business_name: e.target.value }))}
+            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          />
+          <input
+            placeholder="Contact name"
+            value={form.contact_name}
+            onChange={(e) => setForm((f) => ({ ...f, contact_name: e.target.value }))}
+            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          />
+          <input
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          />
+          <button type="submit" className="nova-btn-primary">
+            Add
+          </button>
+        </form>
+      )}
 
       {error && (
         <div className="mb-4 rounded-md bg-rose-50 dark:bg-rose-900/30 px-3 py-2 text-sm text-rose-700 dark:text-rose-300">
@@ -28,14 +87,28 @@ export default function Clients() {
       )}
 
       {clients === null && !error ? (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>
+        <p className="text-sm text-nova-text-muted">Loading…</p>
+      ) : (clients || []).length === 0 ? (
+        <div className="nova-card border-dashed p-10 text-center">
+          <div className="text-2xl mb-2">💼</div>
+          <p className="text-sm font-medium">No clients yet</p>
+          <p className="text-sm text-nova-text-muted mt-1 mb-4">
+            Close your first lead and convert it to a client from the CRM — or add one manually.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="nova-btn-primary"
+          >
+            Add Client
+          </button>
+        </div>
       ) : (
         <DataTable
-          emptyMessage="No clients yet — convert a lead once they sign."
-          rows={clients || []}
+          rows={clients}
           columns={[
-            { key: 'business_name', label: 'Business' },
-            { key: 'contact_name', label: 'Contact' },
+            { key: 'business_name', label: 'Business', render: (r) => clientBusiness(r) || '—' },
+            { key: 'contact_name', label: 'Contact', render: (r) => clientContact(r) || '—' },
             { key: 'email', label: 'Email' },
             {
               key: 'status',
@@ -46,7 +119,7 @@ export default function Clients() {
                 </span>
               ),
             },
-            { key: 'mrr', label: 'MRR', render: (r) => `$${r.mrr}/mo` },
+            { key: 'mrr', label: 'MRR', render: (r) => `$${clientMonthly(r)}/mo` },
           ]}
         />
       )}

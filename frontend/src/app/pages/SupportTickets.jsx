@@ -29,20 +29,21 @@ export default function SupportTickets() {
 
   return (
     <div className="max-w-3xl">
+      <p className="nova-eyebrow mb-1">LEARN</p>
       <h1 className="text-xl font-semibold mb-1">Support</h1>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Open a ticket if something's broken.</p>
+      <p className="text-sm text-nova-text-muted mb-6">Open a ticket if something's broken.</p>
 
       <form onSubmit={handleCreate} className="flex gap-2 mb-6">
         <input
           placeholder="What's going on?"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm"
+          className="flex-1 nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
         />
         <button
           type="submit"
           disabled={busy || !subject.trim()}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="nova-btn-primary disabled:opacity-50"
         >
           Submit
         </button>
@@ -55,7 +56,7 @@ export default function SupportTickets() {
       )}
 
       {tickets === null && !error ? (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>
+        <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : (
         <DataTable
           emptyMessage="No tickets — you're all set."

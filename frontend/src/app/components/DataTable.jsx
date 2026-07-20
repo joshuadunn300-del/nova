@@ -3,27 +3,27 @@
 export default function DataTable({ columns, rows, keyField = 'id', emptyMessage = 'Nothing here yet.' }) {
   if (!rows || rows.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-700 p-10 text-center text-sm text-slate-500 dark:text-slate-400">
+      <div className="nova-card border-dashed p-10 text-center text-sm text-nova-text-muted">
         {emptyMessage}
       </div>
     )
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
-      <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-sm">
-        <thead className="bg-slate-50 dark:bg-slate-900/60">
+    <div className="overflow-x-auto nova-card">
+      <table className="min-w-full divide-y divide-white/[0.06] text-sm">
+        <thead className="bg-white/[0.03]">
           <tr>
             {columns.map((c) => (
-              <th key={c.key} className="px-4 py-2.5 text-left font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
+              <th key={c.key} className="px-4 py-2.5 text-left font-medium text-nova-text-muted whitespace-nowrap">
                 {c.label}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+        <tbody className="divide-y divide-white/[0.06]">
           {rows.map((row) => (
-            <tr key={row[keyField]} className="hover:bg-slate-50 dark:hover:bg-slate-900/40">
+            <tr key={row[keyField]} className="hover:bg-white/[0.03]">
               {columns.map((c) => (
                 <td
                   key={c.key}

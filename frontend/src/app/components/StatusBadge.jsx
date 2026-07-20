@@ -7,7 +7,7 @@ const STYLES = {
 const LABELS = { none: 'No website', poor: 'Poor website', decent: 'Decent website' }
 
 export default function WebsiteStatusBadge({ status }) {
-  const cls = STYLES[status] || 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+  const cls = STYLES[status] || 'bg-nova-surface-hover text-nova-text-muted'
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${cls}`}>
       {LABELS[status] || status || 'Unknown'}
