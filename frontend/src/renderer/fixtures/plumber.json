@@ -10,7 +10,8 @@
         "logo": "Rapid Flow Plumbing",
         "links": ["Home", "Services", "About", "Reviews"],
         "phone": "(555) 123-4567",
-        "ctaText": "Get a Quote"
+        "ctaText": "Get a Quote",
+        "logoIcon": "droplets"
       }
     },
     {
@@ -115,7 +116,8 @@
         "phone": "(555) 123-4567",
         "email": "hello@rapidflowplumbing.com",
         "links": ["Home", "Services", "About", "Reviews"],
-        "copyright": "© 2026 Rapid Flow Plumbing. All rights reserved."
+        "copyright": "© 2026 Rapid Flow Plumbing. All rights reserved.",
+        "logoIcon": "droplets"
       }
     }
   ]

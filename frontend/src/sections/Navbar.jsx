@@ -1,11 +1,13 @@
 import { editableProps } from './editable.js'
+import { resolveIcon } from './icons.js'
 
 export default function Navbar({ props = {}, path, editable = false }) {
   // `ctaText` (plain string) is the real field (lib/templates/_base.js); `cta:{label,href}`
   // kept as a back-compat read. `links` may be plain strings (real shape) or
   // {label,href} objects — both rendered the same, only strings aren't inline-editable
   // (no stable path into a bare string array item makes sense to expose as a link URL).
-  const { logo = 'Business', links = [], cta, ctaText, phone } = props
+  const { logo = 'Business', links = [], cta, ctaText, phone, logoIcon } = props
+  const LogoIcon = resolveIcon(logoIcon)
   const ctaLabel = ctaText || cta?.label
   const ctaHref = cta?.href || '#'
 
@@ -27,12 +29,19 @@ export default function Navbar({ props = {}, path, editable = false }) {
           <div
             className="flex items-center justify-center shrink-0"
             style={{
-              width: 'var(--logo-tile-size)',
-              height: 'var(--logo-tile-size)',
-              borderRadius: 'var(--logo-tile-radius)',
+              // Real Tenji's navbar logo tile is a DISTINCT, smaller spec from the
+              // footer's (28px/8px radius, flat brand color vs. footer's 36px/12px
+              // gradient) — confirmed identical across both real template HTML files,
+              // so hardcoded here rather than sharing --logo-tile-size/-radius (those
+              // match the footer tile only, see Footer.jsx).
+              width: '28px',
+              height: '28px',
+              borderRadius: '8px',
               background: 'var(--primary)',
             }}
-          />
+          >
+            {LogoIcon && <LogoIcon size={20} color="#000" strokeWidth={2} />}
+          </div>
           <span
             className="font-semibold text-[15px] shrink-0 truncate max-w-[10rem]"
             style={{ color: '#fff', letterSpacing: '-0.01em' }}

@@ -1,10 +1,12 @@
 import { editableProps } from './editable.js'
+import { resolveIcon } from './icons.js'
 
 export default function Footer({ props = {}, path, editable = false }) {
   // `tagline` is the real field (lib/templates/_base.js); `text` kept as a
   // back-compat read for older content_json. Explore `links` may be plain
   // strings (real template shape, same as Navbar's) or {label,href} objects.
-  const { logo = 'Business', tagline, text, links = [], phone, email, copyright } = props
+  const { logo = 'Business', tagline, text, links = [], phone, email, copyright, logoIcon } = props
+  const LogoIcon = resolveIcon(logoIcon)
   const taglineText = tagline ?? text ?? ''
   const taglineField = tagline !== undefined ? 'tagline' : 'text'
 
@@ -15,7 +17,7 @@ export default function Footer({ props = {}, path, editable = false }) {
           <div style={{ maxWidth: '20rem' }}>
             <div className="flex items-center gap-2.5">
               <div
-                className="shrink-0"
+                className="shrink-0 flex items-center justify-center"
                 style={{
                   width: 'var(--logo-tile-size)',
                   height: 'var(--logo-tile-size)',
@@ -23,7 +25,9 @@ export default function Footer({ props = {}, path, editable = false }) {
                   background: 'var(--logo-tile-bg)',
                   boxShadow: 'var(--logo-tile-shadow)',
                 }}
-              />
+              >
+                {LogoIcon && <LogoIcon size={24} color="#000" strokeWidth={2} />}
+              </div>
               <span
                 className="font-semibold truncate"
                 style={{ color: '#fff', fontSize: '1.125rem', letterSpacing: '-0.01em' }}
