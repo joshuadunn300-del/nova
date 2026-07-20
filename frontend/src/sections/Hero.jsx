@@ -4,23 +4,35 @@ export default function Hero({ props = {}, path, editable = false }) {
   const {
     headline = 'Your headline here',
     subheadline = '',
+    bgImage,
+    // `image` is a legacy/back-compat field name — real generation (templateFiller,
+    // AI path) writes `bgImage`, but keep reading `image` too so any content_json
+    // that predates this fix still shows its photo instead of reverting to black.
     image,
     cta,
     form,
   } = props
+  const heroImage = bgImage || image
 
   return (
     <section
       className="relative w-full py-20 md:py-28 text-center overflow-hidden group"
       style={{ backgroundColor: 'var(--secondary)', color: '#fff', paddingInline: 'var(--section-x)' }}
-      data-bg-path={editable ? `${path}.image` : undefined}
+      data-bg-path={editable ? `${path}.bgImage` : undefined}
     >
-      {image && (
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: `url(${image})` }}
-          aria-hidden="true"
-        />
+      {heroImage && (
+        <>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroImage})` }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'var(--hero-overlay)' }}
+            aria-hidden="true"
+          />
+        </>
       )}
       {editable && (
         <button

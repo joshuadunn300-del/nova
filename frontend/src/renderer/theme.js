@@ -92,6 +92,10 @@ export function resolveThemeVars(theme) {
     '--input-radius': generatedSite.input.radius,
     '--input-pad': generatedSite.input.padding,
     '--input-shadow': generatedSite.input.shadow,
+
+    // Hero photo scrim — real Tenji dark-overlays the hero background photo for text
+    // legibility (tenji-tokens.md "Dark hero overlay"), not a flat opacity fade.
+    '--hero-overlay': `linear-gradient(105deg, ${generatedSite.colors.darkOverlay} 0%, rgba(8, 9, 14, 0.28) 100%)`,
   }
 
   return {

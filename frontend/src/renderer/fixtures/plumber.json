@@ -23,6 +23,7 @@
       "props": {
         "headline": "24/7 Emergency Plumbing You Can Trust",
         "subheadline": "Licensed, insured, and on your doorstep in under an hour.",
+        "bgImage": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=80&auto=format&fit=crop",
         "form": { "enabled": true, "fields": ["name", "phone"], "submitLabel": "Get a Free Quote" }
       }
     },
