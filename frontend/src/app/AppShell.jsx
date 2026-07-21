@@ -126,7 +126,7 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen flex bg-nova-bg text-nova-text">
-      <aside className="w-64 shrink-0 border-r border-nova-border flex flex-col">
+      <aside className="w-60 shrink-0 border-r border-nova-border flex flex-col">
         <div className="px-4 pt-4 pb-3">
           <div className="flex items-center gap-2.5 px-1">
             <div className="nova-icon-tile shrink-0" style={{ width: '2.25rem', height: '2.25rem' }}>
@@ -136,7 +136,7 @@ export default function AppShell() {
           </div>
         </div>
         <div className="border-b border-nova-border" />
-        <nav className="flex-1 px-2.5 py-4 space-y-5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
           {NAV_GROUPS.map((group) => (
             <div key={group.label}>
               <div className="px-3 pb-1.5 text-[11px] font-semibold tracking-wider text-nova-text-muted">
@@ -157,10 +157,10 @@ export default function AppShell() {
                         }
                       }}
                       className={({ isActive }) =>
-                        `nova-nav-pill justify-between text-sm font-medium ${isActive ? 'nova-nav-pill-active' : ''} ${locked ? 'opacity-45' : ''}`
+                        `nova-nav-pill justify-between ${isActive ? 'nova-nav-pill-active' : ''} ${locked ? 'opacity-45' : ''}`
                       }
                     >
-                      <span className="flex items-center gap-3">
+                      <span className="flex items-center gap-2.5">
                         <item.Icon size={17} className="shrink-0" strokeWidth={1.75} />
                         {item.label}
                         {item.badge && (

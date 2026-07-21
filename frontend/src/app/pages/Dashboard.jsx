@@ -171,16 +171,16 @@ export default function Dashboard() {
           <div className="nova-stat-card nova-card-active flex items-center justify-between">
             <div>
               <div className="nova-icon-tile mb-3"><DollarSign size={18} /></div>
-              <p className="nova-eyebrow mb-1">Recurring Revenue</p>
-              <p className="text-2xl font-semibold">${mrr}/mo</p>
+              <p className="nova-stat-label-lg">Recurring Revenue</p>
+              <p className="nova-stat-value-lg">${mrr}/mo</p>
             </div>
             <span className="nova-badge-pill">↗ Monthly</span>
           </div>
           <div className="nova-stat-card flex items-center justify-between">
             <div>
               <div className="nova-icon-tile nova-icon-tile-muted mb-3"><Coins size={18} /></div>
-              <p className="nova-eyebrow mb-1">Credits Left</p>
-              <p className="text-2xl font-semibold">{creditsLeft.toLocaleString()}</p>
+              <p className="nova-stat-label mb-1">Credits Left</p>
+              <p className="nova-stat-value-plain">{creditsLeft.toLocaleString()}</p>
               <p className="text-xs text-nova-text-muted mt-1">of {plan.monthlyCredits.toLocaleString()} · {plan.name || 'Free Trial'}</p>
             </div>
             <div className="nova-credit-ring shrink-0" style={{ '--pct': creditsPct }}>
@@ -192,8 +192,8 @@ export default function Dashboard() {
           {SMALL_STATS.map((s) => (
             <div key={s.label} className="nova-stat-card">
               <div className="nova-icon-tile nova-icon-tile-muted mb-3"><s.Icon size={16} /></div>
-              <p className="nova-eyebrow mb-1">{s.label}</p>
-              <p className="text-xl font-semibold">{s.value}</p>
+              <p className="nova-stat-label mb-1">{s.label}</p>
+              <p className="nova-stat-value">{s.value}</p>
             </div>
           ))}
         </div>
