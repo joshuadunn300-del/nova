@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { SquareCheck } from 'lucide-react'
 import { createTask, listTasks, updateTask } from '../lib/api'
 
 export default function Tasks() {
@@ -95,9 +96,9 @@ export default function Tasks() {
       {tasks === null && !error ? (
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : filtered.length === 0 ? (
-        <div className="nova-card border-dashed p-10 text-center">
-          <div className="nova-icon-tile mx-auto mb-3 text-base">☑️</div>
-          <p className="text-sm font-medium">{filter === 'open' ? 'No open tasks' : 'No completed tasks'}</p>
+        <div className="nova-empty-card">
+          <div className="nova-empty-icon-tile mx-auto mb-4"><SquareCheck size={22} /></div>
+          <p className="text-lg font-semibold">{filter === 'open' ? 'No open tasks' : 'No completed tasks'}</p>
           <p className="text-sm text-nova-text-muted mt-1">
             {filter === 'open' ? "You're all caught up. Add your next move above." : 'Finished tasks will show up here.'}
           </p>

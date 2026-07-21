@@ -260,10 +260,28 @@ const NICHE_ALIASES = {
   solar: 'solar-panel-installers',
   cleaning: 'carpet-cleaners',
   handyman: 'builders',
+  // Catalog niches (frontend/src/app/lib/templateCatalog.js) whose full human-readable
+  // name slugifies to something that doesn't match a HERO_BRAND key one-for-one —
+  // found 2026-07-21 auditing Templates.jsx card photos against every real catalog
+  // entry, not just the ones that happened to already work.
+  'hvac-air-conditioning': 'hvac',
+  'builders-construction': 'builders',
+  'bathroom-renovators': 'bathroom-renovation',
+  'garage-door-repair': 'garage-door',
+  physiotherapists: 'physios',
+  veterinarians: 'vets',
+  'martial-arts-gyms': 'martial-arts',
+  'takeaway-shops': 'takeaway',
+  'catering-companies': 'catering',
 };
+// Real niche slugs (DB rows, e.g. "carpet-cleaning") are already dashed — but callers
+// also pass full catalog display names with spaces/slashes (e.g. "HVAC / Air
+// Conditioning") which never matched any HERO_BRAND key here since this only
+// lowercased, never slugified. Slugify first, THEN alias-resolve, so both shapes work.
 const resolveKey = (niche) => {
-  const key = String(niche || '').trim().toLowerCase();
-  return NICHE_ALIASES[key] || key;
+  const raw = String(niche || '').trim().toLowerCase();
+  const slug = raw.replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return NICHE_ALIASES[raw] || NICHE_ALIASES[slug] || slug;
 };
 
 // Testimonial/avatar faces via i.pravatar.cc (fake-face service, hotlink-stable,

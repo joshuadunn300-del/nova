@@ -79,12 +79,12 @@ export default function Crm() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search businesses..."
-          className="flex-1 nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
+          className="flex-1 nova-input-focus nova-solid-input px-4 py-2 text-sm text-white"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
+          className="nova-input-focus nova-solid-input px-4 py-2 text-sm text-white"
         >
           <option value="all">All Statuses</option>
           <option value="new">New</option>
@@ -98,9 +98,9 @@ export default function Crm() {
       {leads === null ? (
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : rows.length === 0 ? (
-        <div className="nova-card border-dashed p-10 text-center">
-          <div className="nova-icon-tile mx-auto mb-3"><Users size={18} /></div>
-          <p className="text-sm font-medium">No leads found</p>
+        <div className="nova-empty-card">
+          <div className="nova-empty-icon-tile mx-auto mb-4"><Users size={22} /></div>
+          <p className="text-lg font-semibold">No leads found</p>
           <p className="text-sm text-nova-text-muted mt-1">
             Run a lead search or add leads manually from the tracker.
           </p>

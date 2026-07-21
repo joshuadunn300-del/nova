@@ -54,7 +54,10 @@ export const mockSettings = {
   brand_name: 'Nova',
   brand_description: 'AI-powered lead-to-client agency toolkit.',
   logo_url: null,
-  palette_preset: 'indigo',
+  // Real Tenji's default brand colour is its own accent pink (#F2386F) — verified
+  // against settings.md's literal spec ("Default brand colour ... hex #F2386F"),
+  // not an arbitrary indigo default.
+  palette_preset: 'nova',
   custom_primary: null,
   custom_secondary: null,
   theme: 'dark',
@@ -63,6 +66,7 @@ export const mockSettings = {
 }
 
 export const PALETTE_PRESETS = {
+  nova: { primary: '#F2386F', secondary: '#15171f' },
   indigo: { primary: '#4f46e5', secondary: '#111827' },
   crimson: { primary: '#9D174D', secondary: '#15171f' },
   emerald: { primary: '#047857', secondary: '#0f172a' },

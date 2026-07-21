@@ -35,6 +35,19 @@ export async function getEntitlements() {
   return { ...state.entitlements }
 }
 
+// Starts a real Stripe Checkout for a paid plan (starter|pro|agency) and returns
+// { url } for the caller to redirect to. interval: 'monthly' | 'annual'. Needs the
+// live backend (the createCheckout Base44 function holds the Stripe secret key) —
+// mock mode has no Stripe, so it throws a clear message instead of faking a URL.
+export async function startCheckout({ plan, interval = 'monthly' }) {
+  if (live()) {
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    return invokeFn('createCheckout', { plan, interval, origin })
+  }
+  await delay(200)
+  throw new Error('Checkout needs the live backend — connect Stripe to enable payments.')
+}
+
 export async function listSiteTemplates() {
   if (live()) return window.base44.entities.SiteTemplate.list()
   await delay(150)
@@ -66,11 +79,11 @@ export async function generateSite({ business_name, industry, location, phone, s
   return { id: mock.nextId(), business_name, industry, status: 'draft' }
 }
 
-export async function searchLeads({ niche, location }) {
+export async function searchLeads({ niche, location, limit }) {
   if (live()) {
     // Real searchLeads returns { leads, credits_used, balance_after }, not a bare
     // array — crashed DataTable's rows.map() until this unwrap (found live 2026-07-21).
-    const { leads } = await invokeFn('searchLeads', { niche, location })
+    const { leads } = await invokeFn('searchLeads', { niche, location, limit })
     return leads || []
   }
   await delay(600)
@@ -201,7 +214,9 @@ export async function getSettings() {
       agency_name: u.agency_brand_name || '',
       agency_bio: u.agency_description || '',
       logo_url: u.agency_logo_url || null,
-      palette_preset: colors.preset || 'indigo',
+      // Real Tenji's default brand colour is its own accent pink (#F2386F/'nova' preset),
+      // not indigo — confirmed against settings.md's literal spec.
+      palette_preset: colors.preset || 'nova',
       custom_primary: colors.primary || null,
       custom_secondary: colors.secondary || null,
       theme: 'dark',

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Briefcase } from 'lucide-react'
 import { createClient, listClients } from '../lib/api'
 import DataTable from '../components/DataTable'
 
@@ -89,9 +90,9 @@ export default function Clients() {
       {clients === null && !error ? (
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : (clients || []).length === 0 ? (
-        <div className="nova-card border-dashed p-10 text-center">
-          <div className="nova-icon-tile mx-auto mb-3 text-base">💼</div>
-          <p className="text-sm font-medium">No clients yet</p>
+        <div className="nova-empty-card">
+          <div className="nova-empty-icon-tile mx-auto mb-4"><Briefcase size={22} /></div>
+          <p className="text-lg font-semibold">No clients yet</p>
           <p className="text-sm text-nova-text-muted mt-1 mb-4">
             Close your first lead and convert it to a client from the CRM — or add one manually.
           </p>

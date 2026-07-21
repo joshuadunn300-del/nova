@@ -53,7 +53,7 @@ export default function Tracker() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search leads..."
-            className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
+            className="nova-input-focus nova-solid-input px-4 py-2 text-sm text-white"
           />
           <button type="button" className="nova-btn-primary">
             ＋ Add Lead
@@ -77,13 +77,17 @@ export default function Tracker() {
               {/* Verified via getComputedStyle against live tenji.ai/app/tracker: column
                   label is 10px/600/white, not 12px/muted — the count badge stays muted. */}
               <div className="flex items-center justify-between px-3 py-2 text-[10px] font-semibold text-nova-text">
-                <span>{col.label}</span>
-                <span className="rounded-full bg-nova-surface-hover px-1.5">{rows.length}</span>
+                <span style={{ letterSpacing: '1.5px' }}>{col.label}</span>
+                {/* Exact per live probe: 10px/500, muted color, bg white/6%, full pill, 2px/8px padding. */}
+                <span className="rounded-full text-nova-text-muted" style={{ fontSize: 10, fontWeight: 500, backgroundColor: 'rgba(255,255,255,0.06)', padding: '2px 8px' }}>
+                  {rows.length}
+                </span>
               </div>
               <div className="px-2 pb-2 space-y-2">
                 {rows.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 py-10">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-nova-border text-nova-text-muted">$</div>
+                    {/* Exact per live probe: 48x48, rounded-lg (not full circle), dashed border. */}
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-white/[0.12] text-nova-text-muted/50">$</div>
                     <span className="text-xs text-nova-text-muted">Drop a lead here</span>
                   </div>
                 ) : (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Calculator, DollarSign, Percent, TrendingUp, Users, Wallet } from 'lucide-react'
 import { listClients } from '../lib/api'
 
 export default function Revenue() {
@@ -14,32 +15,28 @@ export default function Revenue() {
   const avgValue = active.length ? Math.round(totalMrr / active.length) : 0
 
   const STATS = [
-    { label: 'TOTAL MRR', value: `$${totalMrr}`, highlight: true },
-    { label: 'SETUP FEES', value: '$0' },
-    { label: 'CLOSED CLIENTS', value: active.length },
-    { label: 'AVG CLIENT VALUE', value: `$${avgValue}` },
-    { label: 'CONVERSION', value: '0%' },
-    { label: 'PIPELINE VALUE', value: '$0' },
+    { label: 'Total MRR', value: `$${totalMrr}`, Icon: DollarSign, highlight: true },
+    { label: 'Setup Fees', value: '$0', Icon: TrendingUp },
+    { label: 'Closed Clients', value: active.length, Icon: Users },
+    { label: 'Avg Client Value', value: `$${avgValue}`, Icon: Calculator },
+    { label: 'Conversion', value: '0%', Icon: Percent },
+    { label: 'Pipeline Value', value: '$0', Icon: Wallet },
   ]
 
   return (
     <div>
       <p className="nova-eyebrow mb-1">AGENCY</p>
-      <h1 className="text-xl font-semibold mb-1">Revenue Tracker</h1>
+      <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-1">Revenue Tracker</h1>
       <p className="text-sm text-nova-text-muted mb-6">Your agency's money at a glance.</p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
         {STATS.map((s) => (
-          <div
-            key={s.label}
-            className={`rounded-nova border p-4 ${
-              s.highlight
-                ? 'border-nova-accent/40 bg-nova-accent/10'
-                : 'border-nova-border'
-            }`}
-          >
-            <p className="nova-eyebrow mb-1">{s.label}</p>
-            <p className="text-2xl font-semibold">{s.value}</p>
+          <div key={s.label} className={`nova-stat-card ${s.highlight ? 'nova-card-active' : ''}`}>
+            <div className={s.highlight ? 'nova-icon-tile mb-3' : 'nova-icon-tile-muted mb-3'}>
+              <s.Icon size={s.highlight ? 18 : 16} />
+            </div>
+            <p className={s.highlight ? 'nova-stat-label-lg mb-1' : 'nova-stat-label mb-1'}>{s.label}</p>
+            <p className="text-xl font-semibold">{s.value}</p>
           </div>
         ))}
       </div>
@@ -47,13 +44,20 @@ export default function Revenue() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="nova-card p-4">
           <p className="text-sm font-medium mb-3">MRR Over Time</p>
-          <div className="flex items-end justify-between h-32 text-xs text-nova-text-muted">
-            {['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'].map((m) => (
-              <div key={m} className="flex flex-col items-center gap-1">
-                <div className="w-6 bg-nova-surface-hover rounded-t" style={{ height: '4px' }} />
-                <span>{m}</span>
-              </div>
-            ))}
+          <div className="flex gap-3">
+            <div className="flex flex-col justify-between h-32 text-xs text-nova-text-muted pb-5">
+              {['$4', '$3', '$2', '$1', '$0'].map((y) => (
+                <span key={y}>{y}</span>
+              ))}
+            </div>
+            <div className="flex-1 flex items-end justify-between h-32 text-xs text-nova-text-muted border-l border-nova-border pl-3">
+              {['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'].map((m) => (
+                <div key={m} className="flex flex-col items-center gap-1">
+                  <div className="w-6 bg-nova-surface-hover rounded-t" style={{ height: '4px' }} />
+                  <span>{m}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="nova-card p-4">
