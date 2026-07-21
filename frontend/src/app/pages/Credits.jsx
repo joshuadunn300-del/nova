@@ -25,7 +25,7 @@ export default function Credits() {
     <div>
       <p className="nova-eyebrow mb-1">ACCOUNT</p>
       <div className="flex items-start justify-between mb-1">
-        <h1 className="text-xl font-semibold">Credits</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">Credits</h1>
         <button type="button" className="nova-btn-primary">
           Upgrade Plan
         </button>
@@ -45,7 +45,7 @@ export default function Credits() {
           className="relative overflow-hidden p-6"
           style={{
             borderRadius: '16px',
-            border: '1px solid rgba(244,42,126,0.4)',
+            border: '1px solid rgba(244,42,126,0.35)',
             background: 'linear-gradient(160deg, rgb(17,17,22) 0%, rgb(11,11,15) 100%)',
             boxShadow: 'rgba(246,85,152,0.2) 0px 1px 0px 0px inset, rgba(244,42,126,0.2) 0px 0px 40px -8px, rgba(0,0,0,0.6) 0px 16px 40px -12px',
           }}
@@ -54,9 +54,9 @@ export default function Credits() {
             <div className="nova-icon-tile" style={{ width: 36, height: 36, borderRadius: 12 }}>
               <Coins className="h-4 w-4" />
             </div>
-            <p className="text-sm text-nova-text-muted">Credits Remaining</p>
+            <p className="text-xs text-nova-text-muted" style={{ letterSpacing: '0.3px' }}>Credits Remaining</p>
           </div>
-          <p className="text-2xl font-semibold mb-2">{entitlements?.credits.toLocaleString() ?? '—'}</p>
+          <p className="font-display text-4xl font-bold leading-none mb-2">{entitlements?.credits.toLocaleString() ?? '—'}</p>
           <div className="h-1 rounded-full bg-white/10 overflow-hidden mb-1.5">
             <div className="h-full rounded-full bg-nova-accent" style={{ width: `${usedPct}%` }} />
           </div>
@@ -77,9 +77,9 @@ export default function Credits() {
             <div className="nova-icon-tile-muted">
               <Calendar className="h-4 w-4" />
             </div>
-            <p className="text-sm text-nova-text-muted">Monthly Allowance</p>
+            <p className="text-xs text-nova-text-muted" style={{ letterSpacing: '0.3px' }}>Monthly Allowance</p>
           </div>
-          <p className="text-2xl font-semibold mb-2">{plan.monthlyCredits.toLocaleString()}</p>
+          <p className="font-display text-4xl font-bold leading-none mb-2">{plan.monthlyCredits.toLocaleString()}</p>
           <p className="text-xs text-nova-text-muted">{rawPlanLabel} Plan</p>
         </div>
         <div
@@ -95,9 +95,9 @@ export default function Credits() {
             <div className="nova-icon-tile-muted">
               <TrendingDown className="h-4 w-4" />
             </div>
-            <p className="text-sm text-nova-text-muted">Used This Month</p>
+            <p className="text-xs text-nova-text-muted" style={{ letterSpacing: '0.3px' }}>Used This Month</p>
           </div>
-          <p className="text-2xl font-semibold">{used}</p>
+          <p className="font-display text-4xl font-bold leading-none">{used}</p>
         </div>
       </div>
 
@@ -122,8 +122,8 @@ export default function Credits() {
                 className="flex items-center justify-between text-sm"
                 style={{ padding: '12px 16px', borderRadius: '12px', background: 'rgba(5,5,7,0.85)' }}
               >
-                <span className="text-nova-text-muted">{c.label}</span>
-                <span className="font-semibold text-nova-accent">{c.cost}</span>
+                <span className="text-nova-text-muted" style={{ fontSize: '13px' }}>{c.label}</span>
+                <span className="font-semibold" style={{ color: 'rgb(246,85,152)' }}>{c.cost}</span>
               </div>
             ))}
           </div>

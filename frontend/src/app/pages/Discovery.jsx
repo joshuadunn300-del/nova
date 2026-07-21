@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { DISCOVERY_NICHES } from '../lib/discoveryCatalog'
 
 const DIFFICULTY_STYLE = {
@@ -9,8 +8,6 @@ const DIFFICULTY_STYLE = {
 }
 
 export default function Discovery() {
-  const navigate = useNavigate()
-
   return (
     <div>
       <p className="nova-eyebrow mb-1">STUDIO</p>
@@ -19,31 +16,38 @@ export default function Discovery() {
         Every local business niche with its average client value, difficulty, and best offer angle.
       </p>
 
-      <div className="rounded-nova border border-nova-accent/40 bg-nova-accent/10 px-4 py-3 mb-6">
-        <p className="text-sm font-medium">Coming Soon..</p>
-        <p className="text-sm text-nova-text-muted">
-          Niche Discovery is getting a major upgrade — live market data, opportunity scores, and AI-picked angles.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {DISCOVERY_NICHES.map((n) => (
-          <div key={n.niche} className="nova-card p-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-medium">{n.niche}</h3>
-              <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${DIFFICULTY_STYLE[n.difficulty]}`}>{n.difficulty}</span>
+      {/* Real tenji.ai/app/discovery is a full "Coming Soon" gate — the niche grid renders
+          dimmed/inert behind a glass overlay card, not a small dismissible banner above a
+          working grid (T5 PORTAL PARITY, 2026-07-21: getComputedStyle confirmed radius:24px/
+          padding:128px 24px/backdrop-blur:20px card, heading 60px/600 with the same 5-stop
+          animated-gradient-text treatment used elsewhere in the app). */}
+      <div className="relative">
+        <div className="pointer-events-none opacity-30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {DISCOVERY_NICHES.map((n) => (
+            <div key={n.niche} className="nova-card p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-medium">{n.niche}</h3>
+                <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${DIFFICULTY_STYLE[n.difficulty]}`}>{n.difficulty}</span>
+              </div>
+              <p className="text-sm text-nova-text-muted mb-2">{n.angle}</p>
+              <p className="text-sm font-medium mb-3">${n.avgValue}/mo avg</p>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-nova-accent">
+                Find Leads <ArrowRight size={14} />
+              </span>
             </div>
-            <p className="text-sm text-nova-text-muted mb-2">{n.angle}</p>
-            <p className="text-sm font-medium mb-3">${n.avgValue}/mo avg</p>
-            <button
-              type="button"
-              onClick={() => navigate('/app/leads', { state: { niche: n.niche } })}
-              className="inline-flex items-center gap-1 text-sm font-medium text-nova-accent"
-            >
-              Find Leads <ArrowRight size={14} />
-            </button>
+          ))}
+        </div>
+        <div className="absolute inset-x-0 top-0 py-32 px-6 flex flex-col items-center justify-center text-center rounded-3xl backdrop-blur-[20px]">
+          <div className="w-10 h-10 rounded-xl bg-nova-accent/15 border border-nova-accent/30 flex items-center justify-center mb-4">
+            <Sparkles className="w-5 h-5 text-nova-accent" />
           </div>
-        ))}
+          <h2 className="font-display text-5xl md:text-6xl font-semibold tracking-tight leading-[1.35] pb-2 animated-gradient-text">
+            Coming Soon..
+          </h2>
+          <p className="text-sm text-nova-text-muted max-w-md">
+            Niche Discovery is getting a major upgrade — live market data, opportunity scores, and AI-picked angles.
+          </p>
+        </div>
       </div>
     </div>
   )

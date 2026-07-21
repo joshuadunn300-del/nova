@@ -80,7 +80,7 @@ export default function ScriptGenerator({ lead, leads = [] }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <form onSubmit={submit} className={`${CARD_CLASS} space-y-4`}>
-            <h2 className="text-xs font-semibold tracking-wide uppercase text-nova-text-muted">Who You're Calling</h2>
+            <h2 className="text-[11px] font-semibold uppercase text-nova-text-muted/80 tracking-[0.16em]">Who You're Calling</h2>
 
             <label className="block">
               <span className={LABEL_CLASS}>Choose a lead from your CRM (optional)</span>
@@ -103,7 +103,7 @@ export default function ScriptGenerator({ lead, leads = [] }) {
               <input className={FIELD_CLASS} placeholder="e.g. plumber" value={form.niche} onChange={update('niche')} />
             </label>
 
-            <h2 className="text-xs font-semibold tracking-wide uppercase text-nova-text-muted pt-2">You</h2>
+            <h2 className="text-[11px] font-semibold uppercase text-nova-text-muted/80 tracking-[0.16em] pt-2">You</h2>
             <label className="block">
               <span className={LABEL_CLASS}>Your name</span>
               <input className={FIELD_CLASS} value={form.yourName} onChange={update('yourName')} />
@@ -113,7 +113,7 @@ export default function ScriptGenerator({ lead, leads = [] }) {
               <input className={FIELD_CLASS} value={form.tone} onChange={update('tone')} />
             </label>
 
-            <h2 className="text-xs font-semibold tracking-wide uppercase text-nova-text-muted pt-2">Their Site</h2>
+            <h2 className="text-[11px] font-semibold uppercase text-nova-text-muted/80 tracking-[0.16em] pt-2">Their Site</h2>
             <fieldset className="block">
               <legend className={LABEL_CLASS}>Website weakness *</legend>
               <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-2">
