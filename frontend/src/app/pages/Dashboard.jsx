@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import {
+  Search, Globe, MessageSquare, SquarePen, LayoutTemplate, Kanban,
+  Users, Phone, Flame, Trophy, Briefcase, SquareCheck, DollarSign, Coins,
+  Calendar, ArrowRight,
+} from 'lucide-react'
 import { getSession } from '../lib/auth'
 import { listLeads, listClients, listTasks } from '../lib/api'
 import { listSites } from '../../tools/api'
 import { planOf } from '../lib/entitlements'
 import samurai from '../../assets/samurai.png'
+
+// Real Tenji greets by first name only ("Good afternoon, Josh") even with a full name set.
+const firstName = (name) => (name || '').split(' ')[0] || name
 
 function greeting() {
   const h = new Date().getHours()
@@ -22,13 +30,15 @@ const PETALS = [
   { l: '68%', s: 6, d: 13, delay: 5.5 },
 ]
 
+// Matches the live Tenji dashboard exactly (reference/tenji-Dashboard.png, verified 2026-07-21
+// against the reactivated real account) — 6 actions, 2 rows of 3, same labels/order/costs/icons.
 const QUICK_ACTIONS = [
-  { to: '/app/leads', label: 'Find Leads', cost: '10 credits', icon: '🔍' },
-  { to: '/app/templates', label: 'Generate Site', cost: '20 credits', icon: '✨' },
-  { to: '/app/scripts', label: 'Cold Call Script', cost: '3 credits', icon: '📞' },
-  { to: '/app/contracts', label: 'New Proposal', cost: '5 credits', icon: '📄' },
-  { to: '/app/clients', label: 'Add Client', cost: 'Free', icon: '💼' },
-  { to: '/app/tasks', label: 'Add Task', cost: 'Free', icon: '☑️' },
+  { to: '/app/leads', label: 'Generate Leads', desc: 'Find local businesses to pitch', cost: '10 credits', Icon: Search },
+  { to: '/app/templates', label: 'Website Mockup', desc: 'Generate a premium client site', cost: '20 credits', Icon: Globe },
+  { to: '/app/scripts', label: 'Create Script', desc: 'Cold call, DM, or email scripts', cost: '3 credits', Icon: MessageSquare },
+  { to: '/app/contracts', label: 'Create Contract', desc: 'Lock clients into a monthly retainer', cost: 'Free', Icon: SquarePen },
+  { to: '/app/templates', label: 'Browse Templates', desc: 'Niche-ready website designs', cost: 'Free', Icon: LayoutTemplate },
+  { to: '/app/tracker', label: 'Open Tracker', desc: 'Manage your pipeline', cost: 'Free', Icon: Kanban },
 ]
 
 export default function Dashboard() {
@@ -47,23 +57,27 @@ export default function Dashboard() {
     listSites().then(setSites).catch(() => {})
   }, [])
 
-  // Real Lead field is `status` (enum new/contacted/demo_sent/closed/lost), not `stage`
-  // — 'interested' also isn't a real status value, closest real equivalent is 'demo_sent'.
+  // Real Lead field is `status` (enum new/contacted/demo_sent/closed/lost), not `stage`.
   // Real Client field is `monthly_value`, not `mrr`.
   const byStatus = (status) => leads.filter((l) => l && l.status === status).length
   const activeClients = clients.filter((c) => c.status === 'active')
   const mrr = activeClients.reduce((sum, c) => sum + (c.monthly_value ?? c.mrr ?? 0), 0)
   const openTasks = tasks.filter((t) => t.status !== 'done').length
+  const todaysFollowUps = tasks.filter((t) => t.status !== 'done' && t.due_date === new Date().toISOString().slice(0, 10))
   const plan = planOf(entitlements)
+  const creditsLeft = entitlements?.credits ?? 0
+  const creditsPct = plan.monthlyCredits ? Math.round((creditsLeft / plan.monthlyCredits) * 100) : 0
 
-  const STATS = [
-    { label: 'Recurring Revenue', value: `$${mrr}/mo`, highlight: true, icon: '💰' },
-    { label: 'Credits Left', value: entitlements ? `${entitlements.credits.toLocaleString()} / ${plan.monthlyCredits.toLocaleString()}` : '—', icon: '⚡' },
-    { label: 'Total Leads', value: leads.length, icon: '🔍' },
-    { label: 'Demo Sent', value: byStatus('demo_sent'), icon: '👀' },
-    { label: 'Closed', value: byStatus('closed'), icon: '✅' },
-    { label: 'Active Clients', value: activeClients.length, icon: '💼' },
-    { label: 'Open Tasks', value: openTasks, icon: '☑️' },
+  // 8 stats in the exact real Tenji layout (reference/tenji-Dashboard.png): 2 large cards
+  // (Recurring Revenue, Credits Left with a % ring) then 2 rows of 3 smaller cards — not a
+  // flat 7-col row, and "Contacted" was missing from the flat version entirely.
+  const SMALL_STATS = [
+    { label: 'Total Leads', value: leads.length, Icon: Users },
+    { label: 'Contacted', value: byStatus('contacted'), Icon: Phone },
+    { label: 'Interested', value: byStatus('demo_sent'), Icon: Flame },
+    { label: 'Closed', value: byStatus('closed'), Icon: Trophy },
+    { label: 'Active Clients', value: activeClients.length, Icon: Briefcase },
+    { label: 'Open Tasks', value: openTasks, Icon: SquareCheck },
   ]
 
   return (
@@ -122,14 +136,14 @@ export default function Dashboard() {
             天 · Nova
           </span>
           <h1 className="relative z-10 font-display text-3xl md:text-5xl font-semibold tracking-tight">
-            {greeting()}, <span className="animated-gradient-text">{session?.name || 'there'}</span>.
+            {greeting()}, <span className="animated-gradient-text">{firstName(session?.name) || 'there'}</span>.
           </h1>
           <p className="relative z-10 mt-3 text-muted-foreground max-w-xl">
             Your agency command center is ready. Search a niche, generate a mockup, write the pitch, and track the deal.
           </p>
           <div className="relative z-10 mt-7 flex flex-wrap gap-3">
-            <button type="button" onClick={() => navigate('/app/leads')} className="nova-btn-primary nova-btn-sheen h-12 px-6">
-              🔍 Find New Clients →
+            <button type="button" onClick={() => navigate('/app/leads')} className="nova-btn-primary nova-btn-sheen h-12 px-6 inline-flex items-center gap-2">
+              Find New Clients <ArrowRight size={16} />
             </button>
             <button type="button" onClick={() => navigate('/app/sites')} className="inline-flex items-center justify-center px-6 py-3 rounded-xl glass-panel font-medium hover:border-primary/40 transition-colors h-12">
               Create Client Site
@@ -140,10 +154,31 @@ export default function Dashboard() {
 
       <div>
         <p className="text-xs uppercase tracking-[0.2em] text-accent mb-3">Performance</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-          {STATS.map((s) => (
-            <div key={s.label} className={`nova-stat-card ${s.highlight ? 'nova-card-active' : ''}`}>
-              <div className="nova-icon-tile mb-3 text-base">{s.icon}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="nova-stat-card nova-card-active flex items-center justify-between">
+            <div>
+              <div className="nova-icon-tile mb-3"><DollarSign size={18} /></div>
+              <p className="nova-eyebrow mb-1">Recurring Revenue</p>
+              <p className="text-2xl font-semibold">${mrr}/mo</p>
+            </div>
+            <span className="nova-badge-pill">↗ Monthly</span>
+          </div>
+          <div className="nova-stat-card flex items-center justify-between">
+            <div>
+              <div className="nova-icon-tile nova-icon-tile-muted mb-3"><Coins size={18} /></div>
+              <p className="nova-eyebrow mb-1">Credits Left</p>
+              <p className="text-2xl font-semibold">{creditsLeft.toLocaleString()}</p>
+              <p className="text-xs text-nova-text-muted mt-1">of {plan.monthlyCredits.toLocaleString()} · {plan.name || 'Free Trial'}</p>
+            </div>
+            <div className="nova-credit-ring shrink-0" style={{ '--pct': creditsPct }}>
+              <span className="nova-credit-ring-inner">{creditsPct}%</span>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
+          {SMALL_STATS.map((s) => (
+            <div key={s.label} className="nova-stat-card">
+              <div className="nova-icon-tile nova-icon-tile-muted mb-3"><s.Icon size={16} /></div>
               <p className="nova-eyebrow mb-1">{s.label}</p>
               <p className="text-xl font-semibold">{s.value}</p>
             </div>
@@ -152,15 +187,23 @@ export default function Dashboard() {
       </div>
 
       <div>
+        <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Studio</p>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold">Recent Client Sites</h2>
+          <h2 className="font-display text-xl font-semibold">Recent Client Sites</h2>
           <button type="button" onClick={() => navigate('/app/sites')} className="text-sm font-medium text-nova-accent">
-            View all
+            View all →
           </button>
         </div>
         {sites.length === 0 ? (
-          <div className="nova-card border-dashed p-8 text-center text-sm text-nova-text-muted">
-            No sites generated yet — create one from Templates or a real Lead Search.
+          <div className="nova-card border-dashed p-10 text-center">
+            <div className="nova-icon-tile mx-auto mb-4"><Globe size={20} /></div>
+            <p className="font-semibold mb-1">No sites yet</p>
+            <p className="text-sm text-nova-text-muted mb-5">
+              Create your first client site and it'll show up here, ready to edit and publish.
+            </p>
+            <button type="button" onClick={() => navigate('/app/templates')} className="nova-btn-primary px-5 py-2.5 inline-flex items-center gap-1.5">
+              + Create your first site
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -177,16 +220,55 @@ export default function Dashboard() {
       </div>
 
       <div className="pt-4">
-        <p className="text-xs uppercase tracking-[0.2em] text-accent mb-4">Tools</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Tools</p>
         <h2 className="font-display text-xl font-semibold mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {QUICK_ACTIONS.map((a) => (
-            <button key={a.to} type="button" onClick={() => navigate(a.to)} className="text-left nova-card p-4 hover:border-nova-accent/30 transition-colors">
-              <div className="nova-icon-tile mb-2 text-base">{a.icon}</div>
+          {QUICK_ACTIONS.map((a, i) => (
+            <button key={`${a.to}-${i}`} type="button" onClick={() => navigate(a.to)} className="text-left nova-card p-4 hover:border-nova-accent/30 transition-colors relative">
+              <span className="absolute top-4 right-4 nova-badge-pill">{a.cost}</span>
+              <div className="nova-icon-tile mb-3"><a.Icon size={18} /></div>
               <p className="font-medium mb-1">{a.label}</p>
-              <p className="text-xs text-nova-text-muted">{a.cost}</p>
+              <p className="text-xs text-nova-text-muted">{a.desc}</p>
             </button>
           ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="nova-card p-6">
+          <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Leads</p>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display text-lg font-semibold">Pipeline</h2>
+            <button type="button" onClick={() => navigate('/app/tracker')} className="text-sm font-medium text-nova-accent">
+              Open Tracker →
+            </button>
+          </div>
+          {leads.length === 0 ? (
+            <p className="text-sm text-nova-text-muted">No leads yet. Run your first lead search to fill the pipeline.</p>
+          ) : (
+            <p className="text-sm text-nova-text-muted">{leads.length} lead{leads.length === 1 ? '' : 's'} in your pipeline.</p>
+          )}
+        </div>
+        <div className="nova-card p-6">
+          <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Schedule</p>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display text-lg font-semibold">Today's Follow-Ups</h2>
+            <button type="button" onClick={() => navigate('/app/followups')} className="text-sm font-medium text-nova-accent">
+              View all →
+            </button>
+          </div>
+          {todaysFollowUps.length === 0 ? (
+            <div className="text-center py-2">
+              <Calendar size={22} className="mx-auto mb-2 text-nova-text-muted" />
+              <p className="text-sm text-nova-text-muted">No follow-ups due today. Stay ahead of your pipeline.</p>
+            </div>
+          ) : (
+            <ul className="space-y-2 text-sm">
+              {todaysFollowUps.slice(0, 4).map((t) => (
+                <li key={t.id} className="text-nova-text-muted">{t.title}</li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

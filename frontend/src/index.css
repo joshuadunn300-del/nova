@@ -309,6 +309,17 @@ h1, h2, h3 {
   box-shadow: 0 0 16px rgba(242, 56, 111, 0.4);
   color: #fff;
 }
+/* Muted variant — real Tenji dashboard's smaller PERFORMANCE stat tiles (Total Leads,
+   Contacted, Interested, Closed, Active Clients, Open Tasks) and the Credits Left tile use
+   a dark, low-emphasis tile with a faint pink icon, not the full pink-gradient treatment —
+   only Recurring Revenue and Quick Actions keep the solid gradient (verified against a live
+   screenshot, reference/tenji-Dashboard.png). */
+.nova-icon-tile-muted {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  color: var(--color-nova-text-muted);
+}
 
 /* Hero badge pill (e.g. "天 · Nova") */
 .nova-badge-pill {
