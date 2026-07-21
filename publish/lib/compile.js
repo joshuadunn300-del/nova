@@ -1,7 +1,16 @@
-const { escapeHtml } = require('./escape');
-const { RENDERERS } = require('./sections');
+const { escapeHtml, escapeAttr } = require('./escape');
+const { RENDERERS, safeUrl } = require('./sections');
 const { buildCss } = require('./css');
 const { buildLeadClientScript } = require('./leadClient');
+
+function findSection(sections, type) {
+  return sections.find((s) => s && s.type === type && s.props);
+}
+
+function truncate(str, max) {
+  if (!str || str.length <= max) return str || '';
+  return str.slice(0, max - 1).trimEnd() + '…';
+}
 
 function compileToHtml(contentJson, opts = {}) {
   if (!contentJson || typeof contentJson !== 'object') {
@@ -11,11 +20,23 @@ function compileToHtml(contentJson, opts = {}) {
   const sections = Array.isArray(contentJson.sections) ? contentJson.sections : [];
   const siteId = opts.siteId || contentJson.site_id || '';
   const leadEndpoint = opts.leadEndpoint || '/__lead';
-  const title = escapeHtml(opts.title || theme.siteTitle || 'Website');
+
+  const navbar = findSection(sections, 'navbar');
+  const hero = findSection(sections, 'hero');
+  const about = findSection(sections, 'about');
+
+  const siteName = navbar?.props?.logo || theme.siteTitle || 'Website';
+  const headline = hero?.props?.headline || '';
+  const title = escapeHtml(opts.title || theme.siteTitle || (headline ? `${siteName} | ${headline}` : siteName));
+  const description = truncate(
+    hero?.props?.subtext || hero?.props?.subheadline || about?.props?.body || '',
+    160
+  );
+  const ogImage = hero?.props?.bgImage || hero?.props?.image || about?.props?.image || '';
 
   const bodyHtml = sections
-    .filter(s => s && s.visible !== false)
-    .map(s => {
+    .filter((s) => s && s.visible !== false)
+    .map((s) => {
       const renderer = RENDERERS[s.type];
       if (!renderer) {
         // unknown section type: skip rather than crash the whole page
@@ -26,7 +47,27 @@ function compileToHtml(contentJson, opts = {}) {
     })
     .join('\n');
 
-  const hasLeadForm = sections.some(s => s && s.type === 'hero' && s.props && s.props.form && s.props.form.enabled);
+  const hasLeadForm = sections.some(
+    (s) =>
+      s &&
+      s.type === 'hero' &&
+      s.props &&
+      s.props.form &&
+      s.props.form.enabled !== false &&
+      Array.isArray(s.props.form.fields) &&
+      s.props.form.fields.length > 0
+  );
+
+  const descTag = description ? `<meta name="description" content="${escapeAttr(description)}" />` : '';
+  const ogTags = `
+<meta property="og:type" content="website" />
+<meta property="og:title" content="${title}" />
+${description ? `<meta property="og:description" content="${escapeAttr(description)}" />` : ''}
+${ogImage ? `<meta property="og:image" content="${safeUrl(ogImage)}" />` : ''}
+<meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}" />
+<meta name="twitter:title" content="${title}" />
+${description ? `<meta name="twitter:description" content="${escapeAttr(description)}" />` : ''}
+${ogImage ? `<meta name="twitter:image" content="${safeUrl(ogImage)}" />` : ''}`.trim();
 
   return `<!doctype html>
 <html lang="en">
@@ -34,6 +75,8 @@ function compileToHtml(contentJson, opts = {}) {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${title}</title>
+${descTag}
+${ogTags}
 <style>${buildCss(theme)}</style>
 </head>
 <body>

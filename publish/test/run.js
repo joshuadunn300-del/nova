@@ -22,7 +22,7 @@ test('plumber fixture compiles with all 9 section types', () => {
   const data = loadFixture('fixture-plumber.json');
   const html = compileToHtml(data, { siteId: data.site_id });
   ['navbar', 'hero', 'services', 'gallery', 'about', 'testimonials', 'faq', 'cta', 'footer']
-    .forEach(type => assert(html.includes(`class="section ${type}"`) || html.includes(`class="section ${type} `), `missing section ${type}`));
+    .forEach(type => assert(html.includes(`class="${type}"`) || html.includes(`class="${type} `), `missing section ${type}`));
   assert(html.includes('Rapid Flow Plumbing'));
   assert(html.includes('<style>'));
   assert(html.includes('NovaLead'));
@@ -45,7 +45,8 @@ test('adversarial fixture escapes all injected script/attrs', () => {
 test('empty items arrays render without crashing', () => {
   const data = loadFixture('fixture-adversarial.json');
   const html = compileToHtml(data);
-  assert(html.includes('class="grid"'), 'services section with empty items should still render container');
+  assert(html.includes('class="services"'), 'services section should still render its container');
+  assert(html.includes('section-empty'), 'services section with empty items should render an empty-state message');
 });
 
 // Unknown section type should be skipped, not crash
