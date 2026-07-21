@@ -5,11 +5,36 @@
 // hardcode scripts/proposals/etc per plan, silently ignoring the real backend's
 // `features` — so a real trial user with `features.scripts: true` still saw Scripts
 // locked in the UI because the local PLANS.trial.scripts was hardcoded false).
+// Pricing/site-caps below are Josh's live capture of Tenji's real activation wall
+// (UI-PARITY-ORDERS §NEW-2, 2026-07-21) — supersedes the earlier $31/$63/$119 guess and
+// the old null (=unlimited-looking) site caps on starter/pro. `icon` is a lucide-react
+// export name (resolved by whichever component renders the plan card, e.g. ActivationWall)
+// so this file doesn't need to import lucide-react itself.
 export const PLANS = {
-  trial: { label: 'Free Trial', monthlyCredits: 500, siteCap: 3 },
-  starter: { label: 'Starter', monthlyCredits: 500, siteCap: null },
-  pro: { label: 'Pro', monthlyCredits: 2500, siteCap: null },
-  agency: { label: 'Agency', monthlyCredits: 15000, siteCap: null },
+  trial: {
+    label: 'Free Trial', monthlyCredits: 500, siteCap: 3,
+    price: 'Free', priceNote: '500 credits/mo', icon: 'Zap', cta: 'Start Free Trial',
+    blurb: 'Full Starter access for 3 days. Card required, cancel anytime.',
+    checks: ['500 credits', '3 sites', 'Custom domains'],
+  },
+  starter: {
+    label: 'Starter', monthlyCredits: 500, siteCap: 3,
+    price: '$39', priceNote: '500 credits/mo', icon: 'Globe', cta: 'Choose Starter',
+    blurb: 'For beginners launching their agency and scaling to $5K/month.',
+    checks: ['500 credits', '3 sites', 'Custom domains'],
+  },
+  pro: {
+    label: 'Pro', monthlyCredits: 2500, siteCap: 15,
+    price: '$79', priceNote: '2,500 credits/mo', icon: 'Shield', cta: 'Choose Pro', badge: 'Most Popular',
+    blurb: 'For agencies scaling past $10K/month. Built for winners.',
+    checks: ['2,500 credits', '15 sites', 'Custom domains', 'Scripts'],
+  },
+  agency: {
+    label: 'Agency', monthlyCredits: 15000, siteCap: null,
+    price: '$149', priceNote: '15,000 credits/mo', icon: 'Users', cta: 'Choose Agency', badge: 'Best Value',
+    blurb: 'Unlimited scale. Team seats. Per-client analytics. Priority support.',
+    checks: ['15,000 credits', '∞ sites', 'Custom domains', 'Scripts'],
+  },
 }
 
 // Mock-mode fallback only — used when entitlements.features isn't present (i.e. the

@@ -212,7 +212,7 @@ h1, h2, h3 {
   display: flex;
   align-items: center;
   border-radius: 9999px;
-  padding: 0.5rem 0.875rem;
+  padding: 0.625rem 0.875rem; /* roomier row rhythm (UI-PARITY-ORDERS §Terminal 2.1e) */
   color: rgb(161 161 170); /* low-contrast gray, inactive */
   transition: background-color 0.15s, color 0.15s;
 }
@@ -333,6 +333,20 @@ h1, h2, h3 {
   letter-spacing: 0.02em;
   background: rgba(242, 56, 111, 0.12);
   border: 1px solid rgba(242, 56, 111, 0.3);
+  color: var(--color-nova-accent);
+}
+/* Compact outlined variant — sidebar "LIVE EDITOR" tag. Same soft-outline recipe as
+   .nova-badge-pill (never a solid fill), just smaller for an inline nav-row badge. */
+.nova-badge-pill-outline {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.0625rem 0.4rem;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: rgba(242, 56, 111, 0.1);
+  border: 1px solid rgba(242, 56, 111, 0.35);
   color: var(--color-nova-accent);
 }
 

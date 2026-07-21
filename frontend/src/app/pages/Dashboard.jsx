@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 import {
   Search, Globe, MessageSquare, SquarePen, LayoutTemplate, Kanban,
   Users, Phone, Flame, Trophy, Briefcase, SquareCheck, DollarSign, Coins,
-  Calendar, ArrowRight,
+  Calendar, ArrowRight, Sparkles,
 } from 'lucide-react'
 import { getSession } from '../lib/auth'
 import { listLeads, listClients, listTasks } from '../lib/api'
@@ -12,7 +12,15 @@ import { planOf } from '../lib/entitlements'
 import samurai from '../../assets/samurai.png'
 
 // Real Tenji greets by first name only ("Good afternoon, Josh") even with a full name set.
-const firstName = (name) => (name || '').split(' ')[0] || name
+// When the stored name is email-ish (no space — e.g. "joshua.dunn300+novaqa", the local-part
+// of a test account's email with no real full_name set), take the substring before the first
+// '@' or '.' and capitalize it instead of printing the whole email-like string verbatim.
+const firstName = (name) => {
+  if (!name) return name
+  if (name.includes(' ')) return name.split(' ')[0]
+  const base = name.split('@')[0].split('.')[0].split('+')[0]
+  return base.charAt(0).toUpperCase() + base.slice(1)
+}
 
 function greeting() {
   const h = new Date().getHours()
@@ -127,13 +135,18 @@ export default function Dashboard() {
           }}
         />
 
-        <span className="absolute top-6 right-8 font-display text-7xl text-primary/10 select-none hidden md:block z-[2]">
-          天
-        </span>
+        {/* Kanji watermark slot kept, glyph swapped for a lucide icon — UI-PARITY-ORDERS
+            global rule 3: keep Tenji's layout slots, never ship the literal 天/探/刀/勝
+            kanji in Nova chrome (D3 will re-skin this brand mark later). */}
+        <Sparkles
+          className="absolute top-6 right-8 text-primary/10 select-none hidden md:block z-[2]"
+          style={{ width: '7rem', height: '7rem' }}
+          strokeWidth={1}
+        />
 
         <div className="relative">
-          <span className="relative z-10 inline-block mb-4 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 text-xs text-accent font-medium">
-            天 · Nova
+          <span className="relative z-10 inline-flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 text-xs text-accent font-medium">
+            <Sparkles size={12} /> Nova
           </span>
           <h1 className="relative z-10 font-display text-3xl md:text-5xl font-semibold tracking-tight">
             {greeting()}, <span className="animated-gradient-text">{firstName(session?.name) || 'there'}</span>.
