@@ -1,0 +1,9 @@
+{
+  "name": "nova",
+  "site": {
+    "installCommand": "npm install --prefix frontend",
+    "buildCommand": "npm run build --prefix frontend",
+    "serveCommand": "npm run dev --prefix frontend",
+    "outputDirectory": "./frontend/dist"
+  }
+}
