@@ -3,11 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 // Real target numbers + timing captured live off tenji.ai (Playwright sample of the
 // actual count-up, 2026-07-21) — replaces the earlier placeholder values Josh flagged
 // as TBD in the rubric. Order/format (N+ / $N.NM+ / N / N+) matches rubric section 11.
+// pinkTail = how many trailing characters of `format(value)+suffix` render in the
+// accent color — matches the live site's two-tone digit split (leading digits white,
+// trailing digits+suffix pink), confirmed against the frozen mirror at localhost:8000.
 const STATS = [
-  { label: 'Leads Generated', target: 173000, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
-  { label: 'Client Revenue Generated', target: 2.1, prefix: '$', suffix: 'M+', format: (n) => n.toFixed(1) },
-  { label: 'Websites Analyzed', target: 93400, prefix: '', suffix: '', format: (n) => n.toLocaleString() },
-  { label: 'Deals Closed', target: 3400, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
+  { label: 'Leads Generated', target: 173000, prefix: '', suffix: '+', format: (n) => n.toLocaleString(), pinkTail: 4 },
+  { label: 'Client Revenue Generated', target: 2.1, prefix: '$', suffix: 'M+', format: (n) => n.toFixed(1), pinkTail: 3 },
+  { label: 'Websites Analyzed', target: 93400, prefix: '', suffix: '', format: (n) => n.toLocaleString(), pinkTail: 3 },
+  { label: 'Deals Closed', target: 3400, prefix: '', suffix: '+', format: (n) => n.toLocaleString(), pinkTail: 4 },
 ]
 
 // Duration + easing reverse-engineered from real samples (80ms polling) of tenji.ai's
@@ -38,12 +41,16 @@ function useCountUp(target, active) {
 
 function StatTile({ stat, active }) {
   const value = useCountUp(stat.target, active)
+  const body = stat.format(value) + stat.suffix
+  const splitAt = Math.max(0, body.length - stat.pinkTail)
   return (
     <div className="text-center">
-      <p className="text-4xl font-bold text-white sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
-        {stat.prefix}
-        {stat.format(value)}
-        {stat.suffix}
+      <p className="text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
+        <span className="text-white">
+          {stat.prefix}
+          {body.slice(0, splitAt)}
+        </span>
+        <span className="text-[#f2386f]">{body.slice(splitAt)}</span>
       </p>
       <p className="mt-2 text-sm text-white/50">{stat.label}</p>
     </div>
