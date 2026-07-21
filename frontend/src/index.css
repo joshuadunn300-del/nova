@@ -106,6 +106,7 @@
 html {
   background-color: #08080c;
   overscroll-behavior-y: none;
+  scroll-behavior: smooth;
 }
 
 /* App background: near-black w/ faint pink grid, per spec. */
@@ -127,9 +128,21 @@ body::before {
     linear-gradient(90deg, rgba(242, 56, 111, 0.05) 1px, transparent 1px);
   background-size: 48px 48px;
 }
+/* White top strip (Josh caught live, 2026-07-21): #root had no explicit background or
+   guaranteed full-height box — html/body were already dark, but #root itself could still
+   let the browser's white default paint through at the very top edge on some layouts
+   (e.g. before the app's own flex/min-h-screen wrapper measures in, or on any page whose
+   top-level element doesn't itself stretch to 100vh). Painting #root dark directly and
+   forcing it to at least full viewport height removes the gap regardless of what's inside. */
+html, body, #root {
+  height: 100%;
+  min-height: 100%;
+}
 #root {
   position: relative;
   z-index: 1;
+  min-height: 100vh;
+  background-color: #050505;
 }
 
 .font-nova-heading {
@@ -461,18 +474,20 @@ h1, h2, h3 {
 }
 
 /* Section-label pill (boxed/filled variant, e.g. plan tier tags). */
+/* Exact values via getComputedStyle against live tenji.ai/app/templates, 2026-07-21 —
+   category pills there are neutral grey, not pink-accented. */
 .nova-pill-label {
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  padding: 0.125rem 0.625rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  background: rgba(242, 56, 111, 0.1);
-  border: 1px solid rgba(242, 56, 111, 0.25);
-  color: var(--color-nova-accent-soft);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(161, 145, 153, 0.8);
 }
 
 /* Section eyebrow label (COMMAND / AGENCY / etc + page eyebrows) */
@@ -714,4 +729,33 @@ h1, h2, h3 {
   background-color: transparent;
   border: 1px solid rgba(247, 110, 167, 0.6);
   box-shadow: rgba(244, 42, 126, 0.4) 0px 0px 19.55px 0px, rgba(255, 255, 255, 0.25) 0px 1.09px 0px 0px inset;
+}
+
+/* Empty-state icon tile (CRM/Clients/Tasks/FollowUps "no records yet" cards) — exact
+   values via getComputedStyle against live tenji.ai/app/crm, 2026-07-21. Distinct from
+   `.nova-icon-tile` (solid gradient fill, used on stat cards/quick actions) — empty
+   states use a much lighter tinted-outline tile instead. */
+.nova-empty-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background-color: rgba(244, 42, 126, 0.1);
+  border: 1px solid rgba(244, 42, 126, 0.2);
+  color: rgb(255, 143, 165);
+}
+/* Empty-state card — solid (not dashed) border, exact per live probe. */
+.nova-empty-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 48px;
+  text-align: center;
+}
+/* Dark solid search/filter input fill (not transparent) — exact per live probe. */
+.nova-solid-input {
+  background-color: rgb(11, 11, 15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }
