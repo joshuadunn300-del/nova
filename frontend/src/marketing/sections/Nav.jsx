@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Swords } from 'lucide-react'
+import { Swords, LayoutGrid } from 'lucide-react'
 import { getSession } from '../../app/lib/auth'
 
 const LINKS = [
@@ -50,15 +50,18 @@ export default function Nav() {
 
         <div className="flex items-center gap-2 pr-0.5">
           {session ? (
-            <Link
-              to="/app"
-              className="flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3.5 text-sm font-medium text-nova-text transition-colors hover:bg-white/15"
-            >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-nova-accent text-[11px] font-semibold text-black">
+            <>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-b from-nova-accent-bright to-nova-accent-deep text-[13px] font-semibold text-white">
                 {(session.name || session.email || '?')[0].toUpperCase()}
               </span>
-              Dashboard
-            </Link>
+              <Link
+                to="/app"
+                className="flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-medium text-nova-text transition-colors hover:bg-white/15"
+              >
+                <LayoutGrid className="h-4 w-4" />
+                Dashboard
+              </Link>
+            </>
           ) : (
             <>
               <Link
