@@ -1,6 +1,6 @@
 import {
   Paintbrush, Settings as SettingsIcon, Inbox, Monitor, Tablet, Smartphone,
-  Minus, Plus, Undo2, Redo2, Eye, Save, Rocket,
+  Minus, Plus, Undo2, Redo2, Eye, Save, Rocket, ArrowLeft,
 } from 'lucide-react';
 
 const TAB_ICON = { design: Paintbrush, settings: SettingsIcon, submissions: Inbox };
@@ -13,12 +13,16 @@ export default function Toolbar({
   siteName, device, setDevice, zoom, setZoom,
   canUndo, canRedo, onUndo, onRedo,
   saveStatus, saveError, onSave, published, publishedUrl, publishError, onPublish, onUnpublish, onRepublish,
-  activeTab, setActiveTab,
+  activeTab, setActiveTab, onBack,
 }) {
   return (
     <div className="editor-toolbar" data-testid="toolbar">
       <div className="toolbar-group toolbar-identity">
-        <span className="toolbar-back" title="Back">←</span>
+        {/* Was a plain non-interactive `←` span with no click handler anywhere — dead UI.
+            Real lucide icon + real navigation back to Client Sites. */}
+        <button type="button" className="toolbar-back" title="Back" onClick={onBack}>
+          <ArrowLeft size={16} />
+        </button>
         <span className="toolbar-site-name" data-testid="toolbar-site-name">{siteName || 'Untitled Site'}</span>
         <span className={`status-pill ${published ? 'status-published' : 'status-draft'}`} data-testid="status-pill">
           {published ? 'Published' : 'Draft'}

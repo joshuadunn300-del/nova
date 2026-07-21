@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useEditorState } from './state/useEditorState.js';
 import { getAtPath } from './state/contentPath.js';
 import RealPreviewFrame from './components/RealPreviewFrame.jsx';
@@ -25,6 +26,7 @@ function getSiteId() {
 
 export default function Designer({ initialDoc = sampleDoc }) {
   const siteId = getSiteId();
+  const navigate = useNavigate();
   const editor = useEditorState(siteId, initialDoc);
   const [device, setDevice] = useState('desktop');
   const [zoom, setZoom] = useState(1);
@@ -97,6 +99,7 @@ export default function Designer({ initialDoc = sampleDoc }) {
         published={editor.published} publishedUrl={editor.publishedUrl} publishError={editor.publishError}
         onPublish={editor.publish} onUnpublish={editor.unpublish} onRepublish={editor.republish}
         activeTab={activeTab} setActiveTab={selectTab}
+        onBack={() => navigate('/app/sites')}
       />
 
       <div className="designer-body">
