@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { MessageSquare, ScanLine, Target, Loader2, Phone, Star } from 'lucide-react'
+import { MessageSquare, ScanLine, Target, Loader2, Phone, Star, Search } from 'lucide-react'
 
 const CHIPS = ['Plumbers', 'Roofers', 'Dentists']
 const TYPED_TEXT = 'plumbers in Austin'
@@ -82,7 +82,8 @@ export default function HowItWorks() {
           </p>
 
           <div className="mt-5 rounded-xl border border-nova-border bg-black/30 p-3">
-            <div className="rounded-lg border border-nova-border bg-white/5 px-3 py-2 text-sm text-nova-text">
+            <div className="flex items-center gap-2 rounded-lg border border-nova-border bg-white/5 px-3 py-2 text-sm text-nova-text">
+              <Search className="h-3.5 w-3.5 shrink-0 text-nova-text-muted" />
               {TYPED_TEXT.slice(0, typedLength)}
               {step === 'typing' && <span className="animate-pulse text-nova-accent">|</span>}
             </div>
@@ -189,7 +190,7 @@ function StepCard({ n, icon: Icon, children }) {
     <div className="relative overflow-hidden rounded-2xl border border-nova-border bg-white/[0.03] p-6">
       <span
         aria-hidden
-        className="font-display pointer-events-none absolute -right-2 -top-6 select-none text-[7rem] font-bold leading-none text-nova-accent/5"
+        className="font-display pointer-events-none absolute -right-2 -top-6 select-none text-[7rem] font-bold leading-none text-nova-accent/10"
       >
         {n}
       </span>

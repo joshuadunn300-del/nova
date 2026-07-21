@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Sparkles, Swords, PlayCircle, ArrowRight } from 'lucide-react'
+import { Sparkles, PlayCircle, ArrowRight } from 'lucide-react'
 import samurai from '../../assets/samurai.png'
 
 const HEADLINE_WORDS = [
@@ -82,27 +82,39 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Sword visual slot, top-right — a thin single accent line, not a dominant
-          crossed-blade icon (live tenji.ai uses one subtle diagonal katana, not
-          an X pattern) */}
+      {/* Sword visual slot, top-right — live tenji.ai renders one continuous diagonal
+          katana line, not lucide's crossed-blade Swords icon (which at low stroke width
+          reads as an unrelated flag/antenna shape, not a sword) — a plain rotated bar
+          plus a short crossguard tick reads correctly as a single blade. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-6 top-16 hidden rotate-[38deg] text-nova-accent/25 md:block"
+        className="pointer-events-none absolute -right-4 top-14 hidden rotate-[38deg] md:block"
       >
-        <Swords size={160} strokeWidth={0.6} />
+        <div className="h-[3px] w-40 rounded-full bg-gradient-to-r from-transparent via-nova-accent/60 to-nova-accent/25" />
+        <div className="absolute left-6 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-nova-accent/40" />
       </div>
 
-      {/* Samurai line-art, left third — same treatment as Login's right-panel image */}
+      {/* Samurai line-art, left third. Source PNG is a flat RGB raster (no alpha channel) —
+          tried a mask-image recolor first but the browser rendered it as a solid block
+          instead of the shape, so back to <img>+filter. Live tenji.ai's version reads as a
+          vivid pink/magenta duotone; grayscale+sepia+hue-rotate pushes this art there
+          (sepia's warm base rotates to pink around hue 300-320deg, unlike the previous
+          hue-rotate(-15deg) off an unconverted sepia which only shifted brown to a
+          slightly different brown). */}
       <img
         src={samurai}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 hidden h-auto w-[420px] select-none lg:block"
+        className="pointer-events-none absolute bottom-0 left-0 hidden h-auto w-[480px] select-none lg:block"
         style={{
-          filter: 'saturate(0.9) sepia(0.35) hue-rotate(-15deg) brightness(0.75)',
-          maskImage: 'linear-gradient(to right, black 50%, transparent 92%)',
-          WebkitMaskImage: 'linear-gradient(to right, black 50%, transparent 92%)',
-          opacity: 0.4,
+          filter:
+            'grayscale(1) brightness(1.6) contrast(1.35) sepia(1) hue-rotate(300deg) saturate(4) drop-shadow(0 0 30px rgba(242,56,111,0.35))',
+          opacity: 0.55,
+          // Source PNG has no alpha channel, so its right edge is a visible hard rectangle
+          // against the page background — fade it out with a plain gradient mask (this one
+          // is CSS-generated, not image-sourced, so it doesn't hit the mask-image bug above.
+          maskImage: 'linear-gradient(to right, black 55%, transparent 92%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 55%, transparent 92%)',
         }}
       />
 
