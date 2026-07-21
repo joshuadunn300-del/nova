@@ -73,7 +73,7 @@ export default function SupportTickets() {
             { key: 'subject', label: 'Subject' },
             { key: 'status', label: 'Status' },
             { key: 'priority', label: 'Priority' },
-            { key: 'created_date', label: 'Opened' },
+            { key: 'created_date', label: 'Opened', render: (r) => (r.created_date ? new Date(r.created_date).toLocaleDateString() : '—') },
           ]}
         />
       )}

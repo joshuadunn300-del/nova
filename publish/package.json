@@ -6,6 +6,7 @@
   "main": "server.js",
   "scripts": {
     "test": "node test/run.js && node test/run-e2e.js",
+    "exit-test": "node test/exit-test.js",
     "serve": "node server.js"
   }
 }

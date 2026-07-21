@@ -169,7 +169,10 @@ function renderFooter(props) {
       <div><strong>${name}</strong>${address ? `<p>${address}</p>` : ''}${phone ? `<p>${phone}</p>` : ''}${email ? `<p>${email}</p>` : ''}</div>
       <div class="footer-links">${linksHtml}</div>
     </div>
-    <p class="copyright">${copyright} · Built with Nova</p>
+    <div class="footer-bottombar">
+      <span class="copyright">${copyright}</span>
+      <span class="powered-by">&bull; Powered by Nova</span>
+    </div>
   </footer>`;
 }
 

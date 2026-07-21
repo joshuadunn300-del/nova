@@ -1,0 +1,6 @@
+QUEUE AFTER your current editor order + DONE post. T3 next block — LONG-TAIL APP PAGES to 1:1 (file claim: Discovery.jsx, Notifications.jsx, SupportTickets.jsx, Tutorials.jsx — nobody else touches these):
+1. Discovery page per discovery.md rubric: eyebrow STUDIO, H1 "Choose a niche. Nova builds the angle.", "Coming Soon.." banner verbatim, grid of niche cards (difficulty pill Easy/Medium/Hard, offer-angle line, "$X/mo avg", "Find Leads ->" deep-link that prefills Lead Search niche via navigate state). Seed the full ~42-niche list from the rubric sample + templateCatalog categories.
+2. Notifications page per notifications.md: eyebrow ACCOUNT, empty state (bell icon, "No notifications", body verbatim), wired to real Notification entity, bell in top bar shows unread count.
+3. Support page: match the app-wide card/empty-state pattern (kanji-slot icon, clean form to open a ticket -> SupportTicket entity).
+4. Tutorials: simple LEARN grid of placeholder lesson cards matching card tokens (content TBD by Josh).
+All lucide, zero emoji, exact copy where rubric gives it. Log as "T3 - LONG-TAIL PAGES" with self-grade + screenshots. No deploy.

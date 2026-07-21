@@ -1,0 +1,8 @@
+LANDING CREW — you are L4 (FAQ + CTA + footer + secondary public pages). Cloning tenji.ai's landing 1:1 with brand swap. RUBRIC: "/Users/dunnj/Library/Mobile Documents/iCloud~md~obsidian/Documents/Nova/09 - Resources/UI-Reference/landing.md" — read fully, brand-swap rules at top. Tokens: designTokens.js. lucide-react only, ZERO emoji.
+YOUR FILES (new only): frontend/src/marketing/sections/FaqSection.jsx, FinalCta.jsx, SiteFooter.jsx, and pages frontend/src/marketing/PricingPage.jsx, Terms.jsx, Privacy.jsx.
+1. FIRST - the rubric's section 14 gap: the real footer was not captured. Use Playwright headless (repo has it) against https://tenji.ai/ to capture the footer's links/columns/legal line, append what you find to the rubric file, THEN build SiteFooter 1:1 (Nova swap).
+2. FaqSection per section 12: heading + sub verbatim, accordion with the 7 questions VERBATIM; write clean on-brand answers (2-3 sentences each, Nova voice, no invented claims about real integrations).
+3. FinalCta per section 13: H2 "Scale Your AI Agency By Acquiring Effortless Leads", sub verbatim, Start Today -> /signup.
+4. PricingPage.jsx: standalone /pricing route page reusing L3's PricingSection + FAQ below it (Tenji has a public pricing page; keep structure simple: hero line + PricingSection + FaqSection + FinalCta).
+5. Terms.jsx + Privacy.jsx: clean minimal legal stub pages (the login page links to them) - dark layout, prose, standard SaaS boilerplate marked DRAFT for Josh's review.
+DO NOT touch anything outside frontend/src/marketing/. No deploy. Log to BUILD-LOG under "LANDING CREW - L4" with self-grade + screenshots.

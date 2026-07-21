@@ -1,0 +1,8 @@
+NEXT ORDER — queue after current task. T1: ZERO-AI-SPEND E2E (Josh mandate: no real Google/Anthropic credit burn — do NOT call searchLeads or generateSite).
+Prove the full customer loop using the FREE template path end to end:
+1. Fresh disposable account via the real signup UI (your new 2-step OTP flow) -> activation wall -> Start Free Trial -> verify 500 credits + trial_ends_at land.
+2. Create a site from the TEMPLATE STORE (no AI call) for a niche with real imageLibrary photos (e.g. electricians or catering).
+3. Publish it. Verify serveSite serves the public URL (headless fetch + screenshot).
+4. Submit the lead-capture form on the published site -> verify the Lead row lands in the DB.
+5. Unpublish + cleanup test data. Log the account used + full evidence (URLs, row ids, screenshots) to BUILD-LOG as "T1 - FREE-PATH E2E".
+This closes the last SIM-path item (serveSite verification, P2 E.10) with $0 API spend. No deploy - T5 only.

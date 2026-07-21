@@ -143,7 +143,7 @@ export default function Designer({ initialDoc = sampleDoc }) {
             {activeTab === 'settings' && (
               <SettingsPanel doc={editor.doc} onEditMeta={editor.editMeta} onEditSiteName={(v) => editor.editMeta('siteName', v)} />
             )}
-            {activeTab === 'submissions' && <SubmissionsPanel />}
+            {activeTab === 'submissions' && <SubmissionsPanel siteId={siteId} />}
           </>
         )}
       </div>

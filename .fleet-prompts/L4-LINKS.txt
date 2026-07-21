@@ -1,0 +1,7 @@
+TOP PRIORITY (Josh, live): every nav + footer link is currently DEAD — "these need to work." You own SiteFooter.jsx; fix all of them, coordinate routes with T6.
+Rules — no dead links anywhere:
+1. ON-PAGE sections become smooth-scroll anchors on the landing: Features -> #features (Toolkit section), How It Works -> #how-it-works, Integrations -> #integrations, FAQ -> #faq, Pricing (if on-page) -> #pricing. Add matching id attributes to those section wrappers (coordinate: the section is another crew's file — pass them the id via the composer, or add id on the wrapper you control in Landing/Footer, do NOT rewrite their component).
+2. REAL ROUTES (exist): Pricing -> /pricing, Terms of Service -> /terms, Privacy Policy -> /privacy, Start Today/Get Started -> /signup, Sign In -> /login.
+3. MISSING PAGES — build minimal branded dark stub pages (heading + 2-3 lines + a CTA back to /signup, marked DRAFT), all in frontend/src/marketing/pages/: Contact.jsx, RequestFeature.jsx (or wire to a mailto), News.jsx, Affiliates.jsx, RefundPolicy.jsx. Match Terms/Privacy styling you already built.
+4. Hand T6 the exact route list to wire into App.jsx (/contact /request-feature /news /affiliates /refund). Do not edit App.jsx yourself.
+Verify EVERY nav + footer link click resolves (anchor scrolls or route loads) on localhost. Log as "L4 - LINKS LIVE" with a link-by-link PASS table. No deploy.

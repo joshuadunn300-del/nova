@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Placeholder targets — Josh picks final numbers (see BUILD-LOG).
+// Real target numbers + timing captured live off tenji.ai (Playwright sample of the
+// actual count-up, 2026-07-21) — replaces the earlier placeholder values Josh flagged
+// as TBD in the rubric. Order/format (N+ / $N.NM+ / N / N+) matches rubric section 11.
 const STATS = [
-  { label: 'Leads Generated', target: 12000, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
-  { label: 'Client Revenue Generated', target: 1.2, prefix: '$', suffix: 'M+', format: (n) => n.toFixed(1) },
-  { label: 'Websites Analyzed', target: 40000, prefix: '', suffix: '', format: (n) => n.toLocaleString() },
-  { label: 'Deals Closed', target: 800, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
+  { label: 'Leads Generated', target: 173000, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
+  { label: 'Client Revenue Generated', target: 2.1, prefix: '$', suffix: 'M+', format: (n) => n.toFixed(1) },
+  { label: 'Websites Analyzed', target: 93400, prefix: '', suffix: '', format: (n) => n.toLocaleString() },
+  { label: 'Deals Closed', target: 3400, prefix: '', suffix: '+', format: (n) => n.toLocaleString() },
 ]
 
-const DURATION_MS = 1600
+// Duration + easing reverse-engineered from real samples (80ms polling) of tenji.ai's
+// live count-up: front-loaded curve reaching ~63%/93%/99.6% at ~160/670/1600ms elapsed,
+// settling by ~2.1s — an ease-out-expo curve, not the cubic ease-out used before (cubic
+// underestimates the real early-mid climb by 15-20 points at the same progress).
+const DURATION_MS = 2100
 
 function useCountUp(target, active) {
   const [value, setValue] = useState(0)
@@ -19,7 +25,7 @@ function useCountUp(target, active) {
     const start = performance.now()
     const tick = (now) => {
       const progress = Math.min((now - start) / DURATION_MS, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
+      const eased = progress >= 1 ? 1 : 1 - Math.pow(2, -10 * progress)
       setValue(target * eased)
       if (progress < 1) raf = requestAnimationFrame(tick)
     }
@@ -65,8 +71,8 @@ export default function StatsBand() {
   }, [])
 
   return (
-    <section id="stats" ref={ref} className="border-y border-white/10 bg-[#0a0a10] px-8 py-20 text-white">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-10 sm:grid-cols-4">
+    <section id="stats" ref={ref} className="bg-[#08080c] px-8 py-16 text-white">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-10 rounded-3xl border border-white/10 bg-[#0d0d14] px-8 py-14 sm:grid-cols-4">
         {STATS.map((stat) => (
           <StatTile key={stat.label} stat={stat} active={active} />
         ))}

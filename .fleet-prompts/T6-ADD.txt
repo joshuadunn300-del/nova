@@ -1,0 +1,5 @@
+ADDENDUM to your integrator order (queue after integration + QA):
+1. Marketing site head polish: real favicon (Nova mark, replace any default Vite icon), <title> "Nova — AI Website Generator for Local Businesses", meta description from the hero sub, OG/Twitter card tags with a dark og-image (generate a simple 1200x630 dark card with the Nova lockup + tagline using canvas/sharp locally - no external AI).
+2. Overscroll check on the landing: T2 is setting html background #08080c globally - verify no white rubber-band flash on the marketing page too.
+3. Smoke-test the landing at 375px: nav collapse, hero text scale, pricing cards stack, marquee performance (no jank - pause animation off-viewport).
+Log as "T6 - LANDING POLISH".

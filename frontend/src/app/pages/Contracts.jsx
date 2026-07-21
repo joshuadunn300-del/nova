@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 import { listContracts, listProposals } from '../lib/api'
 import { canUseFeature } from '../lib/entitlements'
 import DataTable from '../components/DataTable'
+import ProFeatureGate from '../../tools/ProFeatureGate'
 
 // Per UI-Reference/contracts.md: "Proposals & Contracts" — no separate /app/proposals route
 // (merged here per orchestrator correction). Full Pro wall; gate copy is verbatim from recon.
@@ -25,26 +26,11 @@ export default function Contracts() {
       <h1 className="text-xl font-semibold mb-6">Proposals & Contracts</h1>
 
       {!allowed ? (
-        <div className="nova-card p-10 text-center max-w-lg mx-auto">
-          <div className="text-2xl mb-2">🔒</div>
-          <p className="text-xs font-semibold text-nova-accent mb-1">PRO FEATURE</p>
-          <h2 className="font-medium mb-2">Full Proposals &amp; Contracts</h2>
-          <p className="text-sm text-nova-text-muted mb-4">
-            Generate polished, client-ready service agreements that lock in recurring retainers, then export them as
-            professional PDFs. Unlock the full proposal suite with Pro.
-          </p>
-          <ul className="text-sm text-left text-nova-text-muted space-y-1.5 mb-5 inline-block">
-            <li>✨ Branded contract PDFs</li>
-            <li>✨ Recurring retainer terms</li>
-            <li>✨ Auto-filled agency details</li>
-            <li>✨ Save &amp; reuse contracts</li>
-          </ul>
-          <div>
-            <button type="button" className="nova-btn-primary">
-              Upgrade to Pro →
-            </button>
-          </div>
-        </div>
+        <ProFeatureGate
+          heading="Full Proposals & Contracts"
+          body="Generate polished, client-ready service agreements that lock in recurring retainers, then export them as professional PDFs. Unlock the full proposal suite with Pro."
+          bullets={['Branded contract PDFs', 'Recurring retainer terms', 'Auto-filled agency details', 'Save & reuse contracts']}
+        />
       ) : (
         <div className="space-y-8">
           <div>

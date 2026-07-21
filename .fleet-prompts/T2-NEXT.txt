@@ -1,0 +1,7 @@
+NEXT ORDER — queue after your current chrome pass. T2: BUNDLE DIET.
+Main chunk is ~1.2MB. With the public landing page landing (marketing crew building frontend/src/marketing/ now), "/" must not pull the whole app.
+1. Route-level code-split with React.lazy + Suspense: marketing (/), auth (/login /signup), app (/app/*), editor (/app/designer) as separate chunks. Loading fallback: your "Entering Nova..." state for /app chunks, minimal spinner elsewhere.
+2. Verify lucide-react imports are per-icon everywhere (no barrel import dragging the full icon set into the bundle).
+3. Target: initial "/" chunk under 300KB gzipped.
+4. npm run build; log a before/after chunk-size table to BUILD-LOG as "T2 - BUNDLE DIET".
+Coordinate the route wiring with T6's pending App.jsx INTEGRATION REQUEST (landing route swap) - fold both into one clean App.jsx change. Do not touch marketing/ section internals (landing crew owns those). No deploy - T5 only.

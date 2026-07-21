@@ -54,16 +54,24 @@ export default function Settings() {
   if (!settings) return <p className="text-sm text-nova-text-muted">Loading…</p>
 
   const plan = planOf(entitlements)
+  // Real Tenji shows the raw plan key, not a humanized label — confirmed live via
+  // tenji-Credits.png ("Free_trial Plan"), same convention reused here for consistency.
+  const rawPlanKey = entitlements?.plan || 'trial'
+  const rawPlanLabel = rawPlanKey.charAt(0).toUpperCase() + rawPlanKey.slice(1)
+  // Real live accounts don't have a `palette_preset` field on the User entity at all
+  // (found live: it comes back undefined, not 'nova') — fall back to Nova's own accent
+  // rather than silently landing on whichever preset happens to be first in the map.
+  const effectivePreset = settings.palette_preset || 'nova'
   const activeColors =
-    settings.palette_preset === 'custom'
-      ? { primary: settings.custom_primary || '#4f46e5', secondary: settings.custom_secondary || '#111827' }
-      : PALETTE_PRESETS[settings.palette_preset] || PALETTE_PRESETS.indigo
+    effectivePreset === 'custom'
+      ? { primary: settings.custom_primary || PALETTE_PRESETS.nova.primary, secondary: settings.custom_secondary || PALETTE_PRESETS.nova.secondary }
+      : PALETTE_PRESETS[effectivePreset] || PALETTE_PRESETS.nova
 
   return (
     <div className="max-w-2xl space-y-6">
       <div>
         <p className="nova-eyebrow mb-1">ACCOUNT</p>
-        <h1 className="text-xl font-semibold mb-1">Settings</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-1">Settings</h1>
         <p className="text-sm text-nova-text-muted">Your profile, preferences and integrations.</p>
       </div>
 
@@ -87,6 +95,7 @@ export default function Settings() {
           <div>
             <p className="text-sm font-medium">{settings.full_name}</p>
             <p className="text-sm text-nova-text-muted">{session?.email}</p>
+            <p className="text-xs text-nova-text-muted mt-0.5">Hover the avatar to change your picture</p>
           </div>
         </div>
 
@@ -149,7 +158,7 @@ export default function Settings() {
         <p className="text-sm text-nova-text-muted mb-3">Your current subscription</p>
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium">
-            {plan.label} Plan · {plan.monthlyCredits.toLocaleString()} credits/month
+            {rawPlanLabel} Plan · {plan.monthlyCredits.toLocaleString()} credits/month
           </p>
           <button
             type="button"
@@ -226,7 +235,7 @@ export default function Settings() {
             { key: 'billing_credits', label: 'Billing & credits', desc: 'Receipts, credit alerts and renewals' },
             { key: 'tips_playbooks', label: 'Tips & playbooks', desc: 'Occasional guides to grow your agency' },
           ].map((n) => (
-            <label key={n.key} className="flex items-center justify-between py-2 border-t border-nova-border first:border-t-0">
+            <label key={n.key} className="flex items-center justify-between py-2 border-t border-nova-border first:border-t-0 cursor-pointer">
               <span>
                 <span className="block text-sm font-medium">{n.label}</span>
                 <span className="block text-sm text-nova-text-muted">{n.desc}</span>
@@ -235,7 +244,11 @@ export default function Settings() {
                 type="checkbox"
                 checked={settings.email_notifications[n.key]}
                 onChange={(e) => setEmailPref(n.key, e.target.checked)}
-                className="h-4 w-4"
+                className="peer sr-only"
+              />
+              <span
+                aria-hidden="true"
+                className="relative h-5 w-9 shrink-0 rounded-full bg-white/10 transition-colors peer-checked:bg-nova-accent after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-4"
               />
             </label>
           ))}
@@ -257,7 +270,7 @@ export default function Settings() {
                 type="button"
                 key={key}
                 onClick={() => setField('palette_preset', key)}
-                className={`h-9 w-9 rounded-full border-2 ${settings.palette_preset === key ? 'border-white' : 'border-transparent'}`}
+                className={`h-9 w-9 rounded-full border-2 ${effectivePreset === key ? 'border-white' : 'border-transparent'}`}
                 style={{ background: `linear-gradient(135deg, ${colors.primary} 50%, ${colors.secondary} 50%)` }}
                 aria-label={`${key} preset`}
                 title={key}
@@ -266,12 +279,12 @@ export default function Settings() {
             <button
               type="button"
               onClick={() => setField('palette_preset', 'custom')}
-              className={`h-9 w-9 rounded-full border text-sm ${settings.palette_preset === 'custom' ? 'border-white' : 'border-nova-border'}`}
+              className={`h-9 w-9 rounded-full border text-sm ${effectivePreset === 'custom' ? 'border-white' : 'border-nova-border'}`}
             >
               ＋
             </button>
           </div>
-          {settings.palette_preset === 'custom' && (
+          {effectivePreset === 'custom' && (
             <div className="flex gap-4 mb-2">
               <label className="text-xs text-nova-text-muted flex items-center gap-2">
                 Primary

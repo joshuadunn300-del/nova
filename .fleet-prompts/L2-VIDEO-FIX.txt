@@ -1,0 +1,4 @@
+Live side-by-side vs tenji.ai found two richness gaps in your sections:
+1. "How Nova Works" VIDEO section is currently an empty framed box + a pink play button. Tenji shows an actual demo visual there. Replace the blank frame with a proper branded fill: either a looping CSS/JS micro-animation of the lead->site->close workflow, or a styled poster still (dark, on-brand, with a real play affordance overlay). No empty boxes on a sales page.
+2. CreatorShowcase ("From lead to live site, in one click."): Tenji layers a real photo (operator at laptop) with a floating "Succeeded / USD" payments table card overlapping it. Match that layered-mockup richness - your version must not be a flat single panel. Use a dark UI mock + an overlapping stat/payments card with a few "Succeeded" rows in green.
+Playwright both side-by-side vs https://tenji.ai/ at 1440 and log as "L2 - RICHNESS FIX" with before/after. No deploy.

@@ -149,7 +149,7 @@ export default function Dashboard() {
             <Sparkles size={12} /> Nova
           </span>
           <h1 className="relative z-10 font-display text-3xl md:text-5xl font-semibold tracking-tight">
-            {greeting()}, <span className="animated-gradient-text">{firstName(session?.name) || 'there'}</span>.
+            {greeting()}, <span className="animated-gradient-text">{firstName(session?.name) || 'there'}</span>
           </h1>
           <p className="relative z-10 mt-3 text-muted-foreground max-w-xl">
             Your agency command center is ready. Search a niche, generate a mockup, write the pitch, and track the deal.
@@ -172,9 +172,9 @@ export default function Dashboard() {
             <div>
               <div className="nova-icon-tile mb-3"><DollarSign size={18} /></div>
               <p className="nova-stat-label-lg">Recurring Revenue</p>
-              <p className="nova-stat-value-lg">${mrr}/mo</p>
+              <p className="nova-stat-value-lg">${mrr}</p>
             </div>
-            <span className="nova-badge-pill">↗ Monthly</span>
+            <span className="nova-badge-pill">↗ MONTHLY</span>
           </div>
           <div className="nova-stat-card flex items-center justify-between">
             <div>

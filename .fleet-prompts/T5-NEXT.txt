@@ -1,0 +1,5 @@
+QUEUE AFTER your deploy + 12-screen delta table. T5 next block:
+1. BUILD-LOG rotation: it is 300KB+ and iCloud keeps evicting it. Move everything before today into "BUILD-LOG-archive-jul20.md" in the vault, keep BUILD-LOG.md as today-forward + a 10-line index pointing at the archive. Announce the rotation at the top of both files.
+2. Published-site quality pass: take T1's FREE-PATH E2E published site URL (from its BUILD-LOG entry) and run Lighthouse (or equivalent headless audit) on it - performance, SEO, accessibility, best practices. The static serveSite output should score 90+; log scores + the top 3 concrete fixes if under. Verify meta/title/OG tags exist per designer.md Settings spec; flag gaps to T3.
+3. Re-shoot the published site at 375px mobile - it is the artifact Josh pitches with.
+Log as "T5 - POST-DEPLOY QA". The deploy itself stays exactly as ordered: once, after T3 DONE.

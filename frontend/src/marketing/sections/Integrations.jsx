@@ -23,8 +23,11 @@ export default function Integrations() {
 
       <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {INTEGRATIONS.map(({ icon: Icon, name, description }) => (
-          <div key={name} className="rounded-2xl border border-white/10 bg-[#0d0d14] p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f2386f]/10">
+          <div
+            key={name}
+            className="group rounded-2xl border border-white/10 bg-[#0d0d14] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#f2386f]/40 hover:shadow-[0_16px_40px_-16px_rgba(242,56,111,0.45)]"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f2386f]/10 transition-colors duration-300 group-hover:bg-[#f2386f]/20">
               <Icon className="h-6 w-6 text-[#f2386f]" />
             </div>
             <p className="mt-4 font-semibold">{name}</p>
@@ -34,10 +37,10 @@ export default function Integrations() {
       </div>
 
       <div className="mt-10 flex items-center justify-center gap-6 text-sm">
-        <a href="/contact" className="flex items-center gap-1 text-white/60 hover:text-white">
+        <a href="/contact" className="flex items-center gap-1 text-white/60 transition hover:text-white">
           Request a feature <ArrowRight className="h-3.5 w-3.5" />
         </a>
-        <a href="/features" className="flex items-center gap-1 text-white/60 hover:text-white">
+        <a href="/features" className="flex items-center gap-1 text-white/60 transition hover:text-white">
           See all features <ArrowRight className="h-3.5 w-3.5" />
         </a>
       </div>

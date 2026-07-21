@@ -5,10 +5,7 @@ import ProFeatureGate from './ProFeatureGate'
 export default function Analytics() {
   return (
     <div>
-      <h1 className="text-xl font-semibold font-nova-heading text-nova-text mb-1">Analytics</h1>
-      <p className="text-sm text-nova-text-muted mb-6">
-        Track performance across every published client site.
-      </p>
+      {/* Real tenji.ai/app/analytics has no page header — just the standalone wall card, confirmed via getComputedStyle (T5 PORTAL PARITY, 2026-07-21). */}
       <ProFeatureGate
         heading="Full Analytics"
         body="Track traffic, conversions, and performance across every published client site. Unlock the full analytics suite with Pro."
