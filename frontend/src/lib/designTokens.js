@@ -139,7 +139,16 @@ export const generatedSite = {
     background: 'linear-gradient(180deg, rgba(BRAND,1) 0%, rgba(BRAND,0.82) 100%)',
     shadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 30px -6px rgba(BRAND,0.6), 0 2px 8px rgba(0,0,0,0.25)',
   },
-  ctaButtonSmall: { radius: '9999px', padding: '6px 16px', fontSize: '13px', fontWeight: 600, color: '#000' },
+  // Real values via getComputedStyle against a live tenji.ai generated site's nav CTA,
+  // 2026-07-21 — a distinct, lighter shadow than the big ctaButton's (2-layer, not 3-layer).
+  ctaButtonSmall: {
+    radius: '9999px',
+    padding: '6px 16px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: '#000',
+    shadow: 'inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 14px -2px rgba(BRAND,0.5)',
+  },
   formButton: { radius: '10px', padding: '12px', fontWeight: 700, fontSize: '14px', color: '#000' },
   // Glass pill (trust badges over dark hero)
   glassBadge: {

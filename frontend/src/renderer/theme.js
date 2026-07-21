@@ -88,6 +88,8 @@ export function resolveThemeVars(theme) {
     '--cta-color': generatedSite.ctaButton.color,
     '--cta-bg': substituteBrand(generatedSite.ctaButton.background, brandRgb),
     '--cta-shadow': substituteBrand(generatedSite.ctaButton.shadow, brandRgb),
+    // Small CTA variant (Navbar's pill button) — distinct real shadow, see ctaButtonSmall.
+    '--cta-sm-shadow': substituteBrand(generatedSite.ctaButtonSmall.shadow, brandRgb),
 
     '--input-bg': generatedSite.input.background,
     '--input-border': generatedSite.input.border,

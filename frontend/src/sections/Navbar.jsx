@@ -49,7 +49,11 @@ export default function Navbar({ props = {}, path, editable = false }) {
           </span>
         </div>
 
-        <ul className="hidden md:flex items-center gap-1.5 mx-auto min-w-0">
+        {/* Real Tenji generated sites do NOT collapse nav links behind a hamburger at
+            mobile widths — verified live (tenji.ai/app editor Live Preview, Mobile frame,
+            2026-07-21): the pill bar just keeps the full link row and lets it run past the
+            viewport edge. Matching that exactly rather than adding a hamburger of our own. */}
+        <ul className="flex items-center gap-1.5 mx-auto min-w-0">
           {Array.isArray(links) &&
             links.map((link, i) => {
               const isString = typeof link === 'string'
@@ -65,7 +69,7 @@ export default function Navbar({ props = {}, path, editable = false }) {
                     className="block rounded-full px-3 py-1.5 text-[13px] whitespace-nowrap transition-colors hover:text-white hover:bg-white/10"
                     style={
                       isActive
-                        ? { color: '#fff', fontWeight: 600, background: 'color-mix(in srgb, var(--primary) 30%, transparent)' }
+                        ? { color: '#fff', background: 'color-mix(in srgb, var(--primary) 16%, transparent)' }
                         : { color: 'rgba(255,255,255,0.72)' }
                     }
                     {...(isString ? {} : editableProps(editable, `${path}.links.${i}.label`))}
@@ -79,12 +83,14 @@ export default function Navbar({ props = {}, path, editable = false }) {
 
         <div className="flex items-center gap-3 shrink-0">
           {phone && (
+            // Real values via getComputedStyle against a live tenji.ai generated site's
+            // nav phone chip, 2026-07-21 — distinct from the shared glassBadge tokens
+            // (no border, no backdrop-blur, lighter fill, pill radius not 12px).
             <div
               className="hidden sm:flex items-center gap-1.5 text-[13px] font-medium whitespace-nowrap text-white"
               style={{
-                background: 'var(--glass-bg)',
-                border: 'var(--glass-border)',
-                borderRadius: 'var(--glass-radius)',
+                background: 'rgba(255,255,255,0.06)',
+                borderRadius: '9999px',
                 padding: '6px 12px',
               }}
             >
@@ -97,12 +103,12 @@ export default function Navbar({ props = {}, path, editable = false }) {
               className="shrink-0 whitespace-nowrap"
               style={{
                 background: 'var(--cta-bg)',
-                boxShadow: 'var(--cta-shadow)',
+                boxShadow: 'var(--cta-sm-shadow)',
                 color: 'var(--cta-color)',
-                borderRadius: 'var(--btn-radius)',
+                borderRadius: '9999px',
                 padding: '6px 16px',
                 fontSize: '13px',
-                fontWeight: 'var(--cta-fw)',
+                fontWeight: 600,
               }}
               {...editableProps(editable, `${path}.${ctaText !== undefined ? 'ctaText' : 'cta.label'}`)}
             >
