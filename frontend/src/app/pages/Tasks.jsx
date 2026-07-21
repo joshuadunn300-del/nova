@@ -38,7 +38,7 @@ export default function Tasks() {
   return (
     <div className="max-w-4xl">
       <p className="nova-eyebrow mb-1">AGENCY</p>
-      <h1 className="text-xl font-semibold mb-1">Tasks</h1>
+      <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-1">Tasks</h1>
       <p className="text-sm text-nova-text-muted mb-6">Keep your agency moving — calls, builds, follow-ups, launches.</p>
 
       <form onSubmit={handleAdd} className="nova-card p-3 flex flex-wrap gap-2 mb-4">
@@ -96,7 +96,7 @@ export default function Tasks() {
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : filtered.length === 0 ? (
         <div className="nova-card border-dashed p-10 text-center">
-          <div className="text-2xl mb-2">☑️</div>
+          <div className="nova-icon-tile mx-auto mb-3 text-base">☑️</div>
           <p className="text-sm font-medium">{filter === 'open' ? 'No open tasks' : 'No completed tasks'}</p>
           <p className="text-sm text-nova-text-muted mt-1">
             {filter === 'open' ? "You're all caught up. Add your next move above." : 'Finished tasks will show up here.'}

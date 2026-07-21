@@ -41,7 +41,7 @@ export default function Clients() {
     <div className="max-w-5xl">
       <p className="nova-eyebrow mb-1">AGENCY</p>
       <div className="flex items-start justify-between mb-1">
-        <h1 className="text-xl font-semibold">Clients</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">Clients</h1>
         <button
           type="button"
           onClick={() => setShowForm((v) => !v)}
@@ -90,7 +90,7 @@ export default function Clients() {
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : (clients || []).length === 0 ? (
         <div className="nova-card border-dashed p-10 text-center">
-          <div className="text-2xl mb-2">💼</div>
+          <div className="nova-icon-tile mx-auto mb-3 text-base">💼</div>
           <p className="text-sm font-medium">No clients yet</p>
           <p className="text-sm text-nova-text-muted mt-1 mb-4">
             Close your first lead and convert it to a client from the CRM — or add one manually.

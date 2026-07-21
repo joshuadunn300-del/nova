@@ -392,12 +392,15 @@ h1, h2, h3 {
 }
 
 /* Section eyebrow label (COMMAND / AGENCY / etc + page eyebrows) */
+/* Verified via getComputedStyle against a live tenji.ai eyebrow label: 12px/400/0.2em
+   tracking, uppercase, rgb(255 143 165) — brighter/lighter pink than the old guess, and
+   NOT semibold (Tenji's is regular weight, letter-spacing carries the emphasis instead). */
 .nova-eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgb(180 140 155); /* muted rose */
+  color: rgb(255 143 165);
 }
 
 /* Stat card — dark charcoal, icon tile top-left, label+value, subtle border. */

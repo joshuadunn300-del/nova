@@ -61,6 +61,10 @@ const NAV_GROUPS = [
   },
 ]
 
+// Real Tenji greets by first name only ("Welcome back, Josh") even when the account's
+// full name is "Josh Dunn" — verified live against tenji.ai/app/crm.
+const firstName = (name) => (name || '').split(' ')[0] || name
+
 export default function AppShell() {
   const session = getSession()
   const navigate = useNavigate()
@@ -95,7 +99,10 @@ export default function AppShell() {
   return (
     <div className="min-h-screen flex bg-nova-bg text-nova-text">
       <aside className="w-60 shrink-0 border-r border-nova-border flex flex-col">
-        <div className="px-4 py-4 text-lg font-semibold">Nova</div>
+        <div className="px-4 py-4 flex items-center gap-2 text-lg font-semibold">
+          <img src="/favicon.svg" alt="" className="h-6 w-6" />
+          Nova
+        </div>
         <nav className="flex-1 px-2 space-y-4 overflow-y-auto">
           {NAV_GROUPS.map((group) => (
             <div key={group.label}>
@@ -173,7 +180,7 @@ export default function AppShell() {
       </aside>
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-14 flex items-center justify-between px-6 border-b border-nova-border">
-          <span className="text-sm font-medium">Welcome back, {session.name}</span>
+          <span className="text-sm font-medium">Welcome back, {firstName(session.name)}</span>
           <div className="flex items-center gap-4">
             <CreditBadge entitlements={entitlements} />
             <NavLink to="/app/notifications" aria-label="Notifications" className="text-lg">

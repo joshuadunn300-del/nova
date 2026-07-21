@@ -5,16 +5,17 @@ import { isHottest, leadScore, sortByScoreDesc } from '../lib/leadScore'
 // Real Base44 Lead entity field is `name`; mock data used `business_name` — guard both.
 const leadName = (l) => l.business_name || l.name || ''
 
-// Per UI-Reference/tracker.md: 5-column kanban, drag-and-drop, colored top border per column.
-// Real Lead field is `status` (enum new/contacted/demo_sent/closed/lost), not `stage` — and
-// Lead has no `mrr` field at all (that's a Client concept). Columns now match the real
-// pipeline exactly so filtering/counting/moving actually reflects real records.
+// Verified live against the real, reactivated tenji.ai/app/tracker (2026-07-21): the real
+// pipeline is exactly NEW / CALLED / INTERESTED / FOLLOW UP / CLOSED — not the
+// new/contacted/demo_sent/closed/lost values from Lead's documented API schema. Tenji's
+// tracker UI clearly runs its own stage vocabulary distinct from that schema doc, so
+// matching the live product (the actual 1:1 target) wins over the doc here.
 const COLUMNS = [
   { key: 'new', label: 'NEW', border: 'border-t-nova-border' },
-  { key: 'contacted', label: 'CONTACTED', border: 'border-t-blue-500' },
-  { key: 'demo_sent', label: 'DEMO SENT', border: 'border-t-pink-500' },
+  { key: 'called', label: 'CALLED', border: 'border-t-blue-500' },
+  { key: 'interested', label: 'INTERESTED', border: 'border-t-pink-500' },
+  { key: 'follow_up', label: 'FOLLOW UP', border: 'border-t-amber-500' },
   { key: 'closed', label: 'CLOSED', border: 'border-t-emerald-500' },
-  { key: 'lost', label: 'LOST', border: 'border-t-slate-500' },
 ]
 
 export default function Tracker() {
@@ -27,8 +28,10 @@ export default function Tracker() {
   }, [])
 
   const filtered = (leads || []).filter((l) => l && (leadName(l) || '').toLowerCase().includes((search || '').toLowerCase()))
-  // Lead has no revenue field — "closed" count is the only real signal available here.
-  const closedCount = (leads || []).filter((l) => l && l.status === 'closed').length
+  // Real Lead entity has no revenue field, so this is always $0 today — kept as a real sum
+  // (not a hardcoded string) so it picks up a value the moment leads carry one, matching
+  // Tenji's exact "Closed MRR: $X/mo" copy rather than substituting a different metric.
+  const closedMrr = (leads || []).filter((l) => l && l.status === 'closed').reduce((sum, l) => sum + (l.mrr || 0), 0)
 
   function moveLead(id, status) {
     const prevStatus = leads.find((l) => l.id === id)?.status
@@ -43,7 +46,7 @@ export default function Tracker() {
     <div>
       <p className="nova-eyebrow mb-1">PIPELINE</p>
       <div className="flex items-start justify-between mb-1">
-        <h1 className="text-xl font-semibold">Lead Tracker</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">Lead Tracker</h1>
         <div className="flex items-center gap-2">
           <input
             value={search}
@@ -57,7 +60,7 @@ export default function Tracker() {
         </div>
       </div>
       <p className="text-sm text-nova-text-muted mb-6">
-        {closedCount} closed · {leads.length} leads in pipeline
+        Closed MRR: ${closedMrr}/mo · {leads.length} leads in pipeline
       </p>
 
       <div className="grid grid-cols-5 gap-3">
@@ -76,7 +79,10 @@ export default function Tracker() {
               </div>
               <div className="px-2 pb-2 space-y-2">
                 {rows.length === 0 ? (
-                  <div className="text-center text-xs text-nova-text-muted py-6">$<br />Drop a lead here</div>
+                  <div className="flex flex-col items-center gap-2 py-10">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-nova-border text-nova-text-muted">$</div>
+                    <span className="text-xs text-nova-text-muted">Drop a lead here</span>
+                  </div>
                 ) : (
                   rows.map((lead) => (
                     <div

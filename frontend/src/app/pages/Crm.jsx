@@ -64,7 +64,7 @@ export default function Crm() {
     <div>
       <p className="nova-eyebrow mb-1">AGENCY</p>
       <div className="flex items-start justify-between mb-1">
-        <h1 className="text-xl font-semibold">CRM</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">CRM</h1>
         <button type="button" onClick={exportCsv} className="nova-btn-secondary">
           ⬇ Export CSV
         </button>
