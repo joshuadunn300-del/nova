@@ -121,12 +121,6 @@ export default function AppShell() {
     )
   }
 
-  // TODO (INTEGRATION, blocked on T1): wire needsActivation(entitlements) from
-  // app/lib/activation.js here — `if (needsActivation(entitlements)) return
-  // <ActivationWall onActivated={refreshEntitlements} />` before the sidebar/topbar
-  // return below. T1's activation.js + ActivationWall.jsx haven't landed yet
-  // (checked 2026-07-21); this is a one-line addition once they do, not a redesign.
-
   const creditsPct = entitlements ? Math.max(0, Math.min(100, Math.round((entitlements.credits / (entitlements.monthlyCredits || 500)) * 100))) : 0
   const planCode = (entitlements?.plan || 'trial').toUpperCase().replace(/\s+/g, '_')
 
