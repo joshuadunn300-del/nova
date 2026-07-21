@@ -50,7 +50,9 @@ function FaqItem({ item, open, onToggle }) {
 }
 
 export default function FaqSection() {
-  const [openIndex, setOpenIndex] = useState(0)
+  // Frozen tenji.ai reference (localhost:8000, 2026-07-21 1:1 pass) renders every FAQ
+  // item collapsed on load — no item pre-opened.
+  const [openIndex, setOpenIndex] = useState(-1)
 
   return (
     <section id="faq" className="scroll-mt-24 bg-[#0a0a10] px-8 py-28 text-white">

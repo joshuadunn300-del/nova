@@ -67,12 +67,9 @@ export default function Nav() {
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="hidden rounded-full px-3.5 py-1.5 text-sm font-medium text-nova-text-muted transition-colors hover:text-nova-text sm:inline-flex"
-              >
-                Log in
-              </Link>
+              {/* Frozen tenji.ai reference (localhost:8000, logged-out state) renders a single
+                  CTA pill here, no separate "Log in" link — Sign In stays reachable via the
+                  footer's "Get Started" column and the mobile drawer below. */}
               <Link
                 to="/signup"
                 className="hidden whitespace-nowrap rounded-full bg-gradient-to-b from-nova-accent-bright to-nova-accent-deep px-4 py-1.5 text-sm font-semibold text-black shadow-[0_6px_18px_-4px_rgba(242,56,111,0.6)] transition-transform hover:scale-[1.03] sm:inline-flex"
