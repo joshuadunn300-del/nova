@@ -1,17 +1,28 @@
-import { Layers, Mail, MapPin, FileText, ArrowRight } from 'lucide-react'
+import { Grid3x3, Mail, MapPin, PenLine, ArrowRight } from 'lucide-react'
 
 const INTEGRATIONS = [
-  { icon: Layers, name: 'Framer', description: 'Automatically generate Framer websites with Nova.' },
+  { icon: Grid3x3, name: 'Framer', description: 'Automatically generate Framer websites with Nova.' },
   { icon: Mail, name: 'Gmail', description: 'Write emails, sort your inbox, and summarize conversations.' },
   { icon: MapPin, name: 'Google Maps', description: 'Scrape local businesses directly inside of Nova.' },
-  { icon: FileText, name: 'Script Writer', description: 'Write cold-call and closing scripts directly inside of Nova.' },
+  { icon: PenLine, name: 'Script Writer (OpenAI)', description: 'Write cold-call and closing scripts directly inside of Nova.' },
 ]
+
+// Matches the live tenji.ai eyebrow chip (dot + pill border) used identically across
+// every other marketing section — was plain uppercase text here, same delta as Pricing.
+function Eyebrow({ children }) {
+  return (
+    <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f2386f]">
+      <span className="h-1.5 w-1.5 rounded-full bg-[#f2386f]" />
+      {children}
+    </p>
+  )
+}
 
 export default function Integrations() {
   return (
     <section id="integrations" className="scroll-mt-24 bg-[#08080c] px-8 py-28 text-white">
       <div className="mx-auto max-w-6xl text-center">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f2386f]">AI INTEGRATIONS</p>
+        <Eyebrow>AI INTEGRATIONS</Eyebrow>
         <h2 className="mt-3 text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
           Works with your entire AI stack
         </h2>

@@ -109,7 +109,8 @@ export default function TestimonialsMarquee() {
       `}</style>
 
       <div className="mx-auto max-w-6xl px-8 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f2386f]">TESTIMONIALS</p>
+        <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
           <div className="flex -space-x-2">
             {avatarSample.map((t) => (
               <div
