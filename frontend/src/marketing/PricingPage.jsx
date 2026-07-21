@@ -9,12 +9,10 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[#08080c]">
       <Nav />
       <main>
-        <div className="px-8 pt-44 pb-4 text-center text-white">
-          <h1 className="mx-auto max-w-2xl text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
-            One plan for every stage of your agency.
-          </h1>
-        </div>
-        <PricingSection />
+        {/* PricingSection already renders its own eyebrow + H2 — a duplicate H1 here
+            (removed 2026-07-21) had no equivalent on live tenji.ai's /pricing. */}
+        <div className="pt-24" />
+        <PricingSection heading="Simple, transparent pricing" />
         <FaqSection />
         <FinalCta />
       </main>

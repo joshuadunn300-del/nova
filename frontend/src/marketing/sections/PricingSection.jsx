@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ArrowRight } from 'lucide-react'
+import { Check, ArrowRight, Zap } from 'lucide-react'
 
 // Live tenji.ai renders checks as a circular pink-ring badge, not an inline glyph.
 function CheckBadge() {
@@ -96,7 +96,8 @@ function PriceCard({ plan, annual }) {
       }`}
     >
       {plan.badge && (
-        <span className="absolute -top-3 left-7 rounded-full bg-[#f2386f] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
+        <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-[#f2386f] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
+          <Zap className="h-3 w-3" fill="currentColor" />
           {plan.badge}
         </span>
       )}
@@ -155,49 +156,39 @@ function PriceCard({ plan, annual }) {
   )
 }
 
-export default function PricingSection() {
-  const [annual, setAnnual] = useState(false)
-  const monthlyRef = useRef(null)
-  const annualRef = useRef(null)
-  const [pill, setPill] = useState({ left: 0, width: 0 })
-
-  // Slides a real pill behind the active label (measured, not guessed — Monthly and
-  // Annual are different widths since Annual carries the "Save 20%" badge) instead of
-  // the old toggle-in-place bg swap, which had no motion at all vs. the live site.
-  useLayoutEffect(() => {
-    const el = annual ? annualRef.current : monthlyRef.current
-    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth })
-  }, [annual])
+// Live tenji.ai uses different H2 copy for the homepage's inline pricing teaser
+// ("Simple pricing that scales with your agency") vs. the standalone /pricing
+// page ("Simple, transparent pricing") — same component, context-driven heading.
+export default function PricingSection({ heading = 'Simple pricing that scales with your agency' }) {
+  const [annual, setAnnual] = useState(true) // live tenji.ai/pricing opens with Annual active
 
   return (
     <section id="pricing" className="relative scroll-mt-24 bg-[#08080c] px-8 py-28 text-white">
       <div className="mx-auto max-w-6xl text-center">
         <Eyebrow>PRICING</Eyebrow>
         <h2 className="mt-3 text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
-          Simple pricing that scales with your agency
+          {heading}
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-white/60">Start free, scale when ready. No hidden fees, no surprises.</p>
 
-        <div className="relative mt-8 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 p-1">
-          <span
-            className="absolute top-1 bottom-1 rounded-full bg-white transition-[left,width] duration-300 ease-out"
-            style={{ left: pill.left, width: pill.width }}
-          />
+        {/* iOS-style switch — matches the real tenji.ai toggle (label / knob-switch / label
+            / separate "Save 20%" badge), not the segmented two-button control this used to be. */}
+        <div className="mt-8 inline-flex items-center gap-3">
+          <span className={`text-sm font-medium transition-colors ${!annual ? 'text-white' : 'text-white/50'}`}>Monthly</span>
           <button
-            ref={monthlyRef}
-            onClick={() => setAnnual(false)}
-            className={`relative z-10 rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${!annual ? 'text-black' : 'text-white/60'}`}
+            type="button"
+            role="switch"
+            aria-checked={annual}
+            aria-label="Toggle annual billing"
+            onClick={() => setAnnual((v) => !v)}
+            className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-300 ${annual ? 'bg-[#f2386f]' : 'bg-white/15'}`}
           >
-            Monthly
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 ${annual ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+            />
           </button>
-          <button
-            ref={annualRef}
-            onClick={() => setAnnual(true)}
-            className={`relative z-10 flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${annual ? 'text-black' : 'text-white/60'}`}
-          >
-            Annual
-            <span className="rounded-full bg-[#f2386f]/20 px-2 py-0.5 text-[10px] font-semibold text-[#f2386f]">Save 20%</span>
-          </button>
+          <span className={`text-sm font-medium transition-colors ${annual ? 'text-white' : 'text-white/50'}`}>Annual</span>
+          <span className="rounded-full bg-[#f2386f]/20 px-2 py-0.5 text-[10px] font-semibold text-[#f2386f]">Save 20%</span>
         </div>
       </div>
 

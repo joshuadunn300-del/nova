@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Swords, ArrowUpRight } from 'lucide-react'
+import { Swords } from 'lucide-react'
 
 // `to` starting with "/#" is an on-page landing anchor (rendered as a plain <a> so the
 // browser's native fragment-navigation handles the scroll — a react-router <Link> would
@@ -43,22 +43,10 @@ export default function SiteFooter() {
   return (
     <footer className="relative border-t border-white/5 bg-[#08080c] text-white">
       <div className="px-8 py-24">
-        <div className="mb-24">
-          <h2 className="max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
-            Scale your agency with{' '}
-            <span className="bg-gradient-to-r from-[#f2386f] to-[#ff8fb0] bg-clip-text text-transparent">
-              effortless leads.
-            </span>
-          </h2>
-          <Link
-            to="/signup"
-            className="mt-10 inline-flex items-center gap-3 rounded-2xl bg-[#f2386f] px-8 py-4 text-lg font-medium text-white shadow-[0_10px_30px_-8px_rgba(242,56,111,0.6)] hover:brightness-110"
-          >
-            Get Started
-            <ArrowUpRight className="h-5 w-5" />
-          </Link>
-        </div>
-
+        {/* Live tenji.ai's footer starts directly with the link columns — no second
+            heading/CTA here, that messaging belongs to FinalCta above it. A prior
+            version duplicated "Scale your agency..." + Get Started in both places;
+            removed (2026-07-21) after live comparison. */}
         <div className="grid grid-cols-2 gap-10 border-b border-white/5 pb-16 md:grid-cols-4">
           {COLUMNS.map((col) => (
             <div key={col.heading}>
