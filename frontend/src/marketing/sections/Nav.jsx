@@ -74,7 +74,7 @@ export default function Nav() {
                 to="/signup"
                 className="hidden whitespace-nowrap rounded-full bg-gradient-to-b from-nova-accent-bright to-nova-accent-deep px-4 py-1.5 text-sm font-semibold text-black shadow-[0_6px_18px_-4px_rgba(242,56,111,0.6)] transition-transform hover:scale-[1.03] sm:inline-flex"
               >
-                Start Free Trial
+                Try Today
               </Link>
             </>
           )}
@@ -129,7 +129,7 @@ export default function Nav() {
                   onClick={() => setMenuOpen(false)}
                   className="rounded-full bg-gradient-to-b from-nova-accent-bright to-nova-accent-deep px-3.5 py-2 text-center text-sm font-semibold text-black"
                 >
-                  Start Free Trial
+                  Try Today
                 </Link>
               </>
             )}
