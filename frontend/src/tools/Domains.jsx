@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ExternalLink } from 'lucide-react'
 
 // Parity target: 09 - Resources/UI-Reference/domains.md. Free feature (not
 // gated) — empty state only, since no domain-purchase flow exists yet
@@ -11,6 +12,7 @@ export default function Domains() {
     <div>
       <div className="flex items-start justify-between mb-6">
         <div>
+          <p className="nova-eyebrow mb-1">Designer</p>
           <h1 className="text-xl font-semibold font-nova-heading text-nova-text mb-1">Domains</h1>
           <p className="text-sm text-nova-text-muted">
             Connect custom domains to your published client sites.
@@ -19,9 +21,9 @@ export default function Domains() {
         <div className="flex gap-2 shrink-0">
           <button
             type="button"
-            className="rounded-lg border border-nova-border px-3 py-2 text-sm font-medium text-nova-text-muted hover:bg-nova-surface-hover"
+            className="rounded-lg border border-nova-border px-3 py-2 text-sm font-medium text-nova-text-muted hover:bg-nova-surface-hover inline-flex items-center gap-1.5"
           >
-            ⧉ Purchase Domain
+            <ExternalLink size={14} /> Purchase Domain
           </button>
           <button
             type="button"
@@ -49,8 +51,8 @@ export default function Domains() {
           >
             Add Your First Domain
           </button>
-          <button type="button" className="mt-3 text-sm text-nova-accent hover:text-nova-accent-deep">
-            ⧉ Don't have a domain? Purchase one →
+          <button type="button" className="mt-3 text-sm text-nova-accent hover:text-nova-accent-deep inline-flex items-center gap-1.5">
+            <ExternalLink size={13} /> Don't have a domain? Purchase one →
           </button>
         </div>
       )}

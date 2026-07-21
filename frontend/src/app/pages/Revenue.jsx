@@ -14,8 +14,8 @@ export default function Revenue() {
   const avgValue = active.length ? Math.round(totalMrr / active.length) : 0
 
   const STATS = [
-    { label: 'TOTAL MRR', value: `$${totalMrr}`, icon: '$', highlight: true },
-    { label: 'SETUP FEES', value: '$0', icon: '📈' },
+    { label: 'TOTAL MRR', value: `$${totalMrr}`, highlight: true },
+    { label: 'SETUP FEES', value: '$0' },
     { label: 'CLOSED CLIENTS', value: active.length },
     { label: 'AVG CLIENT VALUE', value: `$${avgValue}` },
     { label: 'CONVERSION', value: '0%' },

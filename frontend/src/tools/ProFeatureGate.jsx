@@ -1,3 +1,5 @@
+import { Check } from 'lucide-react'
+
 // Matches the real Tenji gate-card pattern (verified in
 // 09 - Resources/UI-Reference/{analytics,contracts}.md — both screens use this
 // exact eyebrow/heading/body/bullets/CTA structure). Reusable across any
@@ -23,7 +25,7 @@ export default function ProFeatureGate({ heading, body, bullets = [], ctaLabel =
         <ul className="mt-5 space-y-2 text-left">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-2 text-sm text-nova-text-muted">
-              <span className="text-nova-accent mt-0.5">✦</span>
+              <Check size={13} className="text-nova-accent mt-0.5 shrink-0" />
               <span>{b}</span>
             </li>
           ))}

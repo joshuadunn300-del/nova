@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Clock } from 'lucide-react'
 import { listLeads } from '../lib/api'
 
 // Verified live against the real tenji.ai/app/followups (2026-07-21): Tracker's real
@@ -22,7 +23,7 @@ export default function FollowUps() {
 
       {leads.length === 0 ? (
         <div className="nova-card border-dashed p-10 text-center">
-          <div className="nova-icon-tile mx-auto mb-3 text-base">🕐</div>
+          <div className="nova-icon-tile mx-auto mb-3"><Clock size={18} /></div>
           <p className="text-sm font-medium">No leads in Follow Up</p>
           <p className="text-sm text-nova-text-muted mt-1">
             Drag leads to the "Follow Up" column in your Lead Tracker and they'll appear here.

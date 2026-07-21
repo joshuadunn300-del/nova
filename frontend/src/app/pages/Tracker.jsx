@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Flame } from 'lucide-react'
 import { listLeads, updateLead } from '../lib/api'
 import { isHottest, leadScore, sortByScoreDesc } from '../lib/leadScore'
 
@@ -96,7 +97,7 @@ export default function Tracker() {
                       <div className="flex items-center justify-between gap-1">
                         <span>{leadName(lead) || '(unnamed lead)'}</span>
                         <span className={isHottest(lead) ? 'shrink-0 font-semibold text-nova-accent' : 'shrink-0 font-semibold text-nova-text-muted'}>
-                          {isHottest(lead) && '🔥'} {leadScore(lead)}
+                          {isHottest(lead) && <Flame size={11} />} {leadScore(lead)}
                         </span>
                       </div>
                     </div>

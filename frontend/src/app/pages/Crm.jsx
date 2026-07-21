@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import { Download, Users, Flame } from 'lucide-react'
 import { listLeads } from '../lib/api'
 import { canUseFeature } from '../lib/entitlements'
 import { isHottest, leadScore, sortByScoreDesc } from '../lib/leadScore'
@@ -65,8 +66,8 @@ export default function Crm() {
       <p className="nova-eyebrow mb-1">AGENCY</p>
       <div className="flex items-start justify-between mb-1">
         <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">CRM</h1>
-        <button type="button" onClick={exportCsv} className="nova-btn-secondary">
-          ⬇ Export CSV
+        <button type="button" onClick={exportCsv} className="nova-btn-secondary inline-flex items-center gap-1.5">
+          <Download size={14} /> Export CSV
         </button>
       </div>
       <p className="text-sm text-nova-text-muted mb-4">
@@ -98,7 +99,7 @@ export default function Crm() {
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : rows.length === 0 ? (
         <div className="nova-card border-dashed p-10 text-center">
-          <div className="nova-icon-tile mx-auto mb-3 text-base">👥</div>
+          <div className="nova-icon-tile mx-auto mb-3"><Users size={18} /></div>
           <p className="text-sm font-medium">No leads found</p>
           <p className="text-sm text-nova-text-muted mt-1">
             Run a lead search or add leads manually from the tracker.
@@ -113,7 +114,7 @@ export default function Crm() {
               label: 'Score',
               render: (r) => (
                 <span className={isHottest(r) ? 'inline-flex items-center gap-1 rounded-full bg-nova-accent/15 px-2 py-0.5 font-semibold text-nova-accent' : 'font-semibold'}>
-                  {isHottest(r) && '🔥'} {leadScore(r)}
+                  {isHottest(r) && <Flame size={12} />} {leadScore(r)}
                 </span>
               ),
             },
