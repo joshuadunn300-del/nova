@@ -82,12 +82,14 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Sword visual slot, top-right */}
+      {/* Sword visual slot, top-right — a thin single accent line, not a dominant
+          crossed-blade icon (live tenji.ai uses one subtle diagonal katana, not
+          an X pattern) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-16 -top-10 hidden text-nova-accent/10 md:block"
+        className="pointer-events-none absolute -right-6 top-16 hidden rotate-[38deg] text-nova-accent/25 md:block"
       >
-        <Swords size={420} strokeWidth={0.75} />
+        <Swords size={160} strokeWidth={0.6} />
       </div>
 
       {/* Samurai line-art, left third — same treatment as Login's right-panel image */}

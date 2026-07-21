@@ -16,9 +16,12 @@ const STAGES = [
 export default function Video() {
   return (
     <section id="video" className="mx-auto max-w-5xl px-6 py-28 text-center text-white scroll-mt-24">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f2386f]">HOW IT WORKS</p>
-      <h2 className="mt-3 text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
-        How Nova Works
+      <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f2386f]">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#f2386f]" />
+        HOW IT WORKS
+      </p>
+      <h2 className="mt-5 text-4xl font-bold sm:text-5xl" style={{ fontFamily: '"Space Grotesk", sans-serif' }}>
+        How Nova <span className="text-[#f2386f]">Works</span>
       </h2>
       <p className="mx-auto mt-4 max-w-xl text-white/50">
         Watch the full workflow in ninety seconds. Find the lead, build the site, close the deal.
