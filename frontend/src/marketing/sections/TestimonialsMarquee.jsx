@@ -1,29 +1,28 @@
 import { useEffect, useRef, useState } from 'react'
 import { Star } from 'lucide-react'
 
-// Names/roles verbatim from landing.md rubric section 10. Quotes for 13/20 confirmed
-// against a live tenji.ai read (2026-07-21, browser recon — the vault's referenced
-// "recon transcript" couldn't be located) and transcribed as closely as the visible
-// text allowed; the remaining 7 are written from the rubric's hook keywords only
-// (not verbatim) since those cards weren't reached in the scroll pass — see BUILD-LOG.
-// Product name swapped to Nova; the mentor's name ("Blake" on the live site) is
-// genericized to "a mentor" per rubric instruction — never shipped.
+// Names/roles/quotes verbatim from a live tenji.ai read (2026-07-21, via get_page_text —
+// the vault's referenced "recon transcript" couldn't be located, so this is sourced
+// directly from the live site instead). All 20/20 confirmed. Product name swapped to
+// Nova; the mentor's name ("Blake Alexander" / "Blake" on the live site, from "the
+// Blake Alexander channel") is genericized to "a marketing YouTube channel" / "a
+// mentor" per rubric instruction — never shipped.
 const TESTIMONIALS = [
-  { name: 'Marcus Webb', role: 'Agency Owner', quote: "Found Nova from a YouTube video and closed two $297/mo clients in my first nine days. Didn't think it'd be that fast." },
-  { name: 'Priya Natarajan', role: 'Freelance Web Designer', quote: "I used to cold-email blind and hope. Now I only pitch businesses Nova's already flagged as needing a new site." },
+  { name: 'Marcus Webb', role: 'Agency Owner', quote: "Found a marketing YouTube channel, tried Nova that same week. Closed two $297 websites in my first 9 days. This just works." },
+  { name: 'Priya Natarajan', role: 'Freelance Web Designer', quote: "I was cold emailing blind for months. Nova shows me exactly which local businesses have garbage websites — I just reach out to the ones that obviously need me." },
   { name: 'Devon Hartley', role: 'Agency Owner', quote: "Scaled from 0 to 11 clients selling $197 sites to plumbers and roofers. Nova finds them, I close them. Wish I had this a year ago." },
   { name: 'Sasha Lindqvist', role: 'Solo Founder', quote: "The site-audit scoring is unreal. I walk into the call already knowing what's wrong with their website. Instant credibility." },
   { name: 'Tyrone Beckett', role: 'Agency Owner', quote: "Watched a mentor scale to 45k doing this, figured I'd try the actual tool. Did 6k my first month on the side. It's legit." },
   { name: 'Emilia Vance', role: 'Web Designer', quote: "Stopped guessing who to pitch. Nova literally hands me a list of local businesses with no website or a broken one. That's the whole game." },
   { name: 'Rohan Mehta', role: 'Agency Owner', quote: "I sell $297 websites to dentists and med spas. Nova's opportunity scoring tells me who's worth my time before I even dial." },
   { name: 'Caleb Brennan', role: 'Solo Agency', quote: 'Used to spend my whole morning scrolling Google Maps for leads. Nova does it in seconds now. Got that time back to actually close deals.' },
-  { name: 'Yuki Tanaka', role: 'Freelancer', quote: 'Fourteen qualified leads on my very first search. I was not expecting that.' },
-  { name: 'Nadia Okonkwo', role: 'Agency Owner', quote: 'Hit my first $8K month once I stopped chasing cold leads and let Nova rank the warm ones.' },
+  { name: 'Yuki Tanaka', role: 'Freelancer', quote: 'First tool that actually understands the local-biz website game. Found 14 solid leads in my city the first day, booked 3 calls.' },
+  { name: 'Nadia Okonkwo', role: 'Agency Owner', quote: 'Sold websites part-time for years with no system. Nova gave me the system. Just hit my first 8k month.' },
   { name: 'Grant Whitfield', role: 'Agency Owner', quote: "The 'weak or missing website' filter is gold. Those are the easiest businesses on earth to sell to and Nova finds them for me." },
   { name: 'Bianca Rossi', role: 'Freelance Web Designer', quote: "I closed a $297 site for a local landscaper off a Nova lead before I'd even finished my coffee. Hooked." },
-  { name: 'Andre Solomon', role: 'Agency Owner', quote: "Found this in a YouTube video and it's the first tab I open every morning now." },
-  { name: 'Hannah Delgado', role: 'Solo Founder', quote: 'No ads, no funnels, just outreach — and I still cleared $4K last month.' },
-  { name: 'Liam Castellano', role: 'Web Designer', quote: 'The scoring accuracy genuinely surprised me. The businesses it flags actually need the help.' },
+  { name: 'Andre Solomon', role: 'Agency Owner', quote: "Came from a mentor's channel skeptical. Now Nova's the first tab I open every morning. My pipeline's never been this full." },
+  { name: 'Hannah Delgado', role: 'Solo Founder', quote: "I don't do paid ads, I don't do fancy funnels. I just pull leads from Nova and pitch businesses that need a website. $4k last month." },
+  { name: 'Liam Castellano', role: 'Agency Owner', quote: "The scoring saves me from wasting pitches. If Nova says high opportunity, they almost always say yes. It's eerie how accurate it is." },
   { name: 'Fatima Al-Rashid', role: 'Web Designer', quote: "Selling websites used to mean begging friends for referrals. Now I've got a constant stream of local businesses that genuinely need me." },
   { name: 'Cody Ferrell', role: 'Agency Owner', quote: 'Did $197 sites for HVAC and electricians all month. Nova found every single lead. Cleared 7k, totally solo.' },
   { name: 'Mei Lin Zhou', role: 'Solo Agency', quote: "What sold me was how fast it is. Niche, city, go — and I've got a list of businesses to pitch. No more manual prospecting." },
