@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Link2 } from 'lucide-react'
+
+// Verified via getComputedStyle against live tenji.ai/app/domains. Primary buttons:
+// 3-stop 135deg gradient rgb(243,22,114)→rgb(245,61,138) 50%→rgb(255,82,116), 12px radius,
+// 14px/600 text, 10px/20px padding. Outline buttons: border-white/10, 12px radius, 12px/500
+// muted text, 10px/16px padding.
+const GRADIENT_BTN = 'rounded-xl bg-[linear-gradient(135deg,#f31672,#f53d8a_50%,#ff5274)] px-5 py-2.5 text-sm font-semibold text-white'
+const OUTLINE_BTN = 'rounded-xl border border-white/10 px-4 py-2.5 text-xs font-medium text-nova-text-muted hover:bg-white/5'
 
 // Parity target: 09 - Resources/UI-Reference/domains.md. Free feature (not
 // gated) — empty state only, since no domain-purchase flow exists yet
@@ -19,16 +26,10 @@ export default function Domains() {
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button
-            type="button"
-            className="rounded-lg border border-nova-border px-3 py-2 text-sm font-medium text-nova-text-muted hover:bg-nova-surface-hover inline-flex items-center gap-1.5"
-          >
+          <button type="button" className={`${OUTLINE_BTN} inline-flex items-center gap-1.5`}>
             <ExternalLink size={14} /> Purchase Domain
           </button>
-          <button
-            type="button"
-            className="rounded-lg bg-nova-accent px-3 py-2 text-sm font-semibold text-white hover:bg-nova-accent-deep transition-colors"
-          >
+          <button type="button" className={GRADIENT_BTN}>
             Add Domain
           </button>
         </div>
@@ -36,19 +37,16 @@ export default function Domains() {
 
       {domains.length === 0 && (
         <div className="max-w-md mx-auto text-center rounded-xl border border-nova-border bg-nova-surface p-10 mt-8">
-          <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-nova-surface-hover text-nova-text-muted">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-              <path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8" />
-            </svg>
+          {/* Verified via getComputedStyle: 56x56px (w-14 h-14), rounded-2xl (not a circle),
+              bg-accent/10, border-accent/20 — a translucent tint tile, not a solid gradient. */}
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-nova-accent/10 border border-nova-accent/20 text-nova-accent">
+            <Link2 size={24} />
           </div>
           <h2 className="text-lg font-semibold font-nova-heading text-nova-text">No domains connected</h2>
           <p className="mt-2 text-sm text-nova-text-muted">
             Add a custom domain and point it to a published client site. We'll walk you through the DNS records.
           </p>
-          <button
-            type="button"
-            className="mt-6 w-full rounded-lg bg-nova-accent px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-nova-accent-deep transition-colors"
-          >
+          <button type="button" className={`${GRADIENT_BTN} mt-6 w-full`}>
             Add Your First Domain
           </button>
           <button type="button" className="mt-3 text-sm text-nova-accent hover:text-nova-accent-deep inline-flex items-center gap-1.5">

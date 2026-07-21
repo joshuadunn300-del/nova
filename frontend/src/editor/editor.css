@@ -48,6 +48,7 @@
 .republish-btn { background: linear-gradient(135deg, #ec4899, #db2777) !important; color: #fff !important; box-shadow: var(--glow-strong); }
 .republish-btn:hover { filter: brightness(1.1); }
 .editor-toolbar button {
+  display: inline-flex; align-items: center; gap: 6px;
   background: transparent; color: var(--text-dim); border: 1px solid transparent; border-radius: var(--radius-lg);
   padding: 7px 12px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
@@ -63,7 +64,7 @@
   background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
 }
 .editor-toolbar .toolbar-tabs .toolbar-tab {
-  display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px;
+  display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 16px;
   font-size: 12px; font-weight: 500; color: rgb(161, 145, 153);
   background: transparent; border: 1px solid transparent;
 }
@@ -164,9 +165,13 @@
 .side-panel .field-hint { font-size: 11px; color: var(--text-dim); text-transform: none; font-weight: 400; letter-spacing: normal; margin-top: 4px; }
 .quick-palettes { margin-bottom: 18px; }
 .palette-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.palette-swatch { display: flex; flex-direction: column; align-items: center; gap: 4px; background: var(--bg-3); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 8px 4px; cursor: pointer; }
+/* Verified via getComputedStyle against live tenji.ai's Designer: swatch is ~80x55px,
+   two overlapping color CIRCLES side by side (not stacked flat bars). */
+.palette-swatch { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: var(--bg-3); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 8px 4px; cursor: pointer; min-height: 55px; }
 .palette-swatch:hover { border-color: var(--accent); }
-.palette-swatch span { display: block; width: 100%; height: 10px; border-radius: 3px; }
+.palette-swatch .swatch-dots { display: flex; }
+.palette-swatch .swatch-dots span { display: block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--bg-3); }
+.palette-swatch .swatch-dots span:last-child { margin-left: -6px; }
 .palette-swatch small { color: var(--text-dim); font-size: 10px; text-transform: none; font-weight: 400; margin-top: 2px; }
 .color-with-hex { display: flex; gap: 6px; }
 .color-with-hex input[type="color"] { flex: 0 0 34px; }

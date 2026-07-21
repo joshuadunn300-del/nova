@@ -36,8 +36,10 @@ export default function DesignPanel({ theme, onChange }) {
               title={p.name}
               onClick={() => { onChange('primary', p.primary); onChange('secondary', p.secondary); }}
             >
-              <span style={{ background: p.primary }} />
-              <span style={{ background: p.secondary }} />
+              <span className="swatch-dots">
+                <span style={{ background: p.primary }} />
+                <span style={{ background: p.secondary }} />
+              </span>
               <small>{p.name}</small>
             </button>
           ))}
