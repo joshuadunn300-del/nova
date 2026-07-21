@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Inbox } from 'lucide-react';
 
 // Loads real inbound form-fills for THIS site. serveSite (the public function that serves
 // published sites) writes a Submission row server-side on every form POST — logged-out
@@ -32,9 +33,13 @@ export default function SubmissionsPanel({ siteId }) {
       {state === 'error' && <p className="panel-note">Couldn't load submissions: {error}</p>}
       {(state === 'offline' || (state === 'ready' && submissions.length === 0)) ? (
         <div className="submissions-empty">
-          <span className="submissions-empty-icon">📥</span>
+          {/* Verified live against tenji.ai/app/editor's real Submissions tab: plain muted
+              outline inbox icon (no colored tile), and the copy is "Use Preview mode to test
+              it." — this file's old copy ("Publish the site and share its link...") didn't
+              match the real product. */}
+          <Inbox className="submissions-empty-icon" size={28} />
           <p className="submissions-empty-title">No submissions yet</p>
-          <p className="panel-note">When visitors submit the quote form on this site, their answers will appear here. Publish the site and share its link to start collecting leads.</p>
+          <p className="panel-note">When visitors submit the quote form on this site, their answers will appear here. Use Preview mode to test it.</p>
         </div>
       ) : (
         <ul className="submissions-list">

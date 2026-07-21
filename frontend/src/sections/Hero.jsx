@@ -77,8 +77,8 @@ export default function Hero({ props = {}, path, editable = false }) {
             </p>
           )}
           <h1
-            className="font-bold leading-[1.1] break-words"
-            style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2.25rem, 5vw, 3.4rem)', letterSpacing: '-0.02em' }}
+            className="font-bold leading-none break-words"
+            style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2.25rem, 5vw, 3.4rem)', letterSpacing: '-0.025em' }}
             {...editableProps(editable, `${path}.headline`)}
           >
             {headline}
@@ -86,7 +86,7 @@ export default function Hero({ props = {}, path, editable = false }) {
           {sub && (
             <p
               className="mt-5 break-words"
-              style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', lineHeight: 1.6, maxWidth: '28rem' }}
+              style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', lineHeight: 1.5, maxWidth: '28rem' }}
               {...editableProps(editable, `${path}.${subtext !== undefined ? 'subtext' : 'subheadline'}`)}
             >
               {sub}

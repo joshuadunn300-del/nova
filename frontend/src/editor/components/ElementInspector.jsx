@@ -1,7 +1,9 @@
+import { X, RotateCcw, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+
 const TEXT_COLOR_SWATCHES = ['#111827', '#ffffff', '#f2386f', '#9d174d', '#0284c7', '#16a34a'];
 const FONTS = ['Site default (Inter)', 'Inter', 'Space Grotesk', 'Poppins', 'Montserrat', 'DM Sans', 'Playfair Display', 'Lora', 'Roboto Slab'];
 const WEIGHTS = ['Reg', 'Med', 'Semi', 'Bold'];
-const ALIGNS = [{ v: 'left', l: '⟸' }, { v: 'center', l: '≡' }, { v: 'right', l: '⟹' }];
+const ALIGNS = [{ v: 'left', Icon: AlignLeft }, { v: 'center', Icon: AlignCenter }, { v: 'right', Icon: AlignRight }];
 const SHADOWS = ['None', 'Soft', 'Strong'];
 
 const SLIDERS = [
@@ -43,7 +45,7 @@ function AutoSlider({ label, unit, min, max, step, value, onChange, onReset }) {
           value={isAuto ? (min + max) / 2 : value}
           onChange={(e) => onChange(Number(e.target.value))}
         />
-        {!isAuto && <button type="button" title="Reset to auto" onClick={onReset}>↺</button>}
+        {!isAuto && <button type="button" title="Reset to auto" onClick={onReset}><RotateCcw size={12} /></button>}
       </div>
     </div>
   );
@@ -59,7 +61,7 @@ export default function ElementInspector({ path, style = {}, onChange, onClear, 
         <span className="inspector-eyebrow">SELECTED</span>
         <div className="inspector-header-top">
           <h3>{labelFromPath(path)}</h3>
-          <button type="button" className="inspector-close" title="Deselect" onClick={onDeselect}>✕</button>
+          <button type="button" className="inspector-close" title="Deselect" onClick={onDeselect}><X size={14} /></button>
         </div>
       </div>
 
@@ -103,7 +105,9 @@ export default function ElementInspector({ path, style = {}, onChange, onClear, 
       <label className="section-label">Alignment</label>
       <div className="inspector-btn-group">
         {ALIGNS.map((a) => (
-          <button key={a.v} type="button" className={style.align === a.v ? 'active' : ''} title={a.v} onClick={() => set('align', a.v)}>{a.l}</button>
+          <button key={a.v} type="button" className={style.align === a.v ? 'active' : ''} title={a.v} onClick={() => set('align', a.v)}>
+            <a.Icon size={14} />
+          </button>
         ))}
       </div>
 
