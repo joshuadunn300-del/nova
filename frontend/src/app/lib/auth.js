@@ -21,6 +21,16 @@ function cacheSession(user) {
   return session
 }
 
+// Google is a built-in Base44 OAuth provider, enabled by default — no extra dashboard
+// config needed (verified against node_modules/@base44/sdk/dist/modules/auth.types.d.ts,
+// 2026-07-21). Redirects the browser away; there's no return value to await.
+export function loginWithGoogle() {
+  if (typeof window === 'undefined' || !window.base44?.auth) {
+    throw new Error('Google sign-in requires a live Base44 session.')
+  }
+  window.base44.auth.loginWithProvider('google', '/app')
+}
+
 export async function login({ email, password }) {
   if (typeof window !== 'undefined' && window.base44?.auth) {
     const { user } = await window.base44.auth.loginViaEmailPassword(email, password)

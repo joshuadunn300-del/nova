@@ -18,6 +18,14 @@ import { AUTH_ROUTES, APP_ROUTES } from './app/routes.jsx'
 // replicate; reverted in favor of the routes.jsx-level fix.
 const Landing = lazy(() => import('./marketing/Landing.jsx'))
 const Designer = lazy(() => import('./editor/Designer.jsx'))
+const PricingPage = lazy(() => import('./marketing/PricingPage.jsx'))
+const Terms = lazy(() => import('./marketing/Terms.jsx'))
+const Privacy = lazy(() => import('./marketing/Privacy.jsx'))
+const Refund = lazy(() => import('./marketing/Refund.jsx'))
+const Contact = lazy(() => import('./marketing/Contact.jsx'))
+const RequestFeature = lazy(() => import('./marketing/RequestFeature.jsx'))
+const News = lazy(() => import('./marketing/News.jsx'))
+const Affiliates = lazy(() => import('./marketing/Affiliates.jsx'))
 
 function EnteringNova() {
   return (
@@ -64,6 +72,70 @@ const router = createBrowserRouter([
     ),
   },
   ...devRoutes,
+  {
+    path: '/pricing',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <PricingPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/terms',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <Terms />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/privacy',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <Privacy />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/refund',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <Refund />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/contact',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <Contact />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/request-feature',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <RequestFeature />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/news',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <News />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/affiliates',
+    element: (
+      <Suspense fallback={<MinimalSpinner />}>
+        <Affiliates />
+      </Suspense>
+    ),
+  },
   {
     path: '/app/designer',
     element: (

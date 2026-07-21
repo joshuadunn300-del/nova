@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, LayoutGrid, TrendingUp, Mail, Lock, ArrowRight } from 'lucide-react'
-import { login } from '../lib/auth'
+import { Search, LayoutGrid, TrendingUp, Mail, Lock, ArrowRight, Sparkles } from 'lucide-react'
+import { login, loginWithGoogle } from '../lib/auth'
 import samurai from '../../assets/samurai.png'
 
 // 1:1 layout/component replica of tenji.ai/login (screenshotted + inspected live
@@ -64,7 +64,7 @@ export default function Login() {
     setBusy(true)
     try {
       await login({ email, password })
-      navigate('/app/leads', { replace: true })
+      navigate('/app', { replace: true })
     } catch (err) {
       setError(err.message || 'Login failed.')
     } finally {
@@ -108,6 +108,7 @@ export default function Login() {
 
           <button
             type="button"
+            onClick={() => loginWithGoogle()}
             className="mt-8 w-full flex items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
           >
             <GoogleIcon />
@@ -202,9 +203,11 @@ export default function Login() {
         />
 
         <div className="relative flex h-full max-w-xl flex-col justify-center px-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-nova-accent">天 · THE AGENCY DOJO</p>
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-nova-accent">
+            <Sparkles size={12} /> THE AGENCY DOJO
+          </p>
           <h2 className="mt-4 font-display text-4xl font-semibold leading-[1.15] tracking-tight">
-            Master the art of winning <span className="text-nova-accent">clients.</span>
+            Master the art of <span className="animated-gradient-text">winning clients.</span>
           </h2>
           <p className="mt-4 max-w-md text-white/60">
             Nova is where agencies find local businesses, build their websites, and close the deal. One disciplined workflow.

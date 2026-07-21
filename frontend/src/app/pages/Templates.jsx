@@ -1,12 +1,34 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { TEMPLATES as FALLBACK_TEMPLATES } from '../lib/templateCatalog'
+import { Search, Wand2 } from 'lucide-react'
+import { CATEGORIES, TEMPLATES as FALLBACK_TEMPLATES } from '../lib/templateCatalog'
 import { createSiteFromTemplate, listSiteTemplates } from '../lib/api'
+import { getNicheImages } from '../../lib/imageLibrary'
 
+// Real Tenji per-category accent bar color (verified against tenji-Templates.png: blue
+// under Plumbing/TRADES, amber under Electricians/TRADES... same category → same color).
 const ACCENTS = {
-  TRADES: 'bg-amber-500', 'HOME SERVICES': 'bg-sky-500', OUTDOOR: 'bg-emerald-500',
-  AUTOMOTIVE: 'bg-slate-500', HEALTH: 'bg-rose-500', 'HEALTH & FITNESS': 'bg-lime-500',
-  BEAUTY: 'bg-fuchsia-500', HOSPITALITY: 'bg-orange-500', CUSTOM: 'bg-nova-accent',
+  TRADES: '#3b82f6', 'HOME SERVICES': '#0ea5e9', OUTDOOR: '#10b981',
+  AUTOMOTIVE: '#64748b', HEALTH: '#f43f5e', 'HEALTH & FITNESS': '#84cc16',
+  BEAUTY: '#d946ef', HOSPITALITY: '#f97316', CUSTOM: '#f2386f',
+}
+
+const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+// Reverse lookup: real seeded SiteTemplate rows only carry a `niche` slug, not a
+// category — resolve it back via the catalog's own human-readable niche list.
+const CATEGORY_BY_SLUG = Object.fromEntries(
+  Object.entries(CATEGORIES).flatMap(([category, niches]) => niches.map((n) => [slugify(n), category]))
+)
+// The real seeded SiteTemplate niche slugs don't always textually match the catalog's
+// human-readable names (e.g. "carpet-cleaning" vs catalog's "Carpet Cleaners", or
+// "handyman"/"cleaning"/"fitness"/"security"/"solar" which aren't literal catalog
+// entries at all) — explicit overrides for the 26 real seeded niches, confirmed via
+// direct API query 2026-07-21.
+const CATEGORY_SLUG_OVERRIDES = {
+  'carpet-cleaning': 'HOME SERVICES', handyman: 'TRADES', cleaning: 'HOME SERVICES',
+  security: 'HOME SERVICES', solar: 'TRADES', fitness: 'HEALTH & FITNESS',
+  'garage-door': 'HOME SERVICES', 'bathroom-renovation': 'TRADES', 'smash-repair': 'AUTOMOTIVE',
+  hvac: 'TRADES', builders: 'TRADES', catering: 'HOSPITALITY',
 }
 
 // Real seeded SiteTemplate rows only have `niche` (a slug, e.g. "carpet-cleaning") +
@@ -14,6 +36,10 @@ const ACCENTS = {
 // and pull a description straight out of the real hero copy, so the card shows real
 // seeded content rather than invented text.
 const label = (t) => (t.category ? t.niche : t.niche.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))
+const categoryOf = (t) => {
+  const slug = slugify(t.niche)
+  return t.category || CATEGORY_BY_SLUG[slug] || CATEGORY_SLUG_OVERRIDES[slug] || null
+}
 const desc = (t) => {
   if (t.desc) return t.desc
   const hero = t.content_json?.sections?.find((s) => s.type === 'hero')?.props
@@ -54,19 +80,20 @@ export default function Templates() {
 
   return (
     <div>
-      <p className="nova-eyebrow mb-1">STUDIO</p>
-      <div className="flex items-start justify-between mb-1">
-        <h1 className="text-xl font-semibold">Templates</h1>
+      <p className="nova-eyebrow mb-1">Studio</p>
+      <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight leading-[1.3]">Templates</h1>
+      <p className="mt-2 text-sm text-nova-text-muted max-w-2xl mb-6">
+        Conversion-focused website templates for every local business niche. Pick one and import a lead to auto-fill it.
+      </p>
+      <div className="relative mb-6 w-56">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-nova-text-muted" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search templates..."
-          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-1.5 text-sm"
+          className="w-full rounded-xl bg-white/[0.04] border border-white/10 focus:border-primary/50 focus:outline-none pl-9 pr-4 py-2.5 text-sm transition-colors"
         />
       </div>
-      <p className="text-sm text-nova-text-muted mb-6">
-        Conversion-focused website templates for every local business niche. Pick one and import a lead to auto-fill it.
-      </p>
 
       {activeNiche && (
         <form onSubmit={handleUseTemplate} className="mb-6 nova-card p-4">
@@ -110,13 +137,19 @@ export default function Templates() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="nova-card overflow-hidden">
-          <div className={`h-1.5 ${ACCENTS.CUSTOM}`} />
-          <div className="p-4">
-            <div className="text-lg mb-1">✨</div>
-            <p className="text-xs font-semibold text-nova-accent mb-1">CUSTOM</p>
-            <h3 className="font-medium mb-1">Create Your Own</h3>
-            <p className="text-sm text-nova-text-muted mb-3">
+        <div className="nova-card overflow-hidden flex flex-col">
+          <div className="aspect-[16/10] bg-nova-accent/10 flex items-center justify-center">
+            <div className="nova-icon-tile" style={{ width: 64, height: 64 }}>
+              <Wand2 className="h-7 w-7" strokeWidth={1.5} />
+            </div>
+          </div>
+          <div className="h-1 w-16 rounded-full ml-4 mt-3" style={{ backgroundColor: ACCENTS.CUSTOM }} />
+          <div className="p-4 pt-3 flex-1 flex flex-col">
+            <div className="flex items-start justify-between gap-2 mb-1">
+              <h3 className="font-medium">Create Your Own</h3>
+              <span className="nova-pill-label shrink-0">CUSTOM</span>
+            </div>
+            <p className="text-sm text-nova-text-muted mb-3 flex-1">
               Start from a fully editable blank template, perfect for any niche we don't list yet. Customize every section.
             </p>
             <button type="button" onClick={() => setActiveNiche('custom')} className="text-sm font-medium text-nova-accent">
@@ -125,19 +158,27 @@ export default function Templates() {
           </div>
         </div>
 
-        {filtered.map((t) => (
-          <div key={t.id || t.niche} className="nova-card overflow-hidden">
-            <div className={`h-1.5 ${ACCENTS[t.category] || 'bg-nova-accent'}`} />
-            <div className="p-4">
-              {t.category && <p className="text-xs font-semibold text-nova-text-muted mb-1">{t.category}</p>}
-              <h3 className="font-medium mb-1">{label(t)}</h3>
-              <p className="text-sm text-nova-text-muted mb-3 line-clamp-2">{desc(t)}</p>
-              <button type="button" onClick={() => setActiveNiche(t.niche)} className="text-sm font-medium text-nova-accent">
-                Use Template ↗
-              </button>
+        {filtered.map((t) => {
+          const category = categoryOf(t)
+          return (
+            <div key={t.id || t.niche} className="nova-card overflow-hidden flex flex-col">
+              <div className="aspect-[16/10] overflow-hidden">
+                <img src={getNicheImages(t.niche).hero} alt="" className="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div className="h-1 w-16 rounded-full ml-4 mt-3" style={{ backgroundColor: ACCENTS[category] || ACCENTS.CUSTOM }} />
+              <div className="p-4 pt-3 flex-1 flex flex-col">
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-medium">{label(t)}</h3>
+                  {category && <span className="nova-pill-label shrink-0">{category}</span>}
+                </div>
+                <p className="text-sm text-nova-text-muted mb-3 line-clamp-2 flex-1">{desc(t)}</p>
+                <button type="button" onClick={() => setActiveNiche(t.niche)} className="text-sm font-medium text-nova-accent">
+                  Use Template ↗
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
