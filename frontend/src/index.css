@@ -283,18 +283,20 @@ h1, h2, h3 {
   opacity: 0.5;
   box-shadow: none;
 }
+/* Verified via getComputedStyle against a live tenji.ai secondary button (Export CSV):
+   rounded-xl (12px), NOT a full pill, regular weight, 10px/16px padding. */
 .nova-btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  border-radius: 9999px;
-  padding: 0.5rem 1.25rem;
-  font-weight: 500;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-weight: 400;
   font-size: 0.875rem;
   color: var(--color-nova-text);
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Icon tile — hot-pink gradient rounded square for stat cards / quick actions. */

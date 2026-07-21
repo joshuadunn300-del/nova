@@ -78,12 +78,12 @@ export default function Crm() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search businesses..."
-          className="flex-1 nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          className="flex-1 nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
         >
           <option value="all">All Statuses</option>
           <option value="new">New</option>

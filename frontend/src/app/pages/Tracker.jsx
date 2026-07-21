@@ -52,7 +52,7 @@ export default function Tracker() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search leads..."
-            className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-1.5 text-sm"
+            className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
           />
           <button type="button" className="nova-btn-primary">
             ＋ Add Lead
@@ -73,7 +73,9 @@ export default function Tracker() {
               onDrop={() => dragId && moveLead(dragId, col.key)}
               className={`rounded-nova border-t-4 ${col.border} border-x border-b border-nova-border bg-nova-surface min-h-[220px]`}
             >
-              <div className="flex items-center justify-between px-3 py-2 text-xs font-semibold text-nova-text-muted">
+              {/* Verified via getComputedStyle against live tenji.ai/app/tracker: column
+                  label is 10px/600/white, not 12px/muted — the count badge stays muted. */}
+              <div className="flex items-center justify-between px-3 py-2 text-[10px] font-semibold text-nova-text">
                 <span>{col.label}</span>
                 <span className="rounded-full bg-nova-surface-hover px-1.5">{rows.length}</span>
               </div>

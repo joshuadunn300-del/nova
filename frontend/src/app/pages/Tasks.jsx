@@ -46,18 +46,18 @@ export default function Tasks() {
           placeholder="What needs to be done?"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="flex-1 min-w-[200px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          className="flex-1 min-w-[200px] nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
         />
         <input
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
         />
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          className="nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+          className="nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>

@@ -60,19 +60,19 @@ export default function Clients() {
             placeholder="Business name"
             value={form.business_name}
             onChange={(e) => setForm((f) => ({ ...f, business_name: e.target.value }))}
-            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+            className="flex-1 min-w-[160px] nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
           />
           <input
             placeholder="Contact name"
             value={form.contact_name}
             onChange={(e) => setForm((f) => ({ ...f, contact_name: e.target.value }))}
-            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+            className="flex-1 min-w-[160px] nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
           />
           <input
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-            className="flex-1 min-w-[160px] nova-input-focus rounded-md border border-nova-border bg-transparent px-3 py-2 text-sm"
+            className="flex-1 min-w-[160px] nova-input-focus rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm"
           />
           <button type="submit" className="nova-btn-primary">
             Add
