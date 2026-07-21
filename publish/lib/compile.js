@@ -39,8 +39,12 @@ function compileToHtml(contentJson, opts = {}) {
     .map((s) => {
       const renderer = RENDERERS[s.type];
       if (!renderer) {
-        // unknown section type: skip rather than crash the whole page
-        return `<!-- unknown section type: ${escapeHtml(s.type || 'undefined')} -->`;
+        // unknown section type: skip rather than crash the whole page. escapeHtml
+        // neutralizes < > so this can't inject a tag, but it doesn't touch "--",
+        // which can prematurely close an HTML comment — strip it too so the comment
+        // itself can't be broken out of regardless of escaper choice.
+        const safeType = escapeHtml(s.type || 'undefined').replace(/--/g, '––');
+        return `<!-- unknown section type: ${safeType} -->`;
       }
       const props = s.props || {};
       return s.type === 'hero' ? renderer(props, siteId) : renderer(props);
