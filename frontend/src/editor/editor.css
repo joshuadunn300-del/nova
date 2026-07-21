@@ -68,6 +68,18 @@
 
 .designer-body { display: flex; flex: 1; min-height: 0; }
 .designer-sidebar { width: 232px; background: var(--bg-1); border-right: 1px solid var(--border); overflow-y: auto; padding: 12px; }
+.section-list-header {
+  display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 12px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);
+}
+.add-section-menu-compact { position: relative; }
+.add-section-menu-compact > button {
+  width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  padding: 0; font-size: 14px; line-height: 1; border-radius: 999px; background: var(--bg-3);
+  border: 1px solid var(--border-soft); color: var(--text-dim);
+}
+.add-section-menu-compact > button:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.add-section-menu-compact .add-section-dropdown { left: auto; right: 0; }
 .section-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .section-row {
   display: flex; justify-content: space-between; align-items: center; background: var(--bg-2);
@@ -80,14 +92,23 @@
 .section-row:active { cursor: grabbing; }
 .drag-handle { color: var(--text-dim); margin-right: 6px; font-size: 12px; }
 .section-type { font-weight: 600; text-transform: capitalize; letter-spacing: 0.01em; flex: 1; }
-.section-controls { display: flex; gap: 3px; }
-.section-controls button {
-  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+/* Move/duplicate/delete/bg-edit are real, functioning controls (nothing removed) but stay
+   hidden until hover — the live Tenji editor's default row state shows only a drag handle,
+   name, and visibility eye (reference/tenji-editor.png); a 6-icon row never matches that. */
+.section-controls-extra { display: flex; gap: 3px; opacity: 0; pointer-events: none; transition: opacity 0.12s; margin-right: 6px; }
+.section-row:hover .section-controls-extra, .section-row:focus-within .section-controls-extra { opacity: 1; pointer-events: auto; }
+.section-controls-extra button {
+  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
   padding: 0; font-size: 12px; background: var(--bg-3); border: 1px solid var(--border-soft);
   border-radius: 5px; color: var(--text-dim); cursor: pointer;
 }
-.section-controls button:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
-.section-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
+.section-controls-extra button:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+.section-controls-extra button:disabled { opacity: 0.3; cursor: not-allowed; }
+.section-eye {
+  flex-shrink: 0; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  padding: 0; font-size: 13px; background: transparent; border: 0; color: var(--text-dim); cursor: pointer;
+}
+.section-eye:hover { color: var(--text); }
 
 .designer-canvas { flex: 1; overflow-y: auto; background: var(--bg-0); padding: 28px; }
 .preview-viewport { display: flex; justify-content: center; }
@@ -95,6 +116,13 @@
 
 .side-panel { width: 288px; background: var(--bg-1); border-left: 1px solid var(--border); padding: 18px; overflow-y: auto; }
 .side-panel h3 { margin: 0 0 16px; font-size: 15px; font-weight: 700; }
+.design-panel-hint {
+  margin: 0 0 18px; padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg); color: var(--text-dim); font-size: 12.5px; line-height: 1.5;
+}
+.design-panel-section-title {
+  margin: 0 0 14px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+}
 .side-panel label { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.03em; }
 .side-panel input, .side-panel select, .side-panel textarea {
   background: var(--bg-3); border: 1px solid var(--border-soft); color: var(--text);

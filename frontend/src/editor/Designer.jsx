@@ -96,7 +96,6 @@ export default function Designer({ initialDoc = sampleDoc }) {
         saveStatus={editor.saveStatus} saveError={editor.saveError} onSave={editor.save}
         published={editor.published} publishedUrl={editor.publishedUrl} publishError={editor.publishError}
         onPublish={editor.publish} onUnpublish={editor.unpublish} onRepublish={editor.republish}
-        onAddSection={(type) => editor.add(type)}
         activeTab={activeTab} setActiveTab={selectTab}
       />
 
@@ -110,6 +109,7 @@ export default function Designer({ initialDoc = sampleDoc }) {
             onDelete={editor.remove}
             onToggleHidden={editor.toggleHidden}
             onEditBackground={onEditBackground}
+            onAddSection={(type) => editor.add(type)}
           />
         </aside>
 

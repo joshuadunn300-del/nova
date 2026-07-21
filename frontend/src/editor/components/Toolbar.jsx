@@ -1,13 +1,13 @@
-import AddSectionMenu from './AddSectionMenu.jsx';
-
 const DEVICES = ['desktop', 'tablet', 'mobile'];
 const DEVICE_ICON = { desktop: '▭', tablet: '▯', mobile: '▮' }; // flat geometric glyphs, not colored emoji — see BUILD-LOG icon-language note
 
+// Live Tenji's toolbar has no "+ Add section" control (reference/tenji-editor.png) — that
+// lives only in the sidebar's "Sections" header (see SectionList.jsx). Kept out of here.
 export default function Toolbar({
   siteName, device, setDevice, zoom, setZoom,
   canUndo, canRedo, onUndo, onRedo,
   saveStatus, saveError, onSave, published, publishedUrl, publishError, onPublish, onUnpublish, onRepublish,
-  onAddSection, activeTab, setActiveTab,
+  activeTab, setActiveTab,
 }) {
   return (
     <div className="editor-toolbar" data-testid="toolbar">
@@ -58,8 +58,6 @@ export default function Toolbar({
         <button type="button" title="Undo" data-testid="undo-btn" disabled={!canUndo} onClick={onUndo}>↶</button>
         <button type="button" title="Redo" data-testid="redo-btn" disabled={!canRedo} onClick={onRedo}>↷</button>
       </div>
-
-      <AddSectionMenu onAdd={onAddSection} />
 
       <div className="toolbar-group toolbar-actions">
         <button type="button" title="Preview">Preview</button>

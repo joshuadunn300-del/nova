@@ -17,6 +17,14 @@ export default function DesignPanel({ theme, onChange }) {
     <div className="side-panel" data-testid="design-panel">
       <h3>Design</h3>
 
+      {/* Matches live Tenji's default (nothing-selected) right-panel state —
+          reference/tenji-editor.png: a hint box, then a "Brand" sub-header before
+          the palette/color controls. */}
+      <p className="design-panel-hint">
+        Select an element on the canvas to edit it — or rebrand the whole site below.
+      </p>
+      <p className="design-panel-section-title">Brand</p>
+
       <div className="quick-palettes">
         <label className="section-label">Quick Palettes</label>
         <div className="palette-grid">
