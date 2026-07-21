@@ -1,5 +1,5 @@
 import { editableProps } from './editable.js'
-import { resolveIcon } from './icons.js'
+import { NovaIcon } from './icons.jsx'
 
 export default function Services({ props = {}, path, editable = false }) {
   // `heading` is the real field (lib/templates/_base.js); `title` kept as a
@@ -32,7 +32,6 @@ export default function Services({ props = {}, path, editable = false }) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" style={{ marginTop: '64px' }}>
           {items.map((item, i) => {
             const desc = item?.desc ?? item?.description ?? ''
-            const Icon = resolveIcon(item?.icon)
             return (
               <div
                 key={i}
@@ -49,7 +48,7 @@ export default function Services({ props = {}, path, editable = false }) {
                   padding: '28px',
                 }}
               >
-                {Icon && (
+                {item?.icon && (
                   <div
                     className="flex items-center justify-center mb-6"
                     style={{
@@ -59,7 +58,7 @@ export default function Services({ props = {}, path, editable = false }) {
                       background: 'var(--icon-tile-bg)',
                     }}
                   >
-                    <Icon size={24} color="var(--primary)" strokeWidth={2} />
+                    <NovaIcon name={item.icon} size={24} color="var(--primary)" strokeWidth={2} />
                   </div>
                 )}
                 <h3

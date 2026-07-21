@@ -1,14 +1,11 @@
 import { editableProps } from './editable.js'
-import { resolveIcon } from './icons.js'
+import { NovaIcon } from './icons.jsx'
 
 export default function Footer({ props = {}, path, editable = false }) {
   // `tagline` is the real field (lib/templates/_base.js); `text` kept as a
   // back-compat read for older content_json. Explore `links` may be plain
   // strings (real template shape, same as Navbar's) or {label,href} objects.
   const { logo = 'Business', tagline, text, links = [], phone, email, copyright, logoIcon } = props
-  // Same fallback as Navbar.jsx: never show an empty logo tile when older
-  // content_json records predate the logoIcon field.
-  const LogoIcon = resolveIcon(logoIcon || 'sparkles')
   const taglineText = tagline ?? text ?? ''
   const taglineField = tagline !== undefined ? 'tagline' : 'text'
 
@@ -28,7 +25,7 @@ export default function Footer({ props = {}, path, editable = false }) {
                   boxShadow: 'var(--logo-tile-shadow)',
                 }}
               >
-                {LogoIcon && <LogoIcon size={24} color="#000" strokeWidth={2} />}
+                <NovaIcon name={logoIcon} size={24} color="#000" strokeWidth={2} />
               </div>
               <span
                 className="font-semibold truncate"

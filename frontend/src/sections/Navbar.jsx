@@ -1,5 +1,5 @@
 import { editableProps } from './editable.js'
-import { resolveIcon } from './icons.js'
+import { NovaIcon } from './icons.jsx'
 
 export default function Navbar({ props = {}, path, editable = false }) {
   // `ctaText` (plain string) is the real field (lib/templates/_base.js); `cta:{label,href}`
@@ -7,10 +7,6 @@ export default function Navbar({ props = {}, path, editable = false }) {
   // {label,href} objects — both rendered the same, only strings aren't inline-editable
   // (no stable path into a bare string array item makes sense to expose as a link URL).
   const { logo = 'Business', links = [], cta, ctaText, phone, logoIcon } = props
-  // Real Tenji's logo tile always shows an icon (verified live, tenji-editor.png) — never
-  // an empty color square. Real content_json usually sets logoIcon, but some existing
-  // GeneratedSite records predate that field; default to 'sparkles' so the tile is never empty.
-  const LogoIcon = resolveIcon(logoIcon || 'sparkles')
   const ctaLabel = ctaText || cta?.label
   const ctaHref = cta?.href || '#'
 
@@ -42,7 +38,7 @@ export default function Navbar({ props = {}, path, editable = false }) {
               background: 'var(--primary)',
             }}
           >
-            {LogoIcon && <LogoIcon size={18} color="#fff" strokeWidth={2} />}
+            <NovaIcon name={logoIcon} size={18} color="#fff" strokeWidth={2} />
           </div>
           <span
             className="font-semibold text-[15px] shrink-0 truncate max-w-[10rem]"

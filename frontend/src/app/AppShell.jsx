@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import {
   Sparkles, LayoutGrid, Search, Kanban, CalendarClock, LayoutTemplate, Globe, Link2,
@@ -234,7 +234,21 @@ export default function AppShell() {
               Couldn't load your plan/credits: {entitlementsError}
             </div>
           )}
-          <Outlet context={{ entitlements, refreshEntitlements }} />
+          {/* BUNDLE DIET (2026-07-21): app pages are React.lazy() now (routes.jsx) — this
+              Suspense boundary is their nearest fallback, reusing the same "Entering
+              Nova..." treatment as the shell's own entitlements-loading state above so a
+              page-to-page navigation reads as one continuous style, not two different
+              spinners. */}
+          <Suspense
+            fallback={
+              <div className="flex flex-col items-center justify-center gap-4 py-24">
+                <div className="nova-icon-tile animate-spin" style={{ width: '3.5rem', height: '3.5rem', animationDuration: '1.1s' }} />
+                <p className="text-sm text-nova-text-muted tracking-wide">Entering Nova...</p>
+              </div>
+            }
+          >
+            <Outlet context={{ entitlements, refreshEntitlements }} />
+          </Suspense>
         </main>
       </div>
 
