@@ -37,10 +37,10 @@ export default function Integrations() {
       </div>
 
       <div className="mt-10 flex items-center justify-center gap-6 text-sm">
-        <a href="/contact" className="flex items-center gap-1 text-white/60 transition hover:text-white">
+        <a href="/request-feature" className="flex items-center gap-1 text-white/60 transition hover:text-white">
           Request a feature <ArrowRight className="h-3.5 w-3.5" />
         </a>
-        <a href="/features" className="flex items-center gap-1 text-white/60 transition hover:text-white">
+        <a href="/#features" className="flex items-center gap-1 text-white/60 transition hover:text-white">
           See all features <ArrowRight className="h-3.5 w-3.5" />
         </a>
       </div>

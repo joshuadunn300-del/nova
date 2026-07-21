@@ -91,7 +91,7 @@ export default function Toolkit() {
       </div>
 
       <div className="mt-10 flex justify-center">
-        <a href="/pricing" className="flex items-center gap-1 text-sm text-white/60 hover:text-white">
+        <a href="/pricing" className="flex items-center gap-1 text-sm font-medium text-[#f2386f] hover:brightness-110">
           Explore all features <ArrowRight className="h-3.5 w-3.5" />
         </a>
       </div>
