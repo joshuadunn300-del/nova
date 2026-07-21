@@ -7,7 +7,10 @@ export default function Navbar({ props = {}, path, editable = false }) {
   // {label,href} objects — both rendered the same, only strings aren't inline-editable
   // (no stable path into a bare string array item makes sense to expose as a link URL).
   const { logo = 'Business', links = [], cta, ctaText, phone, logoIcon } = props
-  const LogoIcon = resolveIcon(logoIcon)
+  // Real Tenji's logo tile always shows an icon (verified live, tenji-editor.png) — never
+  // an empty color square. Real content_json usually sets logoIcon, but some existing
+  // GeneratedSite records predate that field; default to 'sparkles' so the tile is never empty.
+  const LogoIcon = resolveIcon(logoIcon || 'sparkles')
   const ctaLabel = ctaText || cta?.label
   const ctaHref = cta?.href || '#'
 
@@ -29,18 +32,17 @@ export default function Navbar({ props = {}, path, editable = false }) {
           <div
             className="flex items-center justify-center shrink-0"
             style={{
-              // Real Tenji's navbar logo tile is a DISTINCT, smaller spec from the
-              // footer's (28px/8px radius, flat brand color vs. footer's 36px/12px
-              // gradient) — confirmed identical across both real template HTML files,
-              // so hardcoded here rather than sharing --logo-tile-size/-radius (those
-              // match the footer tile only, see Footer.jsx).
-              width: '28px',
-              height: '28px',
-              borderRadius: '8px',
+              // Live Tenji editor (tenji-editor.png, 2026-07-21) shows a CIRCULAR navbar
+              // logo tile with a white icon stroke — supersedes the older rounded-square/
+              // black-icon spec read off static template HTML files. Footer's tile is a
+              // separate, still-correct spec (see Footer.jsx) — not touched here.
+              width: '36px',
+              height: '36px',
+              borderRadius: '9999px',
               background: 'var(--primary)',
             }}
           >
-            {LogoIcon && <LogoIcon size={20} color="#000" strokeWidth={2} />}
+            {LogoIcon && <LogoIcon size={18} color="#fff" strokeWidth={2} />}
           </div>
           <span
             className="font-semibold text-[15px] shrink-0 truncate max-w-[10rem]"
@@ -57,12 +59,19 @@ export default function Navbar({ props = {}, path, editable = false }) {
               const isString = typeof link === 'string'
               const label = isString ? link : link?.label || 'Link'
               const href = isString ? `#${link.toLowerCase().replace(/\s+/g, '-')}` : link?.href || '#'
+              // Real Tenji always shows the first nav link (the page's own "Home"/top
+              // anchor) in an active pill — verified live, tenji-editor.png.
+              const isActive = i === 0
               return (
                 <li key={i} className="truncate max-w-[8rem]">
                   <a
                     href={href}
                     className="block rounded-full px-3 py-1.5 text-[13px] whitespace-nowrap transition-colors hover:text-white hover:bg-white/10"
-                    style={{ color: 'rgba(255,255,255,0.72)' }}
+                    style={
+                      isActive
+                        ? { color: '#fff', fontWeight: 600, background: 'color-mix(in srgb, var(--primary) 30%, transparent)' }
+                        : { color: 'rgba(255,255,255,0.72)' }
+                    }
                     {...(isString ? {} : editableProps(editable, `${path}.links.${i}.label`))}
                   >
                     {label}

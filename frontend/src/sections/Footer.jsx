@@ -6,7 +6,9 @@ export default function Footer({ props = {}, path, editable = false }) {
   // back-compat read for older content_json. Explore `links` may be plain
   // strings (real template shape, same as Navbar's) or {label,href} objects.
   const { logo = 'Business', tagline, text, links = [], phone, email, copyright, logoIcon } = props
-  const LogoIcon = resolveIcon(logoIcon)
+  // Same fallback as Navbar.jsx: never show an empty logo tile when older
+  // content_json records predate the logoIcon field.
+  const LogoIcon = resolveIcon(logoIcon || 'sparkles')
   const taglineText = tagline ?? text ?? ''
   const taglineField = tagline !== undefined ? 'tagline' : 'text'
 
