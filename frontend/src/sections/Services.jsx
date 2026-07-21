@@ -15,7 +15,7 @@ export default function Services({ props = {}, path, editable = false }) {
       <div className="text-center mx-auto" style={{ maxWidth: '42rem' }}>
         <h2
           className="font-bold break-words"
-          style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
+          style={{ fontFamily: 'var(--heading-font)', color: 'var(--heading-color)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', letterSpacing: '-0.025em', lineHeight: 1 }}
           {...editableProps(editable, `${path}.${heading ? 'heading' : 'title'}`)}
         >
           {sectionTitle}

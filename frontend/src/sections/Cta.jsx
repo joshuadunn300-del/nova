@@ -30,8 +30,8 @@ export default function Cta({ props = {}, path, editable = false }) {
               fontFamily: 'var(--heading-font)',
               color: '#fff',
               fontSize: 'clamp(1.75rem, 4vw, 3rem)',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
+              letterSpacing: '-0.025em',
+              lineHeight: 1,
               textShadow: '0 2px 22px rgba(0,0,0,0.4)',
             }}
             {...editableProps(editable, `${path}.${heading ? 'heading' : 'headline'}`)}
