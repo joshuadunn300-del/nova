@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Bell } from 'lucide-react'
 import { listNotifications, markNotificationRead } from '../lib/api'
 
 export default function Notifications() {
@@ -21,7 +22,7 @@ export default function Notifications() {
   return (
     <div className="max-w-2xl">
       <p className="nova-eyebrow mb-1">ACCOUNT</p>
-      <h1 className="text-xl font-semibold mb-1">Notifications</h1>
+      <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-1">Notifications</h1>
       <p className="text-sm text-nova-text-muted mb-6">Lead searches, generations, follow-ups, and system updates.</p>
 
       {error && (
@@ -34,7 +35,9 @@ export default function Notifications() {
         <p className="text-sm text-nova-text-muted">Loading…</p>
       ) : (items || []).length === 0 ? (
         <div className="nova-card border-dashed p-10 text-center">
-          <div className="text-2xl mb-2">🔔</div>
+          <div className="nova-icon-tile mx-auto mb-3 text-base">
+            <Bell size={18} />
+          </div>
           <p className="text-sm font-medium">No notifications</p>
           <p className="text-sm text-nova-text-muted mt-1">
             You'll see updates here when lead searches finish, sites are generated, and follow-ups are due.

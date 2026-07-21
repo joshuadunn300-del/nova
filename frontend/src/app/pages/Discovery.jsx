@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import { DISCOVERY_NICHES } from '../lib/discoveryCatalog'
 
 const DIFFICULTY_STYLE = {
@@ -13,7 +14,7 @@ export default function Discovery() {
   return (
     <div>
       <p className="nova-eyebrow mb-1">STUDIO</p>
-      <h1 className="text-xl font-semibold mb-1">Choose a niche. Tenji builds the angle.</h1>
+      <h1 className="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-1">Choose a niche. Nova builds the angle.</h1>
       <p className="text-sm text-nova-text-muted mb-4">
         Every local business niche with its average client value, difficulty, and best offer angle.
       </p>
@@ -37,9 +38,9 @@ export default function Discovery() {
             <button
               type="button"
               onClick={() => navigate('/app/leads', { state: { niche: n.niche } })}
-              className="text-sm font-medium text-nova-accent"
+              className="inline-flex items-center gap-1 text-sm font-medium text-nova-accent"
             >
-              Find Leads →
+              Find Leads <ArrowRight size={14} />
             </button>
           </div>
         ))}
