@@ -208,9 +208,9 @@ export default function Dashboard() {
           </button>
         </div>
         {sites.length === 0 ? (
-          <div className="nova-card border-dashed p-10 text-center">
+          <div className="nova-action-card text-center" style={{ padding: '40px' }}>
             <div className="nova-icon-tile mx-auto mb-4"><Globe size={20} /></div>
-            <p className="font-semibold mb-1">No sites yet</p>
+            <p className="font-display font-semibold mb-1">No sites yet</p>
             <p className="text-sm text-nova-text-muted mb-5">
               Create your first client site and it'll show up here, ready to edit and publish.
             </p>
@@ -237,18 +237,18 @@ export default function Dashboard() {
         <h2 className="font-display text-xl font-semibold mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {QUICK_ACTIONS.map((a, i) => (
-            <button key={`${a.to}-${i}`} type="button" onClick={() => navigate(a.to)} className="text-left nova-card p-4 hover:border-nova-accent/30 transition-colors relative">
-              <span className="absolute top-4 right-4 nova-badge-pill">{a.cost}</span>
-              <div className="nova-icon-tile mb-3"><a.Icon size={18} /></div>
-              <p className="font-medium mb-1">{a.label}</p>
-              <p className="text-xs text-nova-text-muted">{a.desc}</p>
+            <button key={`${a.to}-${i}`} type="button" onClick={() => navigate(a.to)} className="text-left nova-action-card hover:border-nova-accent/30 transition-colors relative">
+              <span className="absolute top-4 right-4 nova-action-cost-pill">{a.cost}</span>
+              <div className="nova-icon-tile-action"><a.Icon size={18} /></div>
+              <p className="nova-action-card-title">{a.label}</p>
+              <p className="nova-action-card-desc">{a.desc}</p>
             </button>
           ))}
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="nova-card p-6">
+        <div className="glass-panel rounded-2xl" style={{ padding: '24px' }}>
           <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Leads</p>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-semibold">Pipeline</h2>
@@ -262,7 +262,7 @@ export default function Dashboard() {
             <p className="text-sm text-nova-text-muted">{leads.length} lead{leads.length === 1 ? '' : 's'} in your pipeline.</p>
           )}
         </div>
-        <div className="nova-card p-6">
+        <div className="glass-panel rounded-2xl" style={{ padding: '24px' }}>
           <p className="text-xs uppercase tracking-[0.2em] text-accent mb-1">Schedule</p>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-semibold">Today's Follow-Ups</h2>

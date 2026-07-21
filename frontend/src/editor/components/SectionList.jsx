@@ -1,14 +1,21 @@
 import { useState } from 'react';
+import { Layers, GripVertical, ChevronUp, ChevronDown, Copy, Trash2, Eye, EyeOff, ImageIcon } from 'lucide-react';
 import AddSectionMenu from './AddSectionMenu.jsx';
+
+// Real Tenji labels the navbar section "Navigation" (verified live DOM text, section id
+// stays "navbar" for content_json compatibility — this is a display-only relabel).
+const DISPLAY_LABEL = { navbar: 'Navigation' };
 
 // Native HTML5 drag-and-drop (same pattern as T4's Tracker kanban) — the ↑↓ buttons stay
 // as the reliable/keyboard-accessible path, dragging is progressive enhancement matching
 // designer.md's "drag handles" wording.
 //
-// Row layout matches the live Tenji editor (reference/tenji-editor.png): a "SECTIONS" header
-// with a compact "+" add-button, and each row showing only a drag handle + name + visibility
-// eye by default — move/duplicate/delete/bg-edit stay real (no functionality removed) but are
-// hover-revealed rather than always-on icon soup, matching Tenji's minimal default row state.
+// Row layout + every exact value here (padding/radius/icons) verified via a live DOM/
+// getComputedStyle probe of the real Tenji editor (tenji.ai/app/editor), 2026-07-21 — not
+// the earlier screenshot-only pass. Real rows have NO persistent background (only a hover
+// wash), lucide GripVertical/ChevronUp/ChevronDown/Copy/Trash2/Eye icons (not glyphs), and
+// the move/duplicate/delete controls are hover-revealed exactly as before, just correctly
+// iconified now.
 export default function SectionList({ sections, onMove, onReorder, onDuplicate, onDelete, onToggleHidden, onEditBackground, onAddSection }) {
   const [dragIndex, setDragIndex] = useState(null);
   const [overIndex, setOverIndex] = useState(null);
@@ -16,6 +23,7 @@ export default function SectionList({ sections, onMove, onReorder, onDuplicate, 
   return (
     <>
       <div className="section-list-header">
+        <Layers size={14} className="section-list-header-icon" />
         <span>Sections</span>
         <AddSectionMenu onAdd={onAddSection} compact />
       </div>
@@ -37,14 +45,14 @@ export default function SectionList({ sections, onMove, onReorder, onDuplicate, 
             }}
             onDragEnd={() => { setDragIndex(null); setOverIndex(null); }}
           >
-            <span className="drag-handle" title="Drag to reorder">⠿</span>
-            <span className="section-type">{s.type}</span>
+            <span className="drag-handle" title="Drag to reorder"><GripVertical size={14} /></span>
+            <span className="section-type">{DISPLAY_LABEL[s.type] || s.type}</span>
             <div className="section-controls-extra">
-              <button type="button" title="Move up" disabled={i === 0} onClick={() => onMove(i, -1)}>↑</button>
-              <button type="button" title="Move down" disabled={i === sections.length - 1} onClick={() => onMove(i, 1)}>↓</button>
-              <button type="button" title="Duplicate" onClick={() => onDuplicate(i)}>⧉</button>
+              <button type="button" title="Move up" disabled={i === 0} onClick={() => onMove(i, -1)}><ChevronUp size={14} /></button>
+              <button type="button" title="Move down" disabled={i === sections.length - 1} onClick={() => onMove(i, 1)}><ChevronDown size={14} /></button>
+              <button type="button" title="Duplicate" onClick={() => onDuplicate(i)}><Copy size={14} /></button>
               {s.type === 'hero' && (
-                <button type="button" title="Change background image" onClick={() => onEditBackground(i)}>▣</button>
+                <button type="button" title="Change background image" onClick={() => onEditBackground(i)}><ImageIcon size={14} /></button>
               )}
               <button
                 type="button"
@@ -55,11 +63,11 @@ export default function SectionList({ sections, onMove, onReorder, onDuplicate, 
                 }}
                 disabled={sections.length <= 1}
               >
-                ✕
+                <Trash2 size={14} />
               </button>
             </div>
             <button type="button" className="section-eye" title={s.visible === false ? 'Show' : 'Hide'} onClick={() => onToggleHidden(i)}>
-              {s.visible === false ? '◌' : '◉'}
+              {s.visible === false ? <EyeOff size={14} /> : <Eye size={14} />}
             </button>
           </li>
         ))}

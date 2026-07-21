@@ -355,6 +355,47 @@ h1, h2, h3 {
 }
 /* Compact outlined variant — sidebar "LIVE EDITOR" tag. Same soft-outline recipe as
    .nova-badge-pill (never a solid fill), just smaller for an inline nav-row badge. */
+/* Quick Action card — exact values, live probe of "Generate Leads" tenji.ai/app, 2026-07-21. */
+.nova-action-card {
+  border-radius: 16px;
+  padding: 20px;
+  background: linear-gradient(180deg, rgb(11, 11, 15) 0%, rgb(9, 9, 12) 100%);
+  box-shadow: rgba(255, 255, 255, 0.07) 0px 0px 0px 1px, rgba(0, 0, 0, 0.4) 0px 8px 24px 0px;
+}
+.nova-action-card-title {
+  margin-top: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+.nova-action-card-desc {
+  margin-top: 4px;
+  font-size: 14px;
+  color: rgb(161, 145, 153);
+}
+.nova-action-cost-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(244, 42, 126, 0.1);
+  color: rgb(255, 143, 165);
+  border: 1px solid rgba(244, 42, 126, 0.25);
+}
+.nova-icon-tile-action {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgb(246, 49, 131) 0%, rgb(233, 12, 104) 50%, rgb(255, 71, 108) 100%);
+  box-shadow:
+    rgba(242, 13, 108, 0.35) 0px 4px 14px 0px,
+    rgba(244, 42, 126, 0.28) 0px 0px 18px 0px,
+    rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset,
+    rgba(145, 8, 65, 0.5) 0px -2px 6px 0px inset;
+  color: #fff;
+}
+
 .nova-badge-pill-outline {
   display: inline-flex;
   align-items: center;
@@ -525,11 +566,17 @@ h1, h2, h3 {
    class; `animate-grid-drift-slow` + `dash-petal` are the literal animation
    names referenced in the decompiled JSX.
    ============================================================================ */
+/* Exact values from a direct live probe of two real glass-panel instances (dashboard hero
+   card + the Pipeline card, 2026-07-21, both agree): the background is a subtle 2-stop
+   translucent-WHITE gradient and there is NO box-shadow on the class itself — both were
+   wrong before (a dark saturated gradient + an inset/drop shadow that don't exist on the
+   real class; any darker look on a given instance comes from that instance's own separate
+   background layer, not from glass-panel). */
 .glass-panel {
-  background: linear-gradient(165deg, rgba(28, 28, 33, 0.9) 0%, rgba(16, 16, 20, 0.92) 60%, rgba(10, 10, 13, 0.94) 100%);
-  backdrop-filter: blur(20px); /* exact value, reference/tenji-computed-styles.md */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 36px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 @keyframes grid-drift-slow {
@@ -600,4 +647,60 @@ h1, h2, h3 {
   .animated-gradient-text {
     animation: none;
   }
+}
+
+/* ============================================================================
+   LEAD SEARCH — exact recipe, owner T4. Pulled via getComputedStyle directly
+   against the real live tenji.ai/app/leads (2026-07-21), not re-derived from a
+   screenshot. Field/label/chip/toggle values only — the CTA button already
+   reuses `.nova-btn-primary`, independently confirmed exact against the
+   Dashboard hero button.
+   ============================================================================ */
+.nova-search-input {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(255, 255, 255);
+  background-color: rgba(5, 5, 7, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 12px 16px 12px 40px;
+  height: 46px;
+}
+.nova-search-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.68px;
+  color: rgb(161, 145, 153);
+  text-transform: uppercase;
+}
+.nova-suggestion-chip {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(161, 145, 153);
+  background-color: transparent;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  height: 30px;
+  box-shadow: rgba(255, 255, 255, 0.05) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.3) 0px 2px 6px 0px;
+}
+/* Active toggle keeps a TRANSPARENT background — it's the pink border + glow
+   that reads as "active", not a solid fill (confirmed, this was the one real
+   surprise in the diff: not just a color swap on the same recipe). */
+.nova-toggle-pill {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(161, 145, 153);
+  background-color: rgba(6, 6, 9, 0.8);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 20px;
+  height: 30px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2.17px 6.52px 0px inset;
+}
+.nova-toggle-pill-active {
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+  border: 1px solid rgba(247, 110, 167, 0.6);
+  box-shadow: rgba(244, 42, 126, 0.4) 0px 0px 19.55px 0px, rgba(255, 255, 255, 0.25) 0px 1.09px 0px 0px inset;
 }

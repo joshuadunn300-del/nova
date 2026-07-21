@@ -1,3 +1,6 @@
+import { Paintbrush, Settings as SettingsIcon, Inbox } from 'lucide-react';
+
+const TAB_ICON = { design: Paintbrush, settings: SettingsIcon, submissions: Inbox };
 const DEVICES = ['desktop', 'tablet', 'mobile'];
 const DEVICE_ICON = { desktop: '▭', tablet: '▯', mobile: '▮' }; // flat geometric glyphs, not colored emoji — see BUILD-LOG icon-language note
 
@@ -32,12 +35,16 @@ export default function Toolbar({
         </span>
       </div>
 
-      <div className="toolbar-group tabs">
-        {['design', 'settings', 'submissions'].map((tab) => (
-          <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} data-testid={`tab-${tab}`} onClick={() => setActiveTab(tab)}>
-            {tab[0].toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
+      <div className="toolbar-tabs">
+        {['design', 'settings', 'submissions'].map((tab) => {
+          const Icon = TAB_ICON[tab];
+          return (
+            <button key={tab} type="button" className={`toolbar-tab${activeTab === tab ? ' toolbar-tab-active' : ''}`} data-testid={`tab-${tab}`} onClick={() => setActiveTab(tab)}>
+              <Icon size={14} />
+              {tab[0].toUpperCase() + tab.slice(1)}
+            </button>
+          );
+        })}
       </div>
 
       <div className="toolbar-group">

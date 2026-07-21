@@ -54,6 +54,24 @@
 }
 .editor-toolbar button:hover:not(:disabled) { background: var(--bg-3); color: var(--text); }
 .editor-toolbar button.active { background: var(--accent-active-bg); color: #fff; box-shadow: var(--glow-soft); }
+
+/* Design/Settings/Submissions tab group — exact values, live probe of tenji.ai/app/editor,
+   2026-07-21. Distinct from the generic toolbar-button styling above (higher specificity
+   below wins for the properties both would otherwise set). */
+.editor-toolbar .toolbar-tabs {
+  display: flex; align-items: center; gap: 4px; padding: 4px;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
+}
+.editor-toolbar .toolbar-tabs .toolbar-tab {
+  display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; color: rgb(161, 145, 153);
+  background: transparent; border: 1px solid transparent;
+}
+.editor-toolbar .toolbar-tabs .toolbar-tab:hover:not(:disabled) { background: transparent; color: var(--text); }
+.editor-toolbar .toolbar-tabs .toolbar-tab-active,
+.editor-toolbar .toolbar-tabs .toolbar-tab-active:hover {
+  background: rgba(244, 42, 126, 0.2); border-color: rgba(244, 42, 126, 0.4); color: #fff; box-shadow: none;
+}
 .editor-toolbar button.active:hover { background: var(--accent-hover); }
 .editor-toolbar button:disabled { opacity: 0.35; cursor: not-allowed; }
 .editor-toolbar [data-testid="zoom-value"] { color: var(--text-dim); font-variant-numeric: tabular-nums; min-width: 42px; text-align: center; }
@@ -67,46 +85,56 @@
 .add-section-dropdown button { border-radius: 6px; border: 0; text-align: left; text-transform: capitalize; }
 
 .designer-body { display: flex; flex: 1; min-height: 0; }
-.designer-sidebar { width: 232px; background: var(--bg-1); border-right: 1px solid var(--border); overflow-y: auto; padding: 12px; }
+/* Exact values from a live DOM/getComputedStyle probe of tenji.ai/app/editor, 2026-07-21
+   (not the earlier screenshot-only pass) — sidebar width 240px (was 232px), bg
+   hsl(240 14% 4%) (matches --bg-2 already), border white/[0.08]. */
+.designer-sidebar { width: 240px; background: var(--bg-2); border-right: 1px solid rgba(255,255,255,0.08); overflow-y: auto; padding: 0; display: flex; flex-direction: column; }
 .section-list-header {
-  display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 12px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);
+  display: flex; align-items: center; gap: 8px; padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-dim);
 }
+.section-list-header span { flex: 1; }
+.section-list-header-icon { color: var(--accent); }
 .add-section-menu-compact { position: relative; }
 .add-section-menu-compact > button {
-  width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
-  padding: 0; font-size: 14px; line-height: 1; border-radius: 999px; background: var(--bg-3);
-  border: 1px solid var(--border-soft); color: var(--text-dim);
+  width: auto; height: auto; display: flex; align-items: center; justify-content: center;
+  padding: 6px; font-size: 14px; line-height: 1; border-radius: 8px; background: transparent;
+  border: 0; color: var(--text-dim);
 }
-.add-section-menu-compact > button:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.add-section-menu-compact > button:hover { background: rgba(255,255,255,0.1); border-color: transparent; color: var(--text-dim); }
 .add-section-menu-compact .add-section-dropdown { left: auto; right: 0; }
-.section-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.section-list { list-style: none; margin: 0; padding: 8px; display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; }
 .section-row {
-  display: flex; justify-content: space-between; align-items: center; background: var(--bg-2);
-  border: 1px solid transparent; padding: 9px 10px; border-radius: var(--radius-lg); transition: border-color 0.12s;
+  display: flex; justify-content: space-between; align-items: center; gap: 6px; background: transparent;
+  border: 1px solid transparent; padding: 10px 8px; border-radius: 8px; cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s;
 }
-.section-row:hover { border-color: var(--border-soft); }
+.section-row:hover { background: rgba(255,255,255,0.06); transform: scale(1.01); }
 .section-row.is-hidden { opacity: 0.4; }
 .section-row.drag-over { border-color: var(--accent); background: var(--bg-3); }
 .section-row { cursor: grab; }
 .section-row:active { cursor: grabbing; }
-.drag-handle { color: var(--text-dim); margin-right: 6px; font-size: 12px; }
-.section-type { font-weight: 600; text-transform: capitalize; letter-spacing: 0.01em; flex: 1; }
+.drag-handle { display: flex; color: rgba(161,145,153,0.4); flex-shrink: 0; transition: color 0.15s; }
+.drag-handle:hover { color: var(--text-dim); }
+/* text-transform:capitalize is a Nova-side necessity, not part of the real spec — our
+   section.type values are raw lowercase ids ("navbar","hero"), Tenji's real DOM already
+   has properly-cased display strings ("Navigation") so its own CSS needs no transform. */
+.section-type { font-size: 13px; font-weight: 500; letter-spacing: normal; text-transform: capitalize; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Move/duplicate/delete/bg-edit are real, functioning controls (nothing removed) but stay
-   hidden until hover — the live Tenji editor's default row state shows only a drag handle,
-   name, and visibility eye (reference/tenji-editor.png); a 6-icon row never matches that. */
-.section-controls-extra { display: flex; gap: 3px; opacity: 0; pointer-events: none; transition: opacity 0.12s; margin-right: 6px; }
+   hidden until hover, exactly matching the live editor's own opacity-0/group-hover pattern. */
+.section-controls-extra { display: flex; align-items: center; gap: 2px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .section-row:hover .section-controls-extra, .section-row:focus-within .section-controls-extra { opacity: 1; pointer-events: auto; }
 .section-controls-extra button {
-  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
-  padding: 0; font-size: 12px; background: var(--bg-3); border: 1px solid var(--border-soft);
-  border-radius: 5px; color: var(--text-dim); cursor: pointer;
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  padding: 0; background: transparent; border: 0;
+  border-radius: 6px; color: var(--text-dim); cursor: pointer;
 }
-.section-controls-extra button:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+.section-controls-extra button:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: var(--text); }
 .section-controls-extra button:disabled { opacity: 0.3; cursor: not-allowed; }
 .section-eye {
-  flex-shrink: 0; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
-  padding: 0; font-size: 13px; background: transparent; border: 0; color: var(--text-dim); cursor: pointer;
+  flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  padding: 0; background: transparent; border: 0; color: rgba(161,145,153,0.6); cursor: pointer;
 }
 .section-eye:hover { color: var(--text); }
 
